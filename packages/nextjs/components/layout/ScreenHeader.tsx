@@ -41,7 +41,7 @@ export function ScreenHeader({
   };
 
   return (
-    <header className={cn("hb-container flex items-center justify-between gap-4 pb-6 pt-8", className)}>
+    <header className={cn("hb-container flex items-center justify-between gap-4 pb-6 pt-8 md:hidden", className)}>
       <div className="flex flex-1 justify-start">
         {hideBackButton ? (
           <span className="size-9" aria-hidden />

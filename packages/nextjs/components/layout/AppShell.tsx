@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home", icon: HomeIcon },
@@ -19,9 +20,9 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-[color:#05060a] text-white">
-      <main className="flex-1 pb-24 md:pb-14 lg:pb-0">{children}</main>
-      <MobileNav pathname={pathname} />
       <DesktopNav pathname={pathname} />
+      <main className="flex-1 pb-24 md:pb-0">{children}</main>
+      <MobileNav pathname={pathname} />
     </div>
   );
 }
@@ -66,27 +67,32 @@ function DesktopNav({ pathname }: NavProps) {
   return (
     <div className="hidden md:block">
       <div className="sticky top-0 z-30 border-b border-[#1f2432] bg-[color:#05060a]/90 backdrop-blur">
-        <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-6">
-          <div className="flex items-center gap-2 text-sm font-semibold tracking-[0.35em] uppercase text-[#20ff6d]">
+        <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-6 px-6">
+          <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.35em] text-[#20ff6d]">
             <span>Hash Butterfly</span>
           </div>
-          <div className="flex items-center gap-6 text-xs uppercase tracking-[0.25em] text-[#788090]">
-            {NAV_ITEMS.map(item => {
-              const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-2 transition-colors",
-                    isActive ? "text-[#20ff6d]" : "hover:text-[#20ff6d]",
-                  )}
-                >
-                  <item.icon active={isActive} />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
+          <div className="flex flex-1 items-center justify-center">
+            <div className="flex items-center gap-6 text-xs uppercase tracking-[0.25em] text-[#788090]">
+              {NAV_ITEMS.map(item => {
+                const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-2 transition-colors",
+                      isActive ? "text-[#20ff6d]" : "hover:text-[#20ff6d]",
+                    )}
+                  >
+                    <item.icon active={isActive} />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex items-center">
+            <RainbowKitCustomConnectButton />
           </div>
         </div>
       </div>
