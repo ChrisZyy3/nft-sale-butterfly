@@ -7,33 +7,33 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const walletItems = [
   {
-    title: "My balance",
-    description: "Wallet overview and recent activity",
+    title: "ETH Balance",
+    value: "0.256 ETH",
     accent: "#20ff6d",
     highlight: true,
-    icon: BalanceIcon,
+    icon: ({ accent }) => <TokenBadgeIcon accent={accent} label="ETH" />,
   },
   {
-    title: "My assets",
-    description: "Tokens and collectibles in your vault",
+    title: "Assets",
+    value: "butterfly",
     accent: "#ffb547",
     icon: AssetsIcon,
   },
   {
-    title: "My friend",
-    description: "Invite friends and share ecosystem rewards",
+    title: "Friends",
+    value: "9999999999.0",
     accent: "#ff5f66",
     icon: FriendsIcon,
   },
   {
-    title: "My NFT",
-    description: "Manage your Hash Butterfly editions",
+    title: "NFT",
+    value: "100",
     accent: "#4c7dff",
     icon: ButterflyIcon,
   },
   {
-    title: "My order",
-    description: "Track purchases across the metaverse mall",
+    title: "Orders",
+    value: "0",
     accent: "#9b6bff",
     icon: OrderIcon,
   },
@@ -41,9 +41,9 @@ const walletItems = [
 
 type WalletItem = {
   title: string;
-  description: string;
+  value: string;
   accent: string;
-  icon: (props: { accent: string }) => ReactNode;
+  icon?: (props: { accent: string }) => ReactNode;
   highlight?: boolean;
 };
 
@@ -53,10 +53,8 @@ export default function WalletPage() {
       <ScreenHeader title="Wallet" />
       <section className="hb-container flex flex-col gap-4">
         <div className="rounded-3xl border border-[#1f2432] bg-[#10131c] px-6 py-7 text-center shadow-[0_50px_120px_-80px_rgba(32,255,109,0.45)]">
-          <h1 className="text-xl font-semibold uppercase tracking-[0.32em] text-[#20ff6d]">Hash Butterfly</h1>
-          <p className="mt-3 text-sm leading-relaxed text-[#9ca3b0]">
-            Welcome to the Hash Butterfly Metaverse Ecology.
-          </p>
+          <h1 className="text-xl font-semibold uppercase tracking-[0.32em] text-[#20ff6d]">ETH Balance</h1>
+          <p className="mt-4 text-3xl font-semibold text-white">0.256 ETH</p>
         </div>
         <div className="flex flex-col gap-3">
           {walletItems.map(item => {
@@ -76,15 +74,12 @@ export default function WalletPage() {
                     className="relative grid size-12 place-items-center overflow-hidden rounded-2xl border border-[#1f2432] bg-[#141924]"
                     style={{ boxShadow: `0 18px 60px -32px ${hexToRgba(item.accent, 0.55)}` }}
                   >
-                    <Icon accent={item.accent} />
+                    {Icon ? <Icon accent={item.accent} /> : null}
                   </span>
-                  <span className="flex flex-col gap-1">
-                    <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
-                    <span className="text-xs text-[#818898]">{item.description}</span>
-                  </span>
+                  <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
                 </span>
-                <span className="relative z-10 text-[#626b7a] transition group-hover:text-[#20ff6d]">
-                  <ArrowIcon />
+                <span className="relative z-10 text-sm font-semibold uppercase tracking-[0.18em] text-white transition group-hover:text-[#20ff6d]">
+                  {item.value}
                 </span>
               </button>
             );
@@ -135,21 +130,17 @@ function ConnectWalletCard({ item }: ConnectWalletCardProps) {
                 className="relative grid size-12 place-items-center overflow-hidden rounded-2xl border border-[#1f2432] bg-[#141924]"
                 style={{ boxShadow: `0 18px 60px -32px ${hexToRgba(item.accent, 0.6)}` }}
               >
-                <Icon accent={item.accent} />
+                {Icon ? <Icon accent={item.accent} /> : null}
               </span>
-              <span className="flex flex-col gap-1">
-                <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
-                <span className="text-xs text-[#818898]">{item.description}</span>
-              </span>
+              <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
             </span>
-            <span className="relative z-10 text-[#626b7a] transition group-hover:text-[#20ff6d]">
+            <span className="relative z-10 flex flex-col items-end text-right text-white transition group-hover:text-[#20ff6d]">
+              <span className="text-sm font-semibold uppercase tracking-[0.18em]">{item.value}</span>
               {connected ? (
-                <span className="text-xs font-semibold uppercase tracking-[0.35em] text-[#20ff6d]">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[#20ff6d]">
                   {account.displayName}
                 </span>
-              ) : (
-                <ArrowIcon />
-              )}
+              ) : null}
             </span>
           </button>
         );
@@ -165,33 +156,6 @@ function hexToRgba(hex: string, alpha: number) {
   const g = (bigint >> 8) & 255;
   const b = bigint & 255;
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-function ArrowIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-    >
-      <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function BalanceIcon({ accent }: { accent: string }) {
-  return (
-    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.6">
-      <rect x="5" y="5" width="14" height="14" rx="7" fill={hexToRgba(accent, 0.12)} />
-      <path d="M12 7v10" strokeLinecap="round" />
-      <path d="M9 10h6" strokeLinecap="round" />
-      <path d="M9 14h6" strokeLinecap="round" />
-    </svg>
-  );
 }
 
 function AssetsIcon({ accent }: { accent: string }) {
@@ -237,5 +201,13 @@ function OrderIcon({ accent }: { accent: string }) {
       <path d="M8 13h8" strokeLinecap="round" />
       <path d="M8 17h5" strokeLinecap="round" />
     </svg>
+  );
+}
+
+function TokenBadgeIcon({ accent, label }: { accent: string; label: string }) {
+  return (
+    <span className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: accent }}>
+      {label}
+    </span>
   );
 }
