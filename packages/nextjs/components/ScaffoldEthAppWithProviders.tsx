@@ -7,21 +7,21 @@ import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
-import { Footer } from "~~/components/Footer";
-import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { useInitializeNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
-const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
+type AppContainerProps = {
+  children: React.ReactNode;
+};
+
+const AppContainer = ({ children }: AppContainerProps) => {
   useInitializeNativeCurrencyPrice();
 
   return (
     <>
-      <div className={`flex flex-col min-h-screen `}>
-        <Header />
-        <main className="relative flex flex-col flex-1">{children}</main>
-        <Footer />
+      <div className="flex min-h-dvh flex-col text-[#f5f7fb]">
+        <main className="flex flex-1 flex-col">{children}</main>
       </div>
       <Toaster />
     </>
@@ -52,8 +52,8 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
           avatar={BlockieAvatar}
           theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
         >
-          <ProgressBar height="3px" color="#2299dd" />
-          <ScaffoldEthApp>{children}</ScaffoldEthApp>
+          <ProgressBar height="3px" color="#20ff6d" />
+          <AppContainer>{children}</AppContainer>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

@@ -1,123 +1,108 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@plugin "daisyui";
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
-@theme {
-  --shadow-center: 0 0 12px -2px rgb(0 0 0 / 0.05);
-  --animate-pulse-fast: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+:root {
+  color-scheme: dark;
+  --hb-background: #05060a;
+  --hb-surface: #10131c;
+  --hb-surface-muted: #141924;
+  --hb-surface-soft: #1a1f2c;
+  --hb-border: #1f2432;
+  --hb-border-strong: #2a3040;
+  --hb-text-primary: #f5f7fb;
+  --hb-text-secondary: #9ca3b0;
+  --hb-text-subtle: #6c7380;
+  --hb-green: #20ff6d;
+  --hb-green-soft: #1ed760;
+  --hb-green-faded: rgba(32, 255, 109, 0.16);
+  --hb-green-muted: rgba(32, 255, 109, 0.05);
+  --hb-heading-tracking: 0.3em;
 }
 
-@plugin "daisyui" {
-  themes:
-    light,
-    dark --prefersdark;
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--hb-background);
+  color: var(--hb-text-primary);
+  font-family:
+    "Inter",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-@plugin "daisyui/theme" {
-  name: "light";
-
-  --color-primary: #93bbfb;
-  --color-primary-content: #212638;
-  --color-secondary: #dae8ff;
-  --color-secondary-content: #212638;
-  --color-accent: #93bbfb;
-  --color-accent-content: #212638;
-  --color-neutral: #212638;
-  --color-neutral-content: #ffffff;
-  --color-base-100: #ffffff;
-  --color-base-200: #f4f8ff;
-  --color-base-300: #dae8ff;
-  --color-base-content: #212638;
-  --color-info: #93bbfb;
-  --color-success: #34eeb6;
-  --color-warning: #ffcf72;
-  --color-error: #ff8863;
-
-  --radius-field: 9999rem;
-  --radius-box: 1rem;
-  --tt-tailw: 6px;
+* {
+  border-color: var(--hb-border);
 }
 
-@plugin "daisyui/theme" {
-  name: "dark";
-
-  --color-primary: #212638;
-  --color-primary-content: #f9fbff;
-  --color-secondary: #323f61;
-  --color-secondary-content: #f9fbff;
-  --color-accent: #4969a6;
-  --color-accent-content: #f9fbff;
-  --color-neutral: #f9fbff;
-  --color-neutral-content: #385183;
-  --color-base-100: #385183;
-  --color-base-200: #2a3655;
-  --color-base-300: #212638;
-  --color-base-content: #f9fbff;
-  --color-info: #385183;
-  --color-success: #34eeb6;
-  --color-warning: #ffcf72;
-  --color-error: #ff8863;
-
-  --radius-field: 9999rem;
-  --radius-box: 1rem;
-
-  --tt-tailw: 6px;
-  --tt-bg: var(--color-primary);
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+a:hover {
+  color: var(--hb-green);
+}
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+button {
+  font-family: inherit;
+}
+
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
-
-  p {
-    margin: 1rem 0;
-  }
-
-  body {
-    min-height: 100vh;
-  }
-
   h1,
   h2,
   h3,
-  h4 {
-    margin-bottom: 0.5rem;
-    line-height: 1;
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    letter-spacing: var(--hb-heading-tracking);
+    text-transform: uppercase;
+  }
+
+  main {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
   }
 }
 
-:root,
-[data-theme] {
-  background: var(--color-base-200);
-}
+@layer utilities {
+  .hb-container {
+    width: 100%;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 
-.btn {
-  @apply shadow-md;
-}
+  @media (min-width: 768px) {
+    .hb-container {
+      max-width: 720px;
+    }
+  }
 
-.btn.btn-ghost {
-  @apply shadow-none;
-}
+  .hb-gradient-outline {
+    position: relative;
+    border-radius: 1.5rem;
+  }
 
-.link {
-  text-underline-offset: 2px;
-}
-
-.link:hover {
-  opacity: 80%;
+  .hb-gradient-outline::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(32, 255, 109, 0.7), rgba(32, 255, 109, 0.1));
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
 }
