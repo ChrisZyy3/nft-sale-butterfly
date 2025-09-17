@@ -1,0 +1,2602 @@
+[
+  {
+    "name": "#1",
+    "description": "Pixel Art NFT Collection",
+    "image": "1.png",
+    "dna": "6:background7#45.png-26:body6#17.png-4:pattern13#47.png",
+    "edition": 1,
+    "date": 1758112206617,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "17"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#2",
+    "description": "Pixel Art NFT Collection",
+    "image": "2.png",
+    "dna": "6:background7#45.png-10:body19#43.png-7:pattern16#56.png",
+    "edition": 2,
+    "date": 1758112206693,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "43"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "56"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#3",
+    "description": "Pixel Art NFT Collection",
+    "image": "3.png",
+    "dna": "3:background4#30.png-1:body10#25.png-7:pattern16#56.png",
+    "edition": 3,
+    "date": 1758112206752,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "25"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "56"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#4",
+    "description": "Pixel Art NFT Collection",
+    "image": "4.png",
+    "dna": "2:background3#25.png-10:body19#43.png-8:pattern17#59.png",
+    "edition": 4,
+    "date": 1758112206803,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "25"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "43"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "59"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#5",
+    "description": "Pixel Art NFT Collection",
+    "image": "5.png",
+    "dna": "8:background9#55.png-7:body16#37.png-12:pattern4#20.png",
+    "edition": 5,
+    "date": 1758112206865,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "37"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "20"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#6",
+    "description": "Pixel Art NFT Collection",
+    "image": "6.png",
+    "dna": "8:background9#55.png-15:body23#51.png-7:pattern16#56.png",
+    "edition": 6,
+    "date": 1758112206922,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "51"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "56"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#7",
+    "description": "Pixel Art NFT Collection",
+    "image": "7.png",
+    "dna": "4:background5#35.png-16:body24#53.png-6:pattern15#53.png",
+    "edition": 7,
+    "date": 1758112206973,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "53"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#8",
+    "description": "Pixel Art NFT Collection",
+    "image": "8.png",
+    "dna": "8:background9#55.png-14:body22#49.png-16:pattern8#32.png",
+    "edition": 8,
+    "date": 1758112207023,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "49"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "32"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#9",
+    "description": "Pixel Art NFT Collection",
+    "image": "9.png",
+    "dna": "3:background4#30.png-28:body8#21.png-6:pattern15#53.png",
+    "edition": 9,
+    "date": 1758112207074,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "21"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#10",
+    "description": "Pixel Art NFT Collection",
+    "image": "10.png",
+    "dna": "6:background7#45.png-18:body26#57.png-15:pattern7#29.png",
+    "edition": 10,
+    "date": 1758112207125,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "57"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "29"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#11",
+    "description": "Pixel Art NFT Collection",
+    "image": "11.png",
+    "dna": "1:background2#20.png-5:body14#33.png-6:pattern15#53.png",
+    "edition": 11,
+    "date": 1758112207178,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "20"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "33"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#12",
+    "description": "Pixel Art NFT Collection",
+    "image": "12.png",
+    "dna": "3:background4#30.png-23:body30#65.png-6:pattern15#53.png",
+    "edition": 12,
+    "date": 1758112207249,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "65"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#13",
+    "description": "Pixel Art NFT Collection",
+    "image": "13.png",
+    "dna": "4:background5#35.png-14:body22#49.png-14:pattern6#26.png",
+    "edition": 13,
+    "date": 1758112207299,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "49"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "26"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#14",
+    "description": "Pixel Art NFT Collection",
+    "image": "14.png",
+    "dna": "5:background6#40.png-15:body23#51.png-0:pattern1#11.png",
+    "edition": 14,
+    "date": 1758112207350,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "51"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "11"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#15",
+    "description": "Pixel Art NFT Collection",
+    "image": "15.png",
+    "dna": "5:background6#40.png-19:body27#59.png-2:pattern11#41.png",
+    "edition": 15,
+    "date": 1758112207406,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "59"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "41"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#16",
+    "description": "Pixel Art NFT Collection",
+    "image": "16.png",
+    "dna": "3:background4#30.png-13:body21#47.png-14:pattern6#26.png",
+    "edition": 16,
+    "date": 1758112207455,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "47"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "26"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#17",
+    "description": "Pixel Art NFT Collection",
+    "image": "17.png",
+    "dna": "4:background5#35.png-18:body26#57.png-14:pattern6#26.png",
+    "edition": 17,
+    "date": 1758112207505,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "57"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "26"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#18",
+    "description": "Pixel Art NFT Collection",
+    "image": "18.png",
+    "dna": "5:background6#40.png-18:body26#57.png-2:pattern11#41.png",
+    "edition": 18,
+    "date": 1758112207561,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "57"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "41"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#19",
+    "description": "Pixel Art NFT Collection",
+    "image": "19.png",
+    "dna": "3:background4#30.png-20:body28#61.png-9:pattern18#62.png",
+    "edition": 19,
+    "date": 1758112207614,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "61"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "62"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#20",
+    "description": "Pixel Art NFT Collection",
+    "image": "20.png",
+    "dna": "2:background3#25.png-21:body29#63.png-15:pattern7#29.png",
+    "edition": 20,
+    "date": 1758112207666,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "25"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "63"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "29"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#21",
+    "description": "Pixel Art NFT Collection",
+    "image": "21.png",
+    "dna": "7:background8#50.png-22:body3#11.png-1:pattern10#38.png",
+    "edition": 21,
+    "date": 1758112207718,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "11"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "38"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#22",
+    "description": "Pixel Art NFT Collection",
+    "image": "22.png",
+    "dna": "0:background1#15.png-9:body18#41.png-6:pattern15#53.png",
+    "edition": 22,
+    "date": 1758112207771,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "15"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "41"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#23",
+    "description": "Pixel Art NFT Collection",
+    "image": "23.png",
+    "dna": "7:background8#50.png-8:body17#39.png-9:pattern18#62.png",
+    "edition": 23,
+    "date": 1758112207828,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "39"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "62"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#24",
+    "description": "Pixel Art NFT Collection",
+    "image": "24.png",
+    "dna": "4:background5#35.png-23:body30#65.png-3:pattern12#44.png",
+    "edition": 24,
+    "date": 1758112207955,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "65"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "44"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#25",
+    "description": "Pixel Art NFT Collection",
+    "image": "25.png",
+    "dna": "4:background5#35.png-3:body12#29.png-8:pattern17#59.png",
+    "edition": 25,
+    "date": 1758112208016,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "29"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "59"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#26",
+    "description": "Pixel Art NFT Collection",
+    "image": "26.png",
+    "dna": "0:background1#15.png-20:body28#61.png-3:pattern12#44.png",
+    "edition": 26,
+    "date": 1758112208073,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "15"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "61"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "44"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#27",
+    "description": "Pixel Art NFT Collection",
+    "image": "27.png",
+    "dna": "3:background4#30.png-14:body22#49.png-3:pattern12#44.png",
+    "edition": 27,
+    "date": 1758112208125,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "49"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "44"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#28",
+    "description": "Pixel Art NFT Collection",
+    "image": "28.png",
+    "dna": "4:background5#35.png-21:body29#63.png-17:pattern9#35.png",
+    "edition": 28,
+    "date": 1758112208176,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "63"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "35"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#29",
+    "description": "Pixel Art NFT Collection",
+    "image": "29.png",
+    "dna": "4:background5#35.png-7:body16#37.png-9:pattern18#62.png",
+    "edition": 29,
+    "date": 1758112208227,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "37"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "62"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#30",
+    "description": "Pixel Art NFT Collection",
+    "image": "30.png",
+    "dna": "4:background5#35.png-6:body15#35.png-0:pattern1#11.png",
+    "edition": 30,
+    "date": 1758112208285,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "11"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#31",
+    "description": "Pixel Art NFT Collection",
+    "image": "31.png",
+    "dna": "4:background5#35.png-24:body4#13.png-2:pattern11#41.png",
+    "edition": 31,
+    "date": 1758112208337,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "13"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "41"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#32",
+    "description": "Pixel Art NFT Collection",
+    "image": "32.png",
+    "dna": "5:background6#40.png-25:body5#15.png-14:pattern6#26.png",
+    "edition": 32,
+    "date": 1758112208392,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "15"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "26"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#33",
+    "description": "Pixel Art NFT Collection",
+    "image": "33.png",
+    "dna": "5:background6#40.png-4:body13#31.png-13:pattern5#23.png",
+    "edition": 33,
+    "date": 1758112208444,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "31"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "23"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#34",
+    "description": "Pixel Art NFT Collection",
+    "image": "34.png",
+    "dna": "6:background7#45.png-20:body28#61.png-17:pattern9#35.png",
+    "edition": 34,
+    "date": 1758112208500,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "61"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "35"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#35",
+    "description": "Pixel Art NFT Collection",
+    "image": "35.png",
+    "dna": "4:background5#35.png-13:body21#47.png-15:pattern7#29.png",
+    "edition": 35,
+    "date": 1758112208550,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "47"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "29"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#36",
+    "description": "Pixel Art NFT Collection",
+    "image": "36.png",
+    "dna": "3:background4#30.png-8:body17#39.png-11:pattern3#17.png",
+    "edition": 36,
+    "date": 1758112208609,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "39"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "17"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#37",
+    "description": "Pixel Art NFT Collection",
+    "image": "37.png",
+    "dna": "6:background7#45.png-19:body27#59.png-4:pattern13#47.png",
+    "edition": 37,
+    "date": 1758112208664,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "59"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#38",
+    "description": "Pixel Art NFT Collection",
+    "image": "38.png",
+    "dna": "7:background8#50.png-6:body15#35.png-3:pattern12#44.png",
+    "edition": 38,
+    "date": 1758112208715,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "44"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#39",
+    "description": "Pixel Art NFT Collection",
+    "image": "39.png",
+    "dna": "7:background8#50.png-7:body16#37.png-14:pattern6#26.png",
+    "edition": 39,
+    "date": 1758112208766,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "37"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "26"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#40",
+    "description": "Pixel Art NFT Collection",
+    "image": "40.png",
+    "dna": "8:background9#55.png-13:body21#47.png-15:pattern7#29.png",
+    "edition": 40,
+    "date": 1758112208816,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "47"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "29"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#41",
+    "description": "Pixel Art NFT Collection",
+    "image": "41.png",
+    "dna": "8:background9#55.png-10:body19#43.png-7:pattern16#56.png",
+    "edition": 41,
+    "date": 1758112208867,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "43"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "56"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#42",
+    "description": "Pixel Art NFT Collection",
+    "image": "42.png",
+    "dna": "7:background8#50.png-9:body18#41.png-11:pattern3#17.png",
+    "edition": 42,
+    "date": 1758112208925,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "41"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "17"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#43",
+    "description": "Pixel Art NFT Collection",
+    "image": "43.png",
+    "dna": "8:background9#55.png-17:body25#55.png-5:pattern14#50.png",
+    "edition": 43,
+    "date": 1758112208976,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "50"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#44",
+    "description": "Pixel Art NFT Collection",
+    "image": "44.png",
+    "dna": "0:background1#15.png-21:body29#63.png-4:pattern13#47.png",
+    "edition": 44,
+    "date": 1758112209030,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "15"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "63"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#45",
+    "description": "Pixel Art NFT Collection",
+    "image": "45.png",
+    "dna": "6:background7#45.png-9:body18#41.png-5:pattern14#50.png",
+    "edition": 45,
+    "date": 1758112209078,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "41"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "50"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#46",
+    "description": "Pixel Art NFT Collection",
+    "image": "46.png",
+    "dna": "7:background8#50.png-21:body29#63.png-4:pattern13#47.png",
+    "edition": 46,
+    "date": 1758112209134,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "63"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#47",
+    "description": "Pixel Art NFT Collection",
+    "image": "47.png",
+    "dna": "4:background5#35.png-15:body23#51.png-11:pattern3#17.png",
+    "edition": 47,
+    "date": 1758112209183,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "51"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "17"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#48",
+    "description": "Pixel Art NFT Collection",
+    "image": "48.png",
+    "dna": "6:background7#45.png-20:body28#61.png-8:pattern17#59.png",
+    "edition": 48,
+    "date": 1758112209246,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "61"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "59"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#49",
+    "description": "Pixel Art NFT Collection",
+    "image": "49.png",
+    "dna": "5:background6#40.png-15:body23#51.png-9:pattern18#62.png",
+    "edition": 49,
+    "date": 1758112209308,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "51"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "62"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#50",
+    "description": "Pixel Art NFT Collection",
+    "image": "50.png",
+    "dna": "4:background5#35.png-7:body16#37.png-15:pattern7#29.png",
+    "edition": 50,
+    "date": 1758112209359,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "37"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "29"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#51",
+    "description": "Pixel Art NFT Collection",
+    "image": "51.png",
+    "dna": "3:background4#30.png-13:body21#47.png-4:pattern13#47.png",
+    "edition": 51,
+    "date": 1758112209423,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "47"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#52",
+    "description": "Pixel Art NFT Collection",
+    "image": "52.png",
+    "dna": "5:background6#40.png-25:body5#15.png-7:pattern16#56.png",
+    "edition": 52,
+    "date": 1758112209473,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "15"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "56"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#53",
+    "description": "Pixel Art NFT Collection",
+    "image": "53.png",
+    "dna": "2:background3#25.png-13:body21#47.png-3:pattern12#44.png",
+    "edition": 53,
+    "date": 1758112209522,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "25"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "47"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "44"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#54",
+    "description": "Pixel Art NFT Collection",
+    "image": "54.png",
+    "dna": "8:background9#55.png-9:body18#41.png-1:pattern10#38.png",
+    "edition": 54,
+    "date": 1758112209577,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "41"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "38"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#55",
+    "description": "Pixel Art NFT Collection",
+    "image": "55.png",
+    "dna": "5:background6#40.png-8:body17#39.png-8:pattern17#59.png",
+    "edition": 55,
+    "date": 1758112209625,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "39"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "59"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#56",
+    "description": "Pixel Art NFT Collection",
+    "image": "56.png",
+    "dna": "7:background8#50.png-9:body18#41.png-6:pattern15#53.png",
+    "edition": 56,
+    "date": 1758112209674,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "41"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#57",
+    "description": "Pixel Art NFT Collection",
+    "image": "57.png",
+    "dna": "5:background6#40.png-23:body30#65.png-4:pattern13#47.png",
+    "edition": 57,
+    "date": 1758112209738,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "65"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#58",
+    "description": "Pixel Art NFT Collection",
+    "image": "58.png",
+    "dna": "5:background6#40.png-13:body21#47.png-4:pattern13#47.png",
+    "edition": 58,
+    "date": 1758112209789,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "47"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#59",
+    "description": "Pixel Art NFT Collection",
+    "image": "59.png",
+    "dna": "2:background3#25.png-15:body23#51.png-9:pattern18#62.png",
+    "edition": 59,
+    "date": 1758112209839,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "25"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "51"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "62"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#60",
+    "description": "Pixel Art NFT Collection",
+    "image": "60.png",
+    "dna": "5:background6#40.png-3:body12#29.png-7:pattern16#56.png",
+    "edition": 60,
+    "date": 1758112209895,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "29"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "56"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#61",
+    "description": "Pixel Art NFT Collection",
+    "image": "61.png",
+    "dna": "8:background9#55.png-19:body27#59.png-5:pattern14#50.png",
+    "edition": 61,
+    "date": 1758112209949,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "59"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "50"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#62",
+    "description": "Pixel Art NFT Collection",
+    "image": "62.png",
+    "dna": "2:background3#25.png-14:body22#49.png-5:pattern14#50.png",
+    "edition": 62,
+    "date": 1758112209997,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "25"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "49"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "50"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#63",
+    "description": "Pixel Art NFT Collection",
+    "image": "63.png",
+    "dna": "0:background1#15.png-21:body29#63.png-14:pattern6#26.png",
+    "edition": 63,
+    "date": 1758112210046,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "15"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "63"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "26"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#64",
+    "description": "Pixel Art NFT Collection",
+    "image": "64.png",
+    "dna": "4:background5#35.png-21:body29#63.png-5:pattern14#50.png",
+    "edition": 64,
+    "date": 1758112210096,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "63"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "50"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#65",
+    "description": "Pixel Art NFT Collection",
+    "image": "65.png",
+    "dna": "3:background4#30.png-3:body12#29.png-1:pattern10#38.png",
+    "edition": 65,
+    "date": 1758112210146,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "29"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "38"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#66",
+    "description": "Pixel Art NFT Collection",
+    "image": "66.png",
+    "dna": "8:background9#55.png-29:body9#23.png-8:pattern17#59.png",
+    "edition": 66,
+    "date": 1758112210203,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "23"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "59"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#67",
+    "description": "Pixel Art NFT Collection",
+    "image": "67.png",
+    "dna": "7:background8#50.png-10:body19#43.png-16:pattern8#32.png",
+    "edition": 67,
+    "date": 1758112210252,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "43"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "32"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#68",
+    "description": "Pixel Art NFT Collection",
+    "image": "68.png",
+    "dna": "5:background6#40.png-21:body29#63.png-11:pattern3#17.png",
+    "edition": 68,
+    "date": 1758112210302,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "63"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "17"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#69",
+    "description": "Pixel Art NFT Collection",
+    "image": "69.png",
+    "dna": "5:background6#40.png-9:body18#41.png-8:pattern17#59.png",
+    "edition": 69,
+    "date": 1758112210349,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "41"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "59"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#70",
+    "description": "Pixel Art NFT Collection",
+    "image": "70.png",
+    "dna": "7:background8#50.png-11:body2#9.png-16:pattern8#32.png",
+    "edition": 70,
+    "date": 1758112210399,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "9"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "32"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#71",
+    "description": "Pixel Art NFT Collection",
+    "image": "71.png",
+    "dna": "5:background6#40.png-17:body25#55.png-8:pattern17#59.png",
+    "edition": 71,
+    "date": 1758112210446,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "59"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#72",
+    "description": "Pixel Art NFT Collection",
+    "image": "72.png",
+    "dna": "6:background7#45.png-8:body17#39.png-17:pattern9#35.png",
+    "edition": 72,
+    "date": 1758112210500,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "39"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "35"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#73",
+    "description": "Pixel Art NFT Collection",
+    "image": "73.png",
+    "dna": "7:background8#50.png-4:body13#31.png-7:pattern16#56.png",
+    "edition": 73,
+    "date": 1758112210550,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "31"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "56"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#74",
+    "description": "Pixel Art NFT Collection",
+    "image": "74.png",
+    "dna": "7:background8#50.png-17:body25#55.png-16:pattern8#32.png",
+    "edition": 74,
+    "date": 1758112210599,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "32"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#75",
+    "description": "Pixel Art NFT Collection",
+    "image": "75.png",
+    "dna": "7:background8#50.png-14:body22#49.png-17:pattern9#35.png",
+    "edition": 75,
+    "date": 1758112210648,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "49"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "35"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#76",
+    "description": "Pixel Art NFT Collection",
+    "image": "76.png",
+    "dna": "7:background8#50.png-11:body2#9.png-11:pattern3#17.png",
+    "edition": 76,
+    "date": 1758112210696,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "9"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "17"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#77",
+    "description": "Pixel Art NFT Collection",
+    "image": "77.png",
+    "dna": "6:background7#45.png-16:body24#53.png-9:pattern18#62.png",
+    "edition": 77,
+    "date": 1758112210752,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "53"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "62"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#78",
+    "description": "Pixel Art NFT Collection",
+    "image": "78.png",
+    "dna": "7:background8#50.png-23:body30#65.png-1:pattern10#38.png",
+    "edition": 78,
+    "date": 1758112210847,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "65"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "38"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#79",
+    "description": "Pixel Art NFT Collection",
+    "image": "79.png",
+    "dna": "8:background9#55.png-14:body22#49.png-4:pattern13#47.png",
+    "edition": 79,
+    "date": 1758112210901,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "49"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#80",
+    "description": "Pixel Art NFT Collection",
+    "image": "80.png",
+    "dna": "7:background8#50.png-14:body22#49.png-11:pattern3#17.png",
+    "edition": 80,
+    "date": 1758112210957,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "49"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "17"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#81",
+    "description": "Pixel Art NFT Collection",
+    "image": "81.png",
+    "dna": "8:background9#55.png-13:body21#47.png-9:pattern18#62.png",
+    "edition": 81,
+    "date": 1758112211004,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "47"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "62"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#82",
+    "description": "Pixel Art NFT Collection",
+    "image": "82.png",
+    "dna": "5:background6#40.png-24:body4#13.png-3:pattern12#44.png",
+    "edition": 82,
+    "date": 1758112211051,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "13"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "44"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#83",
+    "description": "Pixel Art NFT Collection",
+    "image": "83.png",
+    "dna": "3:background4#30.png-4:body13#31.png-4:pattern13#47.png",
+    "edition": 83,
+    "date": 1758112211099,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "31"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#84",
+    "description": "Pixel Art NFT Collection",
+    "image": "84.png",
+    "dna": "3:background4#30.png-22:body3#11.png-6:pattern15#53.png",
+    "edition": 84,
+    "date": 1758112211151,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "11"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#85",
+    "description": "Pixel Art NFT Collection",
+    "image": "85.png",
+    "dna": "8:background9#55.png-19:body27#59.png-1:pattern10#38.png",
+    "edition": 85,
+    "date": 1758112211205,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "59"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "38"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#86",
+    "description": "Pixel Art NFT Collection",
+    "image": "86.png",
+    "dna": "3:background4#30.png-10:body19#43.png-4:pattern13#47.png",
+    "edition": 86,
+    "date": 1758112211253,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "43"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#87",
+    "description": "Pixel Art NFT Collection",
+    "image": "87.png",
+    "dna": "7:background8#50.png-25:body5#15.png-6:pattern15#53.png",
+    "edition": 87,
+    "date": 1758112211303,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "15"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#88",
+    "description": "Pixel Art NFT Collection",
+    "image": "88.png",
+    "dna": "6:background7#45.png-18:body26#57.png-16:pattern8#32.png",
+    "edition": 88,
+    "date": 1758112211351,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "57"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "32"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#89",
+    "description": "Pixel Art NFT Collection",
+    "image": "89.png",
+    "dna": "3:background4#30.png-20:body28#61.png-8:pattern17#59.png",
+    "edition": 89,
+    "date": 1758112211401,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "30"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "61"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "59"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#90",
+    "description": "Pixel Art NFT Collection",
+    "image": "90.png",
+    "dna": "7:background8#50.png-3:body12#29.png-4:pattern13#47.png",
+    "edition": 90,
+    "date": 1758112211455,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "29"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "47"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#91",
+    "description": "Pixel Art NFT Collection",
+    "image": "91.png",
+    "dna": "4:background5#35.png-5:body14#33.png-16:pattern8#32.png",
+    "edition": 91,
+    "date": 1758112211509,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "33"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "32"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#92",
+    "description": "Pixel Art NFT Collection",
+    "image": "92.png",
+    "dna": "8:background9#55.png-20:body28#61.png-6:pattern15#53.png",
+    "edition": 92,
+    "date": 1758112211562,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "61"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#93",
+    "description": "Pixel Art NFT Collection",
+    "image": "93.png",
+    "dna": "5:background6#40.png-0:body1#7.png-13:pattern5#23.png",
+    "edition": 93,
+    "date": 1758112211610,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "40"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "7"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "23"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#94",
+    "description": "Pixel Art NFT Collection",
+    "image": "94.png",
+    "dna": "8:background9#55.png-25:body5#15.png-7:pattern16#56.png",
+    "edition": 94,
+    "date": 1758112211657,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "b",
+        "rarity": "15"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "56"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#95",
+    "description": "Pixel Art NFT Collection",
+    "image": "95.png",
+    "dna": "8:background9#55.png-23:body30#65.png-14:pattern6#26.png",
+    "edition": 95,
+    "date": 1758112211718,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "55"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "65"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "26"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#96",
+    "description": "Pixel Art NFT Collection",
+    "image": "96.png",
+    "dna": "4:background5#35.png-16:body24#53.png-14:pattern6#26.png",
+    "edition": 96,
+    "date": 1758112211773,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "53"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "26"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#97",
+    "description": "Pixel Art NFT Collection",
+    "image": "97.png",
+    "dna": "6:background7#45.png-7:body16#37.png-17:pattern9#35.png",
+    "edition": 97,
+    "date": 1758112211821,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "37"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "35"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#98",
+    "description": "Pixel Art NFT Collection",
+    "image": "98.png",
+    "dna": "4:background5#35.png-6:body15#35.png-17:pattern9#35.png",
+    "edition": 98,
+    "date": 1758112211870,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "35"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patt",
+        "rarity": "35"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#99",
+    "description": "Pixel Art NFT Collection",
+    "image": "99.png",
+    "dna": "6:background7#45.png-20:body28#61.png-6:pattern15#53.png",
+    "edition": 99,
+    "date": 1758112211928,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "45"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "61"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "53"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  },
+  {
+    "name": "#100",
+    "description": "Pixel Art NFT Collection",
+    "image": "100.png",
+    "dna": "7:background8#50.png-21:body29#63.png-5:pattern14#50.png",
+    "edition": 100,
+    "date": 1758112211991,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "backgro",
+        "rarity": "50"
+      },
+      {
+        "trait_type": "BodyType",
+        "value": "bo",
+        "rarity": "63"
+      },
+      {
+        "trait_type": "Pattern",
+        "value": "patte",
+        "rarity": "50"
+      }
+    ],
+    "compiler": "Pixel Art NFT Generator"
+  }
+]
