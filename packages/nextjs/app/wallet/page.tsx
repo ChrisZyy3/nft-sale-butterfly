@@ -2,38 +2,40 @@
 
 import type { ReactNode } from "react";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
+import { useWatchBalance } from "@/hooks/scaffold-eth/useWatchBalance";
 import { cn } from "@/lib/utils";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
 const walletItems = [
   {
-    title: "My balance",
-    description: "Wallet overview and recent activity",
+    title: "ETH Balance",
+    value: "0 ETH",
     accent: "#20ff6d",
     highlight: true,
-    icon: BalanceIcon,
+    icon: EthTokenIcon,
   },
   {
-    title: "My assets",
-    description: "Tokens and collectibles in your vault",
+    title: "Assets",
+    value: "0",
     accent: "#ffb547",
     icon: AssetsIcon,
   },
   {
-    title: "My friend",
-    description: "Invite friends and share ecosystem rewards",
+    title: "Friends",
+    value: "0",
     accent: "#ff5f66",
     icon: FriendsIcon,
   },
   {
-    title: "My NFT",
-    description: "Manage your Hash Butterfly editions",
+    title: "NFT",
+    value: "0",
     accent: "#4c7dff",
     icon: ButterflyIcon,
   },
   {
-    title: "My order",
-    description: "Track purchases across the metaverse mall",
+    title: "Orders",
+    value: "0",
     accent: "#9b6bff",
     icon: OrderIcon,
   },
@@ -41,13 +43,23 @@ const walletItems = [
 
 type WalletItem = {
   title: string;
-  description: string;
+  value: string;
   accent: string;
-  icon: (props: { accent: string }) => ReactNode;
+  icon?: (props: { accent: string }) => ReactNode;
   highlight?: boolean;
 };
 
 export default function WalletPage() {
+  const { address, chain: connectedChain } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const { data: balanceData } = useWatchBalance({
+    address,
+    chainId: connectedChain?.id,
+    query: { enabled: Boolean(address) },
+  });
+
+  const formattedBalance = balanceData ? formatBalanceForDisplay(balanceData) : undefined;
+  const isConnected = Boolean(address && connectedChain);
   return (
     <div className="pb-24 pt-2 md:pb-16">
       <ScreenHeader title="Wallet" />
@@ -61,14 +73,20 @@ export default function WalletPage() {
         <div className="flex flex-col gap-3">
           {walletItems.map(item => {
             if (item.highlight) {
-              return <ConnectWalletCard key={item.title} item={item} />;
+              return <ConnectWalletCard key={item.title} item={item} balance={formattedBalance} />;
             }
 
             const Icon = item.icon;
+            const handleItemClick = () => {
+              if (!isConnected) {
+                openConnectModal?.();
+              }
+            };
             return (
               <button
                 key={item.title}
                 type="button"
+                onClick={handleItemClick}
                 className="group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-[22px] border border-[#1f2432] bg-[#10131c] px-5 py-4 text-left transition hover:border-[#20ff6d] hover:bg-[#141924]"
               >
                 <span className="relative z-10 flex items-center gap-4">
@@ -76,15 +94,17 @@ export default function WalletPage() {
                     className="relative grid size-12 place-items-center overflow-hidden rounded-2xl border border-[#1f2432] bg-[#141924]"
                     style={{ boxShadow: `0 18px 60px -32px ${hexToRgba(item.accent, 0.55)}` }}
                   >
-                    <Icon accent={item.accent} />
+                    {Icon ? <Icon accent={item.accent} /> : null}
                   </span>
-                  <span className="flex flex-col gap-1">
-                    <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
-                    <span className="text-xs text-[#818898]">{item.description}</span>
-                  </span>
+                  <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
                 </span>
-                <span className="relative z-10 text-[#626b7a] transition group-hover:text-[#20ff6d]">
-                  <ArrowIcon />
+                <span
+                  className={cn(
+                    "relative z-10 text-white transition group-hover:text-[#20ff6d]",
+                    isConnected ? "text-sm font-semibold uppercase tracking-[0.18em]" : "flex items-center",
+                  )}
+                >
+                  {isConnected ? item.value : <ArrowRightIcon />}
                 </span>
               </button>
             );
@@ -97,9 +117,10 @@ export default function WalletPage() {
 
 type ConnectWalletCardProps = {
   item: WalletItem;
+  balance?: string;
 };
 
-function ConnectWalletCard({ item }: ConnectWalletCardProps) {
+function ConnectWalletCard({ item, balance }: ConnectWalletCardProps) {
   const Icon = item.icon;
 
   return (
@@ -121,9 +142,7 @@ function ConnectWalletCard({ item }: ConnectWalletCardProps) {
           <button
             type="button"
             onClick={handleClick}
-            className={cn(
-              "group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-[22px] border border-transparent bg-[#10131c] px-5 py-4 text-left transition hover:border-[#20ff6d] hover:bg-[#141924]",
-            )}
+            className="group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-[22px] border border-transparent bg-[#10131c] px-5 py-4 text-left transition hover:border-[#20ff6d] hover:bg-[#141924]"
           >
             <span
               aria-hidden
@@ -135,20 +154,25 @@ function ConnectWalletCard({ item }: ConnectWalletCardProps) {
                 className="relative grid size-12 place-items-center overflow-hidden rounded-2xl border border-[#1f2432] bg-[#141924]"
                 style={{ boxShadow: `0 18px 60px -32px ${hexToRgba(item.accent, 0.6)}` }}
               >
-                <Icon accent={item.accent} />
+                {Icon ? <Icon accent={item.accent} /> : null}
               </span>
-              <span className="flex flex-col gap-1">
-                <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
-                <span className="text-xs text-[#818898]">{item.description}</span>
-              </span>
+              <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
             </span>
-            <span className="relative z-10 text-[#626b7a] transition group-hover:text-[#20ff6d]">
+            <span
+              className={cn(
+                "relative z-10 text-white transition group-hover:text-[#20ff6d]",
+                connected ? "flex flex-col items-end text-right" : "flex items-center",
+              )}
+            >
               {connected ? (
-                <span className="text-xs font-semibold uppercase tracking-[0.35em] text-[#20ff6d]">
-                  {account.displayName}
-                </span>
+                <>
+                  <span className="text-sm font-semibold uppercase tracking-[0.18em]">{balance ?? item.value}</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[#20ff6d] group-hover:text-[#20ff6d]">
+                    {account.displayName}
+                  </span>
+                </>
               ) : (
-                <ArrowIcon />
+                <ArrowRightIcon />
               )}
             </span>
           </button>
@@ -165,33 +189,6 @@ function hexToRgba(hex: string, alpha: number) {
   const g = (bigint >> 8) & 255;
   const b = bigint & 255;
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-function ArrowIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-    >
-      <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function BalanceIcon({ accent }: { accent: string }) {
-  return (
-    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.6">
-      <rect x="5" y="5" width="14" height="14" rx="7" fill={hexToRgba(accent, 0.12)} />
-      <path d="M12 7v10" strokeLinecap="round" />
-      <path d="M9 10h6" strokeLinecap="round" />
-      <path d="M9 14h6" strokeLinecap="round" />
-    </svg>
-  );
 }
 
 function AssetsIcon({ accent }: { accent: string }) {
@@ -238,4 +235,51 @@ function OrderIcon({ accent }: { accent: string }) {
       <path d="M8 17h5" strokeLinecap="round" />
     </svg>
   );
+}
+
+function EthTokenIcon({ accent }: { accent: string }) {
+  return (
+    <svg aria-hidden="true" width="20" height="24" viewBox="0 0 20 24" fill="none">
+      <path d="M10 2 16.5 12.25 10 9.6 3.5 12.25 10 2Z" fill={accent} fillOpacity={0.9} />
+      <path d="M10 9.6 16.5 12.25 10 15 3.5 12.25 10 9.6Z" fill={hexToRgba(accent, 0.65)} />
+      <path d="M10 16.4 16.5 13.35 10 22 3.5 13.35 10 16.4Z" fill={hexToRgba(accent, 0.4)} />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+    >
+      <path d="M5 10h8.5" strokeLinecap="round" />
+      <path d="m10.5 6.5 3.5 3.5-3.5 3.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function formatBalanceForDisplay(balance: { formatted: string; symbol: string }) {
+  const numericValue = Number.parseFloat(balance.formatted);
+
+  if (!Number.isFinite(numericValue)) {
+    return `${balance.formatted} ${balance.symbol}`;
+  }
+
+  const fractionDigits = numericValue >= 1 ? 4 : 6;
+  const formattedNumber = numericValue.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: fractionDigits,
+  });
+
+  if (numericValue !== 0 && formattedNumber === "0") {
+    return `${numericValue.toPrecision(4)} ${balance.symbol}`;
+  }
+
+  return `${formattedNumber} ${balance.symbol}`;
 }

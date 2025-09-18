@@ -16,7 +16,9 @@
     "incremental": true,
     "paths": {
       "~~/*": ["./*"],
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@radix-ui/react-slot": ["./types/stubs/radix-slot"],
+      "class-variance-authority": ["./types/stubs/class-variance-authority"]
     },
     "plugins": [
       {
