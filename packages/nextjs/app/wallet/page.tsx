@@ -2,8 +2,10 @@
 
 import type { ReactNode } from "react";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
+import { useWatchBalance } from "@/hooks/scaffold-eth/useWatchBalance";
 import { cn } from "@/lib/utils";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
 const walletItems = [
   {
@@ -48,18 +50,29 @@ type WalletItem = {
 };
 
 export default function WalletPage() {
+  const { address, chain: connectedChain } = useAccount();
+  const { data: balanceData } = useWatchBalance({
+    address,
+    chainId: connectedChain?.id,
+    query: { enabled: Boolean(address) },
+  });
+
+  const formattedBalance = balanceData ? formatBalanceForDisplay(balanceData) : undefined;
+  const highlightItem = walletItems.find(item => item.highlight);
+  const highlightValue = formattedBalance ?? highlightItem?.value ?? "0 ETH";
+
   return (
     <div className="pb-24 pt-2 md:pb-16">
       <ScreenHeader title="Wallet" />
       <section className="hb-container flex flex-col gap-4">
         <div className="rounded-3xl border border-[#1f2432] bg-[#10131c] px-6 py-7 text-center shadow-[0_50px_120px_-80px_rgba(32,255,109,0.45)]">
           <h1 className="text-xl font-semibold uppercase tracking-[0.32em] text-[#20ff6d]">ETH Balance</h1>
-          <p className="mt-4 text-3xl font-semibold text-white">0.256 ETH</p>
+          <p className="mt-4 text-3xl font-semibold text-white">{highlightValue}</p>
         </div>
         <div className="flex flex-col gap-3">
           {walletItems.map(item => {
             if (item.highlight) {
-              return <ConnectWalletCard key={item.title} item={item} />;
+              return <ConnectWalletCard key={item.title} item={item} balance={formattedBalance} />;
             }
 
             const Icon = item.icon;
@@ -92,9 +105,10 @@ export default function WalletPage() {
 
 type ConnectWalletCardProps = {
   item: WalletItem;
+  balance?: string;
 };
 
-function ConnectWalletCard({ item }: ConnectWalletCardProps) {
+function ConnectWalletCard({ item, balance }: ConnectWalletCardProps) {
   const Icon = item.icon;
 
   return (
@@ -135,7 +149,9 @@ function ConnectWalletCard({ item }: ConnectWalletCardProps) {
               <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
             </span>
             <span className="relative z-10 flex flex-col items-end text-right text-white transition group-hover:text-[#20ff6d]">
-              <span className="text-sm font-semibold uppercase tracking-[0.18em]">{item.value}</span>
+              <span className="text-sm font-semibold uppercase tracking-[0.18em]">
+                {connected && balance ? balance : item.value}
+              </span>
               {connected ? (
                 <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[#20ff6d]">
                   {account.displayName}
@@ -212,4 +228,24 @@ function EthTokenIcon({ accent }: { accent: string }) {
       <path d="M10 16.4 16.5 13.35 10 22 3.5 13.35 10 16.4Z" fill={hexToRgba(accent, 0.4)} />
     </svg>
   );
+}
+
+function formatBalanceForDisplay(balance: { formatted: string; symbol: string }) {
+  const numericValue = Number.parseFloat(balance.formatted);
+
+  if (!Number.isFinite(numericValue)) {
+    return `${balance.formatted} ${balance.symbol}`;
+  }
+
+  const fractionDigits = numericValue >= 1 ? 4 : 6;
+  const formattedNumber = numericValue.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: fractionDigits,
+  });
+
+  if (numericValue !== 0 && formattedNumber === "0") {
+    return `${numericValue.toPrecision(4)} ${balance.symbol}`;
+  }
+
+  return `${formattedNumber} ${balance.symbol}`;
 }
