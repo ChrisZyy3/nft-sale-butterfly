@@ -4,32 +4,32 @@ import type { ReactNode } from "react";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { useWatchBalance } from "@/hooks/scaffold-eth/useWatchBalance";
 import { cn } from "@/lib/utils";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 
 const walletItems = [
   {
     title: "ETH Balance",
-    value: "0.256 ETH",
+    value: "0 ETH",
     accent: "#20ff6d",
     highlight: true,
     icon: EthTokenIcon,
   },
   {
     title: "Assets",
-    value: "butterfly",
+    value: "0",
     accent: "#ffb547",
     icon: AssetsIcon,
   },
   {
     title: "Friends",
-    value: "9999999999.0",
+    value: "0",
     accent: "#ff5f66",
     icon: FriendsIcon,
   },
   {
     title: "NFT",
-    value: "100",
+    value: "0",
     accent: "#4c7dff",
     icon: ButterflyIcon,
   },
@@ -51,6 +51,7 @@ type WalletItem = {
 
 export default function WalletPage() {
   const { address, chain: connectedChain } = useAccount();
+  const { openConnectModal } = useConnectModal();
   const { data: balanceData } = useWatchBalance({
     address,
     chainId: connectedChain?.id,
@@ -58,6 +59,7 @@ export default function WalletPage() {
   });
 
   const formattedBalance = balanceData ? formatBalanceForDisplay(balanceData) : undefined;
+  const isConnected = Boolean(address && connectedChain);
   return (
     <div className="pb-24 pt-2 md:pb-16">
       <ScreenHeader title="Wallet" />
@@ -75,10 +77,16 @@ export default function WalletPage() {
             }
 
             const Icon = item.icon;
+            const handleItemClick = () => {
+              if (!isConnected) {
+                openConnectModal?.();
+              }
+            };
             return (
               <button
                 key={item.title}
                 type="button"
+                onClick={handleItemClick}
                 className="group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-[22px] border border-[#1f2432] bg-[#10131c] px-5 py-4 text-left transition hover:border-[#20ff6d] hover:bg-[#141924]"
               >
                 <span className="relative z-10 flex items-center gap-4">
@@ -90,8 +98,13 @@ export default function WalletPage() {
                   </span>
                   <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
                 </span>
-                <span className="relative z-10 text-sm font-semibold uppercase tracking-[0.18em] text-white transition group-hover:text-[#20ff6d]">
-                  {item.value}
+                <span
+                  className={cn(
+                    "relative z-10 text-white transition group-hover:text-[#20ff6d]",
+                    isConnected ? "text-sm font-semibold uppercase tracking-[0.18em]" : "flex items-center",
+                  )}
+                >
+                  {isConnected ? item.value : <ArrowRightIcon />}
                 </span>
               </button>
             );
@@ -129,9 +142,7 @@ function ConnectWalletCard({ item, balance }: ConnectWalletCardProps) {
           <button
             type="button"
             onClick={handleClick}
-            className={cn(
-              "group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-[22px] border border-transparent bg-[#10131c] px-5 py-4 text-left transition hover:border-[#20ff6d] hover:bg-[#141924]",
-            )}
+            className="group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-[22px] border border-transparent bg-[#10131c] px-5 py-4 text-left transition hover:border-[#20ff6d] hover:bg-[#141924]"
           >
             <span
               aria-hidden
@@ -147,15 +158,22 @@ function ConnectWalletCard({ item, balance }: ConnectWalletCardProps) {
               </span>
               <span className="text-base font-semibold uppercase tracking-[0.18em] text-white">{item.title}</span>
             </span>
-            <span className="relative z-10 flex flex-col items-end text-right text-white transition group-hover:text-[#20ff6d]">
-              <span className="text-sm font-semibold uppercase tracking-[0.18em]">
-                {connected && balance ? balance : item.value}
-              </span>
+            <span
+              className={cn(
+                "relative z-10 text-white transition group-hover:text-[#20ff6d]",
+                connected ? "flex flex-col items-end text-right" : "flex items-center",
+              )}
+            >
               {connected ? (
-                <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[#20ff6d]">
-                  {account.displayName}
-                </span>
-              ) : null}
+                <>
+                  <span className="text-sm font-semibold uppercase tracking-[0.18em]">{balance ?? item.value}</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[#20ff6d] group-hover:text-[#20ff6d]">
+                    {account.displayName}
+                  </span>
+                </>
+              ) : (
+                <ArrowRightIcon />
+              )}
             </span>
           </button>
         );
@@ -225,6 +243,23 @@ function EthTokenIcon({ accent }: { accent: string }) {
       <path d="M10 2 16.5 12.25 10 9.6 3.5 12.25 10 2Z" fill={accent} fillOpacity={0.9} />
       <path d="M10 9.6 16.5 12.25 10 15 3.5 12.25 10 9.6Z" fill={hexToRgba(accent, 0.65)} />
       <path d="M10 16.4 16.5 13.35 10 22 3.5 13.35 10 16.4Z" fill={hexToRgba(accent, 0.4)} />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+    >
+      <path d="M5 10h8.5" strokeLinecap="round" />
+      <path d="m10.5 6.5 3.5 3.5-3.5 3.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
