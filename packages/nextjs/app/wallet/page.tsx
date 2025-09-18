@@ -11,7 +11,7 @@ const walletItems = [
     value: "0.256 ETH",
     accent: "#20ff6d",
     highlight: true,
-    icon: ({ accent }) => <TokenBadgeIcon accent={accent} label="ETH" />,
+    icon: EthTokenIcon,
   },
   {
     title: "Assets",
@@ -204,10 +204,12 @@ function OrderIcon({ accent }: { accent: string }) {
   );
 }
 
-function TokenBadgeIcon({ accent, label }: { accent: string; label: string }) {
+function EthTokenIcon({ accent }: { accent: string }) {
   return (
-    <span className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: accent }}>
-      {label}
-    </span>
+    <svg aria-hidden="true" width="20" height="24" viewBox="0 0 20 24" fill="none">
+      <path d="M10 2 16.5 12.25 10 9.6 3.5 12.25 10 2Z" fill={accent} fillOpacity={0.9} />
+      <path d="M10 9.6 16.5 12.25 10 15 3.5 12.25 10 9.6Z" fill={hexToRgba(accent, 0.65)} />
+      <path d="M10 16.4 16.5 13.35 10 22 3.5 13.35 10 16.4Z" fill={hexToRgba(accent, 0.4)} />
+    </svg>
   );
 }
