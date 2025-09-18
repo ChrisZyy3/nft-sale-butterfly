@@ -109,7 +109,7 @@ export default function HomeLanding() {
 
 function TopBar() {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between md:hidden">
       <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.45em] text-[#20ff6d]">
         <span>Hash Butterfly</span>
       </div>
