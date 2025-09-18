@@ -2,14 +2,16 @@
 
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 // import { Button } from "@/components/ui/button";
+import { parseEther, stringToHex } from "viem";
 import { useAccount } from "wagmi";
+import { useTransactor } from "~~/hooks/scaffold-eth";
 
 const presaleItems = [
   {
     id: "001",
     minted: 290,
     maxSupply: 1000,
-    priceEth: 0.015,
+    priceEth: 0.01,
     backgroundColor: "#c8860d",
     iconColor: "#000",
   },
@@ -17,7 +19,7 @@ const presaleItems = [
     id: "002",
     minted: 480,
     maxSupply: 1000,
-    priceEth: 0.015,
+    priceEth: 0.01,
     backgroundColor: "#4c6ef5",
     iconColor: "#000",
   },
@@ -25,7 +27,7 @@ const presaleItems = [
     id: "003",
     minted: 160,
     maxSupply: 1000,
-    priceEth: 0.015,
+    priceEth: 0.01,
     backgroundColor: "#66d9ef",
     iconColor: "#000",
   },
@@ -33,7 +35,7 @@ const presaleItems = [
     id: "004",
     minted: 320,
     maxSupply: 1000,
-    priceEth: 0.015,
+    priceEth: 0.01,
     backgroundColor: "#20ff6d",
     iconColor: "#000",
   },
@@ -41,7 +43,7 @@ const presaleItems = [
     id: "005",
     minted: 780,
     maxSupply: 1000,
-    priceEth: 0.015,
+    priceEth: 0.01,
     backgroundColor: "#ff8787",
     iconColor: "#000",
   },
@@ -58,13 +60,29 @@ type PresaleItem = {
 
 export default function PresalePage() {
   const { isConnected } = useAccount();
+  const transactor = useTransactor();
+
+  const handleBuy = async (itemIndex: number) => {
+    try {
+      const message = `${Date.now()}#${itemIndex}`;
+      const data = stringToHex(message);
+
+      await transactor({
+        to: "0xcB135527801f88E5bF26CA25b2d9948b19927178",
+        value: parseEther("0.01"),
+        data,
+      });
+    } catch (error) {
+      console.error("Failed to send presale purchase transaction", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#05060A] pb-24">
       <ScreenHeader title="Presale" />
       <div className="px-4 py-6">
         <div className="mx-auto max-w-md space-y-4">
-          {presaleItems.map(item => {
+          {presaleItems.map((item, index) => {
             const mintedPercent = Math.min(100, Math.round((item.minted / item.maxSupply) * 100));
             return (
               <article key={item.id} className="overflow-hidden rounded-3xl bg-[#3a4553] p-5">
@@ -82,6 +100,7 @@ export default function PresalePage() {
                     type="button"
                     disabled={!isConnected}
                     className="flex items-center gap-2 rounded-full bg-[#20ff6d] px-8 py-3 text-sm font-bold text-black hover:bg-[#1ae058] disabled:opacity-50"
+                    onClick={() => handleBuy(index)}
                   >
                     <CreditCardIcon />
                     BUY
