@@ -58,16 +58,15 @@ export default function WalletPage() {
   });
 
   const formattedBalance = balanceData ? formatBalanceForDisplay(balanceData) : undefined;
-  const highlightItem = walletItems.find(item => item.highlight);
-  const highlightValue = formattedBalance ?? highlightItem?.value ?? "0 ETH";
-
   return (
     <div className="pb-24 pt-2 md:pb-16">
       <ScreenHeader title="Wallet" />
       <section className="hb-container flex flex-col gap-4">
         <div className="rounded-3xl border border-[#1f2432] bg-[#10131c] px-6 py-7 text-center shadow-[0_50px_120px_-80px_rgba(32,255,109,0.45)]">
-          <h1 className="text-xl font-semibold uppercase tracking-[0.32em] text-[#20ff6d]">ETH Balance</h1>
-          <p className="mt-4 text-3xl font-semibold text-white">{highlightValue}</p>
+          <h1 className="text-xl font-semibold uppercase tracking-[0.32em] text-[#20ff6d]">Hash Butterfly</h1>
+          <p className="mt-3 text-sm leading-relaxed text-[#9ca3b0]">
+            Welcome to the Hash Butterfly Metaverse Ecology.
+          </p>
         </div>
         <div className="flex flex-col gap-3">
           {walletItems.map(item => {
