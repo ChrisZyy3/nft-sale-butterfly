@@ -2,7 +2,7 @@
   {
     "name": "#1",
     "description": "Pixel Art NFT Collection",
-    "image": "1.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/1.png",
     "dna": "6:background7#45.png-26:body6#17.png-4:pattern13#47.png",
     "edition": 1,
     "date": 1758112206617,
@@ -28,7 +28,7 @@
   {
     "name": "#2",
     "description": "Pixel Art NFT Collection",
-    "image": "2.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/2.png",
     "dna": "6:background7#45.png-10:body19#43.png-7:pattern16#56.png",
     "edition": 2,
     "date": 1758112206693,
@@ -54,7 +54,7 @@
   {
     "name": "#3",
     "description": "Pixel Art NFT Collection",
-    "image": "3.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/3.png",
     "dna": "3:background4#30.png-1:body10#25.png-7:pattern16#56.png",
     "edition": 3,
     "date": 1758112206752,
@@ -80,7 +80,7 @@
   {
     "name": "#4",
     "description": "Pixel Art NFT Collection",
-    "image": "4.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/4.png",
     "dna": "2:background3#25.png-10:body19#43.png-8:pattern17#59.png",
     "edition": 4,
     "date": 1758112206803,
@@ -106,7 +106,7 @@
   {
     "name": "#5",
     "description": "Pixel Art NFT Collection",
-    "image": "5.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/5.png",
     "dna": "8:background9#55.png-7:body16#37.png-12:pattern4#20.png",
     "edition": 5,
     "date": 1758112206865,
@@ -132,7 +132,7 @@
   {
     "name": "#6",
     "description": "Pixel Art NFT Collection",
-    "image": "6.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/6.png",
     "dna": "8:background9#55.png-15:body23#51.png-7:pattern16#56.png",
     "edition": 6,
     "date": 1758112206922,
@@ -158,7 +158,7 @@
   {
     "name": "#7",
     "description": "Pixel Art NFT Collection",
-    "image": "7.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/7.png",
     "dna": "4:background5#35.png-16:body24#53.png-6:pattern15#53.png",
     "edition": 7,
     "date": 1758112206973,
@@ -184,7 +184,7 @@
   {
     "name": "#8",
     "description": "Pixel Art NFT Collection",
-    "image": "8.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/8.png",
     "dna": "8:background9#55.png-14:body22#49.png-16:pattern8#32.png",
     "edition": 8,
     "date": 1758112207023,
@@ -210,7 +210,7 @@
   {
     "name": "#9",
     "description": "Pixel Art NFT Collection",
-    "image": "9.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/9.png",
     "dna": "3:background4#30.png-28:body8#21.png-6:pattern15#53.png",
     "edition": 9,
     "date": 1758112207074,
@@ -236,7 +236,7 @@
   {
     "name": "#10",
     "description": "Pixel Art NFT Collection",
-    "image": "10.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/10.png",
     "dna": "6:background7#45.png-18:body26#57.png-15:pattern7#29.png",
     "edition": 10,
     "date": 1758112207125,
@@ -262,7 +262,7 @@
   {
     "name": "#11",
     "description": "Pixel Art NFT Collection",
-    "image": "11.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/11.png",
     "dna": "1:background2#20.png-5:body14#33.png-6:pattern15#53.png",
     "edition": 11,
     "date": 1758112207178,
@@ -288,7 +288,7 @@
   {
     "name": "#12",
     "description": "Pixel Art NFT Collection",
-    "image": "12.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/12.png",
     "dna": "3:background4#30.png-23:body30#65.png-6:pattern15#53.png",
     "edition": 12,
     "date": 1758112207249,
@@ -314,7 +314,7 @@
   {
     "name": "#13",
     "description": "Pixel Art NFT Collection",
-    "image": "13.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/13.png",
     "dna": "4:background5#35.png-14:body22#49.png-14:pattern6#26.png",
     "edition": 13,
     "date": 1758112207299,
@@ -340,7 +340,7 @@
   {
     "name": "#14",
     "description": "Pixel Art NFT Collection",
-    "image": "14.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/14.png",
     "dna": "5:background6#40.png-15:body23#51.png-0:pattern1#11.png",
     "edition": 14,
     "date": 1758112207350,
@@ -366,7 +366,7 @@
   {
     "name": "#15",
     "description": "Pixel Art NFT Collection",
-    "image": "15.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/15.png",
     "dna": "5:background6#40.png-19:body27#59.png-2:pattern11#41.png",
     "edition": 15,
     "date": 1758112207406,
@@ -392,7 +392,7 @@
   {
     "name": "#16",
     "description": "Pixel Art NFT Collection",
-    "image": "16.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/16.png",
     "dna": "3:background4#30.png-13:body21#47.png-14:pattern6#26.png",
     "edition": 16,
     "date": 1758112207455,
@@ -418,7 +418,7 @@
   {
     "name": "#17",
     "description": "Pixel Art NFT Collection",
-    "image": "17.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/17.png",
     "dna": "4:background5#35.png-18:body26#57.png-14:pattern6#26.png",
     "edition": 17,
     "date": 1758112207505,
@@ -444,7 +444,7 @@
   {
     "name": "#18",
     "description": "Pixel Art NFT Collection",
-    "image": "18.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/18.png",
     "dna": "5:background6#40.png-18:body26#57.png-2:pattern11#41.png",
     "edition": 18,
     "date": 1758112207561,
@@ -470,7 +470,7 @@
   {
     "name": "#19",
     "description": "Pixel Art NFT Collection",
-    "image": "19.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/19.png",
     "dna": "3:background4#30.png-20:body28#61.png-9:pattern18#62.png",
     "edition": 19,
     "date": 1758112207614,
@@ -496,7 +496,7 @@
   {
     "name": "#20",
     "description": "Pixel Art NFT Collection",
-    "image": "20.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/20.png",
     "dna": "2:background3#25.png-21:body29#63.png-15:pattern7#29.png",
     "edition": 20,
     "date": 1758112207666,
@@ -522,7 +522,7 @@
   {
     "name": "#21",
     "description": "Pixel Art NFT Collection",
-    "image": "21.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/21.png",
     "dna": "7:background8#50.png-22:body3#11.png-1:pattern10#38.png",
     "edition": 21,
     "date": 1758112207718,
@@ -548,7 +548,7 @@
   {
     "name": "#22",
     "description": "Pixel Art NFT Collection",
-    "image": "22.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/22.png",
     "dna": "0:background1#15.png-9:body18#41.png-6:pattern15#53.png",
     "edition": 22,
     "date": 1758112207771,
@@ -574,7 +574,7 @@
   {
     "name": "#23",
     "description": "Pixel Art NFT Collection",
-    "image": "23.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/23.png",
     "dna": "7:background8#50.png-8:body17#39.png-9:pattern18#62.png",
     "edition": 23,
     "date": 1758112207828,
@@ -600,7 +600,7 @@
   {
     "name": "#24",
     "description": "Pixel Art NFT Collection",
-    "image": "24.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/24.png",
     "dna": "4:background5#35.png-23:body30#65.png-3:pattern12#44.png",
     "edition": 24,
     "date": 1758112207955,
@@ -626,7 +626,7 @@
   {
     "name": "#25",
     "description": "Pixel Art NFT Collection",
-    "image": "25.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/25.png",
     "dna": "4:background5#35.png-3:body12#29.png-8:pattern17#59.png",
     "edition": 25,
     "date": 1758112208016,
@@ -652,7 +652,7 @@
   {
     "name": "#26",
     "description": "Pixel Art NFT Collection",
-    "image": "26.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/26.png",
     "dna": "0:background1#15.png-20:body28#61.png-3:pattern12#44.png",
     "edition": 26,
     "date": 1758112208073,
@@ -678,7 +678,7 @@
   {
     "name": "#27",
     "description": "Pixel Art NFT Collection",
-    "image": "27.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/27.png",
     "dna": "3:background4#30.png-14:body22#49.png-3:pattern12#44.png",
     "edition": 27,
     "date": 1758112208125,
@@ -704,7 +704,7 @@
   {
     "name": "#28",
     "description": "Pixel Art NFT Collection",
-    "image": "28.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/28.png",
     "dna": "4:background5#35.png-21:body29#63.png-17:pattern9#35.png",
     "edition": 28,
     "date": 1758112208176,
@@ -730,7 +730,7 @@
   {
     "name": "#29",
     "description": "Pixel Art NFT Collection",
-    "image": "29.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/29.png",
     "dna": "4:background5#35.png-7:body16#37.png-9:pattern18#62.png",
     "edition": 29,
     "date": 1758112208227,
@@ -756,7 +756,7 @@
   {
     "name": "#30",
     "description": "Pixel Art NFT Collection",
-    "image": "30.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/30.png",
     "dna": "4:background5#35.png-6:body15#35.png-0:pattern1#11.png",
     "edition": 30,
     "date": 1758112208285,
@@ -782,7 +782,7 @@
   {
     "name": "#31",
     "description": "Pixel Art NFT Collection",
-    "image": "31.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/31.png",
     "dna": "4:background5#35.png-24:body4#13.png-2:pattern11#41.png",
     "edition": 31,
     "date": 1758112208337,
@@ -808,7 +808,7 @@
   {
     "name": "#32",
     "description": "Pixel Art NFT Collection",
-    "image": "32.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/32.png",
     "dna": "5:background6#40.png-25:body5#15.png-14:pattern6#26.png",
     "edition": 32,
     "date": 1758112208392,
@@ -834,7 +834,7 @@
   {
     "name": "#33",
     "description": "Pixel Art NFT Collection",
-    "image": "33.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/33.png",
     "dna": "5:background6#40.png-4:body13#31.png-13:pattern5#23.png",
     "edition": 33,
     "date": 1758112208444,
@@ -860,7 +860,7 @@
   {
     "name": "#34",
     "description": "Pixel Art NFT Collection",
-    "image": "34.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/34.png",
     "dna": "6:background7#45.png-20:body28#61.png-17:pattern9#35.png",
     "edition": 34,
     "date": 1758112208500,
@@ -886,7 +886,7 @@
   {
     "name": "#35",
     "description": "Pixel Art NFT Collection",
-    "image": "35.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/35.png",
     "dna": "4:background5#35.png-13:body21#47.png-15:pattern7#29.png",
     "edition": 35,
     "date": 1758112208550,
@@ -912,7 +912,7 @@
   {
     "name": "#36",
     "description": "Pixel Art NFT Collection",
-    "image": "36.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/36.png",
     "dna": "3:background4#30.png-8:body17#39.png-11:pattern3#17.png",
     "edition": 36,
     "date": 1758112208609,
@@ -938,7 +938,7 @@
   {
     "name": "#37",
     "description": "Pixel Art NFT Collection",
-    "image": "37.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/37.png",
     "dna": "6:background7#45.png-19:body27#59.png-4:pattern13#47.png",
     "edition": 37,
     "date": 1758112208664,
@@ -964,7 +964,7 @@
   {
     "name": "#38",
     "description": "Pixel Art NFT Collection",
-    "image": "38.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/38.png",
     "dna": "7:background8#50.png-6:body15#35.png-3:pattern12#44.png",
     "edition": 38,
     "date": 1758112208715,
@@ -990,7 +990,7 @@
   {
     "name": "#39",
     "description": "Pixel Art NFT Collection",
-    "image": "39.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/39.png",
     "dna": "7:background8#50.png-7:body16#37.png-14:pattern6#26.png",
     "edition": 39,
     "date": 1758112208766,
@@ -1016,7 +1016,7 @@
   {
     "name": "#40",
     "description": "Pixel Art NFT Collection",
-    "image": "40.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/40.png",
     "dna": "8:background9#55.png-13:body21#47.png-15:pattern7#29.png",
     "edition": 40,
     "date": 1758112208816,
@@ -1042,7 +1042,7 @@
   {
     "name": "#41",
     "description": "Pixel Art NFT Collection",
-    "image": "41.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/41.png",
     "dna": "8:background9#55.png-10:body19#43.png-7:pattern16#56.png",
     "edition": 41,
     "date": 1758112208867,
@@ -1068,7 +1068,7 @@
   {
     "name": "#42",
     "description": "Pixel Art NFT Collection",
-    "image": "42.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/42.png",
     "dna": "7:background8#50.png-9:body18#41.png-11:pattern3#17.png",
     "edition": 42,
     "date": 1758112208925,
@@ -1094,7 +1094,7 @@
   {
     "name": "#43",
     "description": "Pixel Art NFT Collection",
-    "image": "43.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/43.png",
     "dna": "8:background9#55.png-17:body25#55.png-5:pattern14#50.png",
     "edition": 43,
     "date": 1758112208976,
@@ -1120,7 +1120,7 @@
   {
     "name": "#44",
     "description": "Pixel Art NFT Collection",
-    "image": "44.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/44.png",
     "dna": "0:background1#15.png-21:body29#63.png-4:pattern13#47.png",
     "edition": 44,
     "date": 1758112209030,
@@ -1146,7 +1146,7 @@
   {
     "name": "#45",
     "description": "Pixel Art NFT Collection",
-    "image": "45.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/45.png",
     "dna": "6:background7#45.png-9:body18#41.png-5:pattern14#50.png",
     "edition": 45,
     "date": 1758112209078,
@@ -1172,7 +1172,7 @@
   {
     "name": "#46",
     "description": "Pixel Art NFT Collection",
-    "image": "46.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/46.png",
     "dna": "7:background8#50.png-21:body29#63.png-4:pattern13#47.png",
     "edition": 46,
     "date": 1758112209134,
@@ -1198,7 +1198,7 @@
   {
     "name": "#47",
     "description": "Pixel Art NFT Collection",
-    "image": "47.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/47.png",
     "dna": "4:background5#35.png-15:body23#51.png-11:pattern3#17.png",
     "edition": 47,
     "date": 1758112209183,
@@ -1224,7 +1224,7 @@
   {
     "name": "#48",
     "description": "Pixel Art NFT Collection",
-    "image": "48.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/48.png",
     "dna": "6:background7#45.png-20:body28#61.png-8:pattern17#59.png",
     "edition": 48,
     "date": 1758112209246,
@@ -1250,7 +1250,7 @@
   {
     "name": "#49",
     "description": "Pixel Art NFT Collection",
-    "image": "49.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/49.png",
     "dna": "5:background6#40.png-15:body23#51.png-9:pattern18#62.png",
     "edition": 49,
     "date": 1758112209308,
@@ -1276,7 +1276,7 @@
   {
     "name": "#50",
     "description": "Pixel Art NFT Collection",
-    "image": "50.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/50.png",
     "dna": "4:background5#35.png-7:body16#37.png-15:pattern7#29.png",
     "edition": 50,
     "date": 1758112209359,
@@ -1302,7 +1302,7 @@
   {
     "name": "#51",
     "description": "Pixel Art NFT Collection",
-    "image": "51.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/51.png",
     "dna": "3:background4#30.png-13:body21#47.png-4:pattern13#47.png",
     "edition": 51,
     "date": 1758112209423,
@@ -1328,7 +1328,7 @@
   {
     "name": "#52",
     "description": "Pixel Art NFT Collection",
-    "image": "52.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/52.png",
     "dna": "5:background6#40.png-25:body5#15.png-7:pattern16#56.png",
     "edition": 52,
     "date": 1758112209473,
@@ -1354,7 +1354,7 @@
   {
     "name": "#53",
     "description": "Pixel Art NFT Collection",
-    "image": "53.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/53.png",
     "dna": "2:background3#25.png-13:body21#47.png-3:pattern12#44.png",
     "edition": 53,
     "date": 1758112209522,
@@ -1380,7 +1380,7 @@
   {
     "name": "#54",
     "description": "Pixel Art NFT Collection",
-    "image": "54.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/54.png",
     "dna": "8:background9#55.png-9:body18#41.png-1:pattern10#38.png",
     "edition": 54,
     "date": 1758112209577,
@@ -1406,7 +1406,7 @@
   {
     "name": "#55",
     "description": "Pixel Art NFT Collection",
-    "image": "55.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/55.png",
     "dna": "5:background6#40.png-8:body17#39.png-8:pattern17#59.png",
     "edition": 55,
     "date": 1758112209625,
@@ -1432,7 +1432,7 @@
   {
     "name": "#56",
     "description": "Pixel Art NFT Collection",
-    "image": "56.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/56.png",
     "dna": "7:background8#50.png-9:body18#41.png-6:pattern15#53.png",
     "edition": 56,
     "date": 1758112209674,
@@ -1458,7 +1458,7 @@
   {
     "name": "#57",
     "description": "Pixel Art NFT Collection",
-    "image": "57.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/57.png",
     "dna": "5:background6#40.png-23:body30#65.png-4:pattern13#47.png",
     "edition": 57,
     "date": 1758112209738,
@@ -1484,7 +1484,7 @@
   {
     "name": "#58",
     "description": "Pixel Art NFT Collection",
-    "image": "58.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/58.png",
     "dna": "5:background6#40.png-13:body21#47.png-4:pattern13#47.png",
     "edition": 58,
     "date": 1758112209789,
@@ -1510,7 +1510,7 @@
   {
     "name": "#59",
     "description": "Pixel Art NFT Collection",
-    "image": "59.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/59.png",
     "dna": "2:background3#25.png-15:body23#51.png-9:pattern18#62.png",
     "edition": 59,
     "date": 1758112209839,
@@ -1536,7 +1536,7 @@
   {
     "name": "#60",
     "description": "Pixel Art NFT Collection",
-    "image": "60.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/60.png",
     "dna": "5:background6#40.png-3:body12#29.png-7:pattern16#56.png",
     "edition": 60,
     "date": 1758112209895,
@@ -1562,7 +1562,7 @@
   {
     "name": "#61",
     "description": "Pixel Art NFT Collection",
-    "image": "61.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/61.png",
     "dna": "8:background9#55.png-19:body27#59.png-5:pattern14#50.png",
     "edition": 61,
     "date": 1758112209949,
@@ -1588,7 +1588,7 @@
   {
     "name": "#62",
     "description": "Pixel Art NFT Collection",
-    "image": "62.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/62.png",
     "dna": "2:background3#25.png-14:body22#49.png-5:pattern14#50.png",
     "edition": 62,
     "date": 1758112209997,
@@ -1614,7 +1614,7 @@
   {
     "name": "#63",
     "description": "Pixel Art NFT Collection",
-    "image": "63.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/63.png",
     "dna": "0:background1#15.png-21:body29#63.png-14:pattern6#26.png",
     "edition": 63,
     "date": 1758112210046,
@@ -1640,7 +1640,7 @@
   {
     "name": "#64",
     "description": "Pixel Art NFT Collection",
-    "image": "64.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/64.png",
     "dna": "4:background5#35.png-21:body29#63.png-5:pattern14#50.png",
     "edition": 64,
     "date": 1758112210096,
@@ -1666,7 +1666,7 @@
   {
     "name": "#65",
     "description": "Pixel Art NFT Collection",
-    "image": "65.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/65.png",
     "dna": "3:background4#30.png-3:body12#29.png-1:pattern10#38.png",
     "edition": 65,
     "date": 1758112210146,
@@ -1692,7 +1692,7 @@
   {
     "name": "#66",
     "description": "Pixel Art NFT Collection",
-    "image": "66.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/66.png",
     "dna": "8:background9#55.png-29:body9#23.png-8:pattern17#59.png",
     "edition": 66,
     "date": 1758112210203,
@@ -1718,7 +1718,7 @@
   {
     "name": "#67",
     "description": "Pixel Art NFT Collection",
-    "image": "67.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/67.png",
     "dna": "7:background8#50.png-10:body19#43.png-16:pattern8#32.png",
     "edition": 67,
     "date": 1758112210252,
@@ -1744,7 +1744,7 @@
   {
     "name": "#68",
     "description": "Pixel Art NFT Collection",
-    "image": "68.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/68.png",
     "dna": "5:background6#40.png-21:body29#63.png-11:pattern3#17.png",
     "edition": 68,
     "date": 1758112210302,
@@ -1770,7 +1770,7 @@
   {
     "name": "#69",
     "description": "Pixel Art NFT Collection",
-    "image": "69.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/69.png",
     "dna": "5:background6#40.png-9:body18#41.png-8:pattern17#59.png",
     "edition": 69,
     "date": 1758112210349,
@@ -1796,7 +1796,7 @@
   {
     "name": "#70",
     "description": "Pixel Art NFT Collection",
-    "image": "70.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/70.png",
     "dna": "7:background8#50.png-11:body2#9.png-16:pattern8#32.png",
     "edition": 70,
     "date": 1758112210399,
@@ -1822,7 +1822,7 @@
   {
     "name": "#71",
     "description": "Pixel Art NFT Collection",
-    "image": "71.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/71.png",
     "dna": "5:background6#40.png-17:body25#55.png-8:pattern17#59.png",
     "edition": 71,
     "date": 1758112210446,
@@ -1848,7 +1848,7 @@
   {
     "name": "#72",
     "description": "Pixel Art NFT Collection",
-    "image": "72.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/72.png",
     "dna": "6:background7#45.png-8:body17#39.png-17:pattern9#35.png",
     "edition": 72,
     "date": 1758112210500,
@@ -1874,7 +1874,7 @@
   {
     "name": "#73",
     "description": "Pixel Art NFT Collection",
-    "image": "73.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/73.png",
     "dna": "7:background8#50.png-4:body13#31.png-7:pattern16#56.png",
     "edition": 73,
     "date": 1758112210550,
@@ -1900,7 +1900,7 @@
   {
     "name": "#74",
     "description": "Pixel Art NFT Collection",
-    "image": "74.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/74.png",
     "dna": "7:background8#50.png-17:body25#55.png-16:pattern8#32.png",
     "edition": 74,
     "date": 1758112210599,
@@ -1926,7 +1926,7 @@
   {
     "name": "#75",
     "description": "Pixel Art NFT Collection",
-    "image": "75.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/75.png",
     "dna": "7:background8#50.png-14:body22#49.png-17:pattern9#35.png",
     "edition": 75,
     "date": 1758112210648,
@@ -1952,7 +1952,7 @@
   {
     "name": "#76",
     "description": "Pixel Art NFT Collection",
-    "image": "76.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/76.png",
     "dna": "7:background8#50.png-11:body2#9.png-11:pattern3#17.png",
     "edition": 76,
     "date": 1758112210696,
@@ -1978,7 +1978,7 @@
   {
     "name": "#77",
     "description": "Pixel Art NFT Collection",
-    "image": "77.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/77.png",
     "dna": "6:background7#45.png-16:body24#53.png-9:pattern18#62.png",
     "edition": 77,
     "date": 1758112210752,
@@ -2004,7 +2004,7 @@
   {
     "name": "#78",
     "description": "Pixel Art NFT Collection",
-    "image": "78.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/78.png",
     "dna": "7:background8#50.png-23:body30#65.png-1:pattern10#38.png",
     "edition": 78,
     "date": 1758112210847,
@@ -2030,7 +2030,7 @@
   {
     "name": "#79",
     "description": "Pixel Art NFT Collection",
-    "image": "79.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/79.png",
     "dna": "8:background9#55.png-14:body22#49.png-4:pattern13#47.png",
     "edition": 79,
     "date": 1758112210901,
@@ -2056,7 +2056,7 @@
   {
     "name": "#80",
     "description": "Pixel Art NFT Collection",
-    "image": "80.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/80.png",
     "dna": "7:background8#50.png-14:body22#49.png-11:pattern3#17.png",
     "edition": 80,
     "date": 1758112210957,
@@ -2082,7 +2082,7 @@
   {
     "name": "#81",
     "description": "Pixel Art NFT Collection",
-    "image": "81.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/81.png",
     "dna": "8:background9#55.png-13:body21#47.png-9:pattern18#62.png",
     "edition": 81,
     "date": 1758112211004,
@@ -2108,7 +2108,7 @@
   {
     "name": "#82",
     "description": "Pixel Art NFT Collection",
-    "image": "82.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/82.png",
     "dna": "5:background6#40.png-24:body4#13.png-3:pattern12#44.png",
     "edition": 82,
     "date": 1758112211051,
@@ -2134,7 +2134,7 @@
   {
     "name": "#83",
     "description": "Pixel Art NFT Collection",
-    "image": "83.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/83.png",
     "dna": "3:background4#30.png-4:body13#31.png-4:pattern13#47.png",
     "edition": 83,
     "date": 1758112211099,
@@ -2160,7 +2160,7 @@
   {
     "name": "#84",
     "description": "Pixel Art NFT Collection",
-    "image": "84.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/84.png",
     "dna": "3:background4#30.png-22:body3#11.png-6:pattern15#53.png",
     "edition": 84,
     "date": 1758112211151,
@@ -2186,7 +2186,7 @@
   {
     "name": "#85",
     "description": "Pixel Art NFT Collection",
-    "image": "85.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/85.png",
     "dna": "8:background9#55.png-19:body27#59.png-1:pattern10#38.png",
     "edition": 85,
     "date": 1758112211205,
@@ -2212,7 +2212,7 @@
   {
     "name": "#86",
     "description": "Pixel Art NFT Collection",
-    "image": "86.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/86.png",
     "dna": "3:background4#30.png-10:body19#43.png-4:pattern13#47.png",
     "edition": 86,
     "date": 1758112211253,
@@ -2238,7 +2238,7 @@
   {
     "name": "#87",
     "description": "Pixel Art NFT Collection",
-    "image": "87.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/87.png",
     "dna": "7:background8#50.png-25:body5#15.png-6:pattern15#53.png",
     "edition": 87,
     "date": 1758112211303,
@@ -2264,7 +2264,7 @@
   {
     "name": "#88",
     "description": "Pixel Art NFT Collection",
-    "image": "88.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/88.png",
     "dna": "6:background7#45.png-18:body26#57.png-16:pattern8#32.png",
     "edition": 88,
     "date": 1758112211351,
@@ -2290,7 +2290,7 @@
   {
     "name": "#89",
     "description": "Pixel Art NFT Collection",
-    "image": "89.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/89.png",
     "dna": "3:background4#30.png-20:body28#61.png-8:pattern17#59.png",
     "edition": 89,
     "date": 1758112211401,
@@ -2316,7 +2316,7 @@
   {
     "name": "#90",
     "description": "Pixel Art NFT Collection",
-    "image": "90.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/90.png",
     "dna": "7:background8#50.png-3:body12#29.png-4:pattern13#47.png",
     "edition": 90,
     "date": 1758112211455,
@@ -2342,7 +2342,7 @@
   {
     "name": "#91",
     "description": "Pixel Art NFT Collection",
-    "image": "91.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/91.png",
     "dna": "4:background5#35.png-5:body14#33.png-16:pattern8#32.png",
     "edition": 91,
     "date": 1758112211509,
@@ -2368,7 +2368,7 @@
   {
     "name": "#92",
     "description": "Pixel Art NFT Collection",
-    "image": "92.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/92.png",
     "dna": "8:background9#55.png-20:body28#61.png-6:pattern15#53.png",
     "edition": 92,
     "date": 1758112211562,
@@ -2394,7 +2394,7 @@
   {
     "name": "#93",
     "description": "Pixel Art NFT Collection",
-    "image": "93.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/93.png",
     "dna": "5:background6#40.png-0:body1#7.png-13:pattern5#23.png",
     "edition": 93,
     "date": 1758112211610,
@@ -2420,7 +2420,7 @@
   {
     "name": "#94",
     "description": "Pixel Art NFT Collection",
-    "image": "94.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/94.png",
     "dna": "8:background9#55.png-25:body5#15.png-7:pattern16#56.png",
     "edition": 94,
     "date": 1758112211657,
@@ -2446,7 +2446,7 @@
   {
     "name": "#95",
     "description": "Pixel Art NFT Collection",
-    "image": "95.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/95.png",
     "dna": "8:background9#55.png-23:body30#65.png-14:pattern6#26.png",
     "edition": 95,
     "date": 1758112211718,
@@ -2472,7 +2472,7 @@
   {
     "name": "#96",
     "description": "Pixel Art NFT Collection",
-    "image": "96.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/96.png",
     "dna": "4:background5#35.png-16:body24#53.png-14:pattern6#26.png",
     "edition": 96,
     "date": 1758112211773,
@@ -2498,7 +2498,7 @@
   {
     "name": "#97",
     "description": "Pixel Art NFT Collection",
-    "image": "97.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/97.png",
     "dna": "6:background7#45.png-7:body16#37.png-17:pattern9#35.png",
     "edition": 97,
     "date": 1758112211821,
@@ -2524,7 +2524,7 @@
   {
     "name": "#98",
     "description": "Pixel Art NFT Collection",
-    "image": "98.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/98.png",
     "dna": "4:background5#35.png-6:body15#35.png-17:pattern9#35.png",
     "edition": 98,
     "date": 1758112211870,
@@ -2550,7 +2550,7 @@
   {
     "name": "#99",
     "description": "Pixel Art NFT Collection",
-    "image": "99.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/99.png",
     "dna": "6:background7#45.png-20:body28#61.png-6:pattern15#53.png",
     "edition": 99,
     "date": 1758112211928,
@@ -2576,7 +2576,7 @@
   {
     "name": "#100",
     "description": "Pixel Art NFT Collection",
-    "image": "100.png",
+    "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/100.png",
     "dna": "7:background8#50.png-21:body29#63.png-5:pattern14#50.png",
     "edition": 100,
     "date": 1758112211991,
