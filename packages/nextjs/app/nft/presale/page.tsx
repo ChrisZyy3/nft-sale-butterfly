@@ -9,9 +9,14 @@ import { useAccount } from "wagmi";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const TOKEN_IDS = [1, 2, 3, 4, 5] as const;
-const METADATA_GATEWAY_BASE =
-  "https://ipfs.io/ipfs/bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/metadata";
+const COLLECTION_CID = "bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u";
 const IPFS_GATEWAY = "https://ipfs.io/ipfs";
+const METADATA_PATH_CANDIDATES = [
+  (tokenId: number) => `${COLLECTION_CID}/metadata/${tokenId}.json`,
+  (tokenId: number) => `${COLLECTION_CID}/metadata/${tokenId}`,
+  (tokenId: number) => `${COLLECTION_CID}/json/${tokenId}.json`,
+  (tokenId: number) => `${COLLECTION_CID}/json/${tokenId}`,
+];
 
 type ReservationInfo = {
   buyer: Address;
@@ -75,20 +80,20 @@ export default function PresalePage() {
         <div className="mx-auto max-w-md space-y-4">
           <section className="rounded-3xl bg-[#1f2733] p-5 text-sm text-[#cbd5f5]">
             <div className="flex justify-between">
-              <span>合约总量</span>
-              <span>{maxCount > 0 ? maxCount : "加载中…"}</span>
+              <span>Collection Supply</span>
+              <span>{maxCount > 0 ? maxCount : "Loading…"}</span>
             </div>
             <div className="mt-2 flex justify-between">
-              <span>已铸造</span>
+              <span>Minted</span>
               <span>{mintedCount}</span>
             </div>
             <div className="mt-2 flex justify-between">
-              <span>已预订</span>
+              <span>Reserved</span>
               <span>{reservedCount}</span>
             </div>
             <div className="mt-2 flex justify-between">
-              <span>单价</span>
-              <span>{formattedMintPrice ? `${formattedMintPrice} ETH` : "加载中…"}</span>
+              <span>Mint Price</span>
+              <span>{formattedMintPrice ? `${formattedMintPrice} ETH` : "Loading…"}</span>
             </div>
           </section>
 
@@ -135,12 +140,23 @@ function PresaleItemCard({ tokenId, isConnected, mintPrice }: PresaleItemCardPro
     const loadMetadata = async () => {
       try {
         setIsLoadingMetadata(true);
-        const response = await fetch(`${METADATA_GATEWAY_BASE}/${tokenId}.json`, { signal: controller.signal });
-        if (!response.ok) {
-          throw new Error(`Metadata request failed with status ${response.status}`);
+        for (const buildPath of METADATA_PATH_CANDIDATES) {
+          const url = `${IPFS_GATEWAY}/${buildPath(tokenId)}`;
+          try {
+            const response = await fetch(url, { signal: controller.signal });
+            if (!response.ok) {
+              continue;
+            }
+            const json = (await response.json()) as NftMetadata;
+            setMetadata(json);
+            return;
+          } catch (innerError) {
+            if ((innerError as Error).name === "AbortError") {
+              throw innerError;
+            }
+          }
         }
-        const json = (await response.json()) as NftMetadata;
-        setMetadata(json);
+        setMetadata(null);
       } catch (error) {
         if ((error as Error).name !== "AbortError") {
           console.error(`Failed to load metadata for token ${tokenId}`, error);
@@ -161,9 +177,10 @@ function PresaleItemCard({ tokenId, isConnected, mintPrice }: PresaleItemCardPro
   const reservationInfo = reservationData as ReservationInfo | undefined;
   const reservedBy =
     reservationInfo?.buyer && reservationInfo.buyer !== ZERO_ADDRESS ? reservationInfo.buyer : undefined;
-  const statusLabel = isFulfilled ? "已铸造" : reservedBy ? "已预订" : "可购买";
+  const statusLabel = isFulfilled ? "Fulfilled" : reservedBy ? "Reserved" : "Available";
   const buyerLabel = formatAddress(reservedBy);
-  const imageUrl = ipfsToHttp(metadata?.image);
+  const fallbackImageUrl = `${IPFS_GATEWAY}/${COLLECTION_CID}/images/${tokenId}.png`;
+  const imageUrl = ipfsToHttp(metadata?.image) ?? fallbackImageUrl;
 
   const handleBuy = async () => {
     if (!mintPrice) return;
@@ -215,7 +232,7 @@ function PresaleItemCard({ tokenId, isConnected, mintPrice }: PresaleItemCardPro
             />
           ) : (
             <div className="flex h-full items-center justify-center text-xs text-[#9ca3b0]">
-              {isLoadingMetadata ? "加载中…" : "暂无预览"}
+              {isLoadingMetadata ? "Loading…" : "No preview"}
             </div>
           )}
         </div>
@@ -223,16 +240,18 @@ function PresaleItemCard({ tokenId, isConnected, mintPrice }: PresaleItemCardPro
         <div className="flex flex-col justify-between text-sm text-[#e2e8f0]">
           <div>
             <div className="text-lg font-semibold text-white">{metadata?.name ?? `Token #${tokenId}`}</div>
-            <div className="mt-1 text-xs text-[#9ca3b0]">{metadata?.description ?? "等待揭示…"}</div>
+            <div className="mt-1 text-xs text-[#9ca3b0]">
+              {metadata?.description ?? "Metadata is not available yet."}
+            </div>
           </div>
           <div className="mt-4 flex flex-col gap-1">
             <div className="flex justify-between">
-              <span className="text-[#9ca3b0]">状态</span>
+              <span className="text-[#9ca3b0]">Status</span>
               <span className="font-medium text-white">{statusLabel}</span>
             </div>
             {buyerLabel && (
               <div className="flex justify-between">
-                <span className="text-[#9ca3b0]">预订地址</span>
+                <span className="text-[#9ca3b0]">Reserved By</span>
                 <span className="font-mono text-xs text-[#20ff6d]">{buyerLabel}</span>
               </div>
             )}
