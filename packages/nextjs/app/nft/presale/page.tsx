@@ -53,50 +53,16 @@ export default function PresalePage() {
     functionName: "mintPrice",
   });
 
-  const { data: maxSupply } = useScaffoldReadContract({
-    contractName: "ButterflyPresale",
-    functionName: "maxSupply",
-  });
-
-  const { data: totalSupply } = useScaffoldReadContract({
-    contractName: "ButterflyPresale",
-    functionName: "totalSupply",
-  });
-
-  const { data: totalReservations } = useScaffoldReadContract({
-    contractName: "ButterflyPresale",
-    functionName: "totalReservations",
-  });
-
   const formattedMintPrice = mintPrice ? formatEther(mintPrice) : undefined;
-  const reservedCount = Number(totalReservations ?? 0n);
-  const mintedCount = Number(totalSupply ?? 0n);
-  const maxCount = Number(maxSupply ?? 0n);
 
   return (
     <div className="min-h-screen bg-[#05060A] pb-24">
       <ScreenHeader title="Presale" />
       <div className="px-4 py-6">
         <div className="mx-auto max-w-md space-y-4">
-          <section className="rounded-3xl bg-[#1f2733] p-5 text-sm text-[#cbd5f5]">
-            <div className="flex justify-between">
-              <span>Collection Supply</span>
-              <span>{maxCount > 0 ? maxCount : "Loading…"}</span>
-            </div>
-            <div className="mt-2 flex justify-between">
-              <span>Minted</span>
-              <span>{mintedCount}</span>
-            </div>
-            <div className="mt-2 flex justify-between">
-              <span>Reserved</span>
-              <span>{reservedCount}</span>
-            </div>
-            <div className="mt-2 flex justify-between">
-              <span>Mint Price</span>
-              <span>{formattedMintPrice ? `${formattedMintPrice} ETH` : "Loading…"}</span>
-            </div>
-          </section>
-
+          <p className="text-center text-sm text-[#cbd5f5]">
+            Mint price: {formattedMintPrice ? `${formattedMintPrice} ETH` : "Loading…"}
+          </p>
           {TOKEN_IDS.map(tokenId => (
             <PresaleItemCard key={tokenId} tokenId={tokenId} isConnected={isConnected} mintPrice={mintPrice} />
           ))}
