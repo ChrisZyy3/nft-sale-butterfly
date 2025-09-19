@@ -4,17 +4,23 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import type { Address } from "viem";
-import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
-const PRESALE_ITEMS = [
-  { tokenId: 1, label: "001", backgroundColor: "#c8860d" },
-  { tokenId: 2, label: "002", backgroundColor: "#4c6ef5" },
-  { tokenId: 3, label: "003", backgroundColor: "#66d9ef" },
-  { tokenId: 4, label: "004", backgroundColor: "#20ff6d" },
-  { tokenId: 5, label: "005", backgroundColor: "#ff8787" },
-] as const;
+const CARD_COLORS = ["#c8860d", "#4c6ef5", "#66d9ef", "#20ff6d", "#ff8787"] as const;
+
+type PresaleItem = {
+  tokenId: number;
+  label: string;
+  backgroundColor: string;
+};
+
+const PRESALE_ITEMS: PresaleItem[] = Array.from({ length: 100 }, (_, index) => ({
+  tokenId: index + 1,
+  label: String(index + 1).padStart(3, "0"),
+  backgroundColor: CARD_COLORS[index % CARD_COLORS.length],
+}));
+const ITEMS_PER_PAGE = 10;
 const COLLECTION_CID = "bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u";
 const IPFS_GATEWAY = "https://ipfs.io/ipfs";
 const METADATA_PATH_CANDIDATES = [
@@ -51,14 +57,54 @@ export default function PresalePage() {
     functionName: "mintPrice",
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(PRESALE_ITEMS.length / ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const paginatedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return PRESALE_ITEMS.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [currentPage]);
+
+  const goToPrevious = () => setCurrentPage(prev => Math.max(1, prev - 1));
+  const goToNext = () => setCurrentPage(prev => Math.min(totalPages, prev + 1));
+
   return (
     <div className="min-h-screen bg-[#05060A] pb-24">
       <ScreenHeader title="Presale" />
       <div className="px-4 py-6">
         <div className="mx-auto max-w-md space-y-4">
-          {PRESALE_ITEMS.map(item => (
+          {paginatedItems.map(item => (
             <PresaleItemCard key={item.tokenId} item={item} isConnected={isConnected} mintPrice={mintPrice} />
           ))}
+        </div>
+
+        <div className="mx-auto mt-8 flex max-w-md items-center justify-between text-white">
+          <button
+            type="button"
+            onClick={goToPrevious}
+            disabled={currentPage === 1}
+            className="rounded-full border border-[#4a5562] px-4 py-2 text-sm disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-sm text-[#9ca3b0]">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={goToNext}
+            disabled={currentPage === totalPages}
+            className="rounded-full border border-[#4a5562] px-4 py-2 text-sm disabled:opacity-50"
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>
@@ -66,7 +112,7 @@ export default function PresalePage() {
 }
 
 type PresaleItemCardProps = {
-  item: (typeof PRESALE_ITEMS)[number];
+  item: PresaleItem;
   isConnected: boolean;
   mintPrice: bigint | undefined;
 };
@@ -131,7 +177,7 @@ function PresaleItemCard({ item, isConnected, mintPrice }: PresaleItemCardProps)
   const isReserved = Boolean(reservedBy);
   const mintedCount = isReserved ? 1 : 0;
   const mintedPercent = mintedCount * 100;
-  const priceLabel = mintPrice ? Number.parseFloat(formatEther(mintPrice)).toFixed(3) : "--";
+  const priceLabel = "0.01";
 
   const handleBuy = async () => {
     if (!mintPrice) return;
@@ -185,7 +231,7 @@ function PresaleItemCard({ item, isConnected, mintPrice }: PresaleItemCardProps)
         <span className="rounded-xl border border-[#20ff6d] bg-transparent px-4 py-2 text-sm font-medium text-[#20ff6d]">
           Number
         </span>
-        <span className="text-lg font-semibold text-white">1</span>
+        <span className="text-lg font-semibold text-white">1000</span>
         <span className="rounded-xl border border-[#20ff6d] bg-transparent px-4 py-2 text-sm font-medium text-[#20ff6d] ml-auto">
           Price
         </span>
