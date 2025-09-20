@@ -1,0 +1,26 @@
+{
+  "name": "#96",
+  "description": "Pixel Art NFT Collection",
+  "image": "ipfs://bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u/images/96.png",
+  "dna": "4:background5#35.png-16:body24#53.png-14:pattern6#26.png",
+  "edition": 96,
+  "date": 1758112211773,
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "backgro",
+      "rarity": "35"
+    },
+    {
+      "trait_type": "BodyType",
+      "value": "bo",
+      "rarity": "53"
+    },
+    {
+      "trait_type": "Pattern",
+      "value": "patt",
+      "rarity": "26"
+    }
+  ],
+  "compiler": "Pixel Art NFT Generator"
+}

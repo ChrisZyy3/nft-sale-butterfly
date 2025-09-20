@@ -1,156 +1,254 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
-// import { Button } from "@/components/ui/button";
-import { parseEther, stringToHex } from "viem";
+import type { Address } from "viem";
 import { useAccount } from "wagmi";
-import { useTransactor } from "~~/hooks/scaffold-eth";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
-const presaleItems = [
-  {
-    id: "001",
-    minted: 290,
-    maxSupply: 1000,
-    priceEth: 0.01,
-    backgroundColor: "#c8860d",
-    iconColor: "#000",
-  },
-  {
-    id: "002",
-    minted: 480,
-    maxSupply: 1000,
-    priceEth: 0.01,
-    backgroundColor: "#4c6ef5",
-    iconColor: "#000",
-  },
-  {
-    id: "003",
-    minted: 160,
-    maxSupply: 1000,
-    priceEth: 0.01,
-    backgroundColor: "#66d9ef",
-    iconColor: "#000",
-  },
-  {
-    id: "004",
-    minted: 320,
-    maxSupply: 1000,
-    priceEth: 0.01,
-    backgroundColor: "#20ff6d",
-    iconColor: "#000",
-  },
-  {
-    id: "005",
-    minted: 780,
-    maxSupply: 1000,
-    priceEth: 0.01,
-    backgroundColor: "#ff8787",
-    iconColor: "#000",
-  },
-] satisfies PresaleItem[];
+const CARD_COLORS = ["#c8860d", "#4c6ef5", "#66d9ef", "#20ff6d", "#ff8787"] as const;
 
 type PresaleItem = {
-  id: string;
-  minted: number;
-  maxSupply: number;
-  priceEth: number;
+  tokenId: number;
+  label: string;
   backgroundColor: string;
-  iconColor: string;
+};
+
+const PRESALE_ITEMS: PresaleItem[] = Array.from({ length: 100 }, (_, index) => ({
+  tokenId: index + 1,
+  label: String(index + 1).padStart(3, "0"),
+  backgroundColor: CARD_COLORS[index % CARD_COLORS.length],
+}));
+const ITEMS_PER_PAGE = 10;
+const COLLECTION_CID = "bafybeiclu2xddpmbpgipirkjdrpxtnimpzm5a3cvfzlbpfa4irnyqfhf4u";
+const IPFS_GATEWAY = "https://ipfs.io/ipfs";
+const METADATA_PATH_CANDIDATES = [
+  (tokenId: number) => `${COLLECTION_CID}/metadata/${tokenId}.json`,
+  (tokenId: number) => `${COLLECTION_CID}/metadata/${tokenId}`,
+  (tokenId: number) => `${COLLECTION_CID}/json/${tokenId}.json`,
+  (tokenId: number) => `${COLLECTION_CID}/json/${tokenId}`,
+];
+
+type ReservationInfo = {
+  buyer: Address;
+  pricePaid: bigint;
+  reservedAt: bigint;
+  fulfilled: boolean;
+};
+
+type NftMetadata = {
+  name?: string;
+  image?: string;
+};
+
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as const;
+
+const ipfsToHttp = (uri?: string) => {
+  if (!uri) return undefined;
+  return uri.startsWith("ipfs://") ? uri.replace("ipfs://", `${IPFS_GATEWAY}/`) : uri;
 };
 
 export default function PresalePage() {
   const { isConnected } = useAccount();
-  const transactor = useTransactor();
 
-  const handleBuy = async (itemIndex: number) => {
-    try {
-      const message = `${Date.now()}#${itemIndex}`;
-      const data = stringToHex(message);
+  const { data: mintPrice } = useScaffoldReadContract({
+    contractName: "ButterflyPresale",
+    functionName: "mintPrice",
+  });
 
-      await transactor({
-        to: "0xcB135527801f88E5bF26CA25b2d9948b19927178",
-        value: parseEther("0.01"),
-        data,
-      });
-    } catch (error) {
-      console.error("Failed to send presale purchase transaction", error);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(PRESALE_ITEMS.length / ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
     }
-  };
+  }, [currentPage, totalPages]);
+
+  const paginatedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return PRESALE_ITEMS.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [currentPage]);
+
+  const goToPrevious = () => setCurrentPage(prev => Math.max(1, prev - 1));
+  const goToNext = () => setCurrentPage(prev => Math.min(totalPages, prev + 1));
 
   return (
     <div className="min-h-screen bg-[#05060A] pb-24">
       <ScreenHeader title="Presale" />
       <div className="px-4 py-6">
         <div className="mx-auto max-w-md space-y-4">
-          {presaleItems.map((item, index) => {
-            const mintedPercent = Math.min(100, Math.round((item.minted / item.maxSupply) * 100));
-            return (
-              <article key={item.id} className="overflow-hidden rounded-3xl bg-[#3a4553] p-5">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="flex h-14 w-14 items-center justify-center rounded-full"
-                      style={{ backgroundColor: item.backgroundColor }}
-                    >
-                      <ButterflyIcon color={item.iconColor} />
-                    </div>
-                    <span className="text-3xl font-bold text-white">{item.id}</span>
-                  </div>
-                  <button
-                    type="button"
-                    disabled={!isConnected}
-                    className="flex items-center gap-2 rounded-full bg-[#20ff6d] px-8 py-3 text-sm font-bold text-black hover:bg-[#1ae058] disabled:opacity-50"
-                    onClick={() => handleBuy(index)}
-                  >
-                    <CreditCardIcon />
-                    BUY
-                  </button>
-                </div>
+          {paginatedItems.map(item => (
+            <PresaleItemCard key={item.tokenId} item={item} isConnected={isConnected} mintPrice={mintPrice} />
+          ))}
+        </div>
 
-                {/* 分割线 */}
-                <div className="border-t border-[#4a5562] mb-4"></div>
-
-                <div className="mb-5 flex gap-4">
-                  <span className="rounded-xl border border-[#20ff6d] bg-transparent px-4 py-2 text-sm font-medium text-[#20ff6d]">
-                    Number
-                  </span>
-                  <span className="text-lg font-semibold text-white">{item.maxSupply.toLocaleString()}</span>
-                  <span className="rounded-xl border border-[#20ff6d] bg-transparent px-4 py-2 text-sm font-medium text-[#20ff6d] ml-auto">
-                    Price
-                  </span>
-                  <span className="flex items-center gap-2 text-lg font-semibold text-white">
-                    {item.priceEth.toFixed(3)}
-                    <EthereumIcon />
-                  </span>
-                </div>
-
-                <div className="space-y-3">
-                  <Progress value={mintedPercent} />
-                  <div className="flex justify-between text-sm text-[#9ca3b0]">
-                    <span>Minted</span>
-                    <span>
-                      {item.minted.toLocaleString()} / {item.maxSupply.toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+        <div className="mx-auto mt-8 flex max-w-md items-center justify-between text-white">
+          <button
+            type="button"
+            onClick={goToPrevious}
+            disabled={currentPage === 1}
+            className="rounded-full border border-[#4a5562] px-4 py-2 text-sm disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-sm text-[#9ca3b0]">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={goToNext}
+            disabled={currentPage === totalPages}
+            className="rounded-full border border-[#4a5562] px-4 py-2 text-sm disabled:opacity-50"
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-type ProgressProps = {
-  value: number;
+type PresaleItemCardProps = {
+  item: PresaleItem;
+  isConnected: boolean;
+  mintPrice: bigint | undefined;
 };
 
-function Progress({ value }: ProgressProps) {
+function PresaleItemCard({ item, isConnected, mintPrice }: PresaleItemCardProps) {
+  const [metadata, setMetadata] = useState<NftMetadata | null>(null);
+
+  const tokenIdBigInt = useMemo(() => BigInt(item.tokenId), [item.tokenId]);
+
+  const { data: reservationData } = useScaffoldReadContract({
+    contractName: "ButterflyPresale",
+    functionName: "reservation",
+    args: [tokenIdBigInt],
+  });
+
+  const { writeContractAsync, isMining } = useScaffoldWriteContract({
+    contractName: "ButterflyPresale",
+  });
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadMetadata = async () => {
+      try {
+        for (const buildPath of METADATA_PATH_CANDIDATES) {
+          const url = `${IPFS_GATEWAY}/${buildPath(item.tokenId)}`;
+          try {
+            const response = await fetch(url, { signal: controller.signal });
+            if (!response.ok) {
+              continue;
+            }
+            const json = (await response.json()) as NftMetadata;
+            setMetadata(json);
+            return;
+          } catch (innerError) {
+            if ((innerError as Error).name === "AbortError") {
+              throw innerError;
+            }
+          }
+        }
+        setMetadata(null);
+      } catch (error) {
+        if ((error as Error).name !== "AbortError") {
+          console.error(`Failed to load metadata for token ${item.tokenId}`, error);
+        }
+        setMetadata(null);
+      }
+    };
+
+    loadMetadata();
+
+    return () => {
+      controller.abort();
+    };
+  }, [item.tokenId]);
+
+  const reservationInfo = reservationData as ReservationInfo | undefined;
+  const reservedBy =
+    reservationInfo?.buyer && reservationInfo.buyer !== ZERO_ADDRESS ? reservationInfo.buyer : undefined;
+  const fallbackImageUrl = `${IPFS_GATEWAY}/${COLLECTION_CID}/images/${item.tokenId}.png`;
+  const imageUrl = ipfsToHttp(metadata?.image) ?? fallbackImageUrl;
+  const isReserved = Boolean(reservedBy);
+  const mintedCount = isReserved ? 1 : 0;
+  const mintedPercent = mintedCount * 100;
+  const priceLabel = "0.01";
+
+  const handleBuy = async () => {
+    if (!mintPrice) return;
+    try {
+      await writeContractAsync({
+        functionName: "reserve",
+        args: [tokenIdBigInt],
+        value: mintPrice,
+      });
+    } catch (error) {
+      console.error(`Failed to reserve token ${item.tokenId}`, error);
+    }
+  };
+
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-[#3d4854]">
-      <div className="h-full rounded-full bg-[#20ff6d]" style={{ width: `${value}%` }} />
-    </div>
+    <article className="overflow-hidden rounded-3xl bg-[#3a4553] p-5">
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div
+            className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full"
+            style={{ backgroundColor: item.backgroundColor }}
+          >
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt={metadata?.name ?? `Token #${item.tokenId}`}
+                fill
+                sizes="56px"
+                className="object-cover"
+              />
+            ) : (
+              <ButterflyIcon color="#000" />
+            )}
+          </div>
+          <span className="text-3xl font-bold text-white">{item.label}</span>
+        </div>
+        <button
+          type="button"
+          disabled={!isConnected || !mintPrice || isReserved || isMining}
+          className="flex items-center gap-2 rounded-full bg-[#20ff6d] px-8 py-3 text-sm font-bold text-black hover:bg-[#1ae058] disabled:opacity-50"
+          onClick={handleBuy}
+        >
+          <CreditCardIcon />
+          BUY
+        </button>
+      </div>
+
+      <div className="border-t border-[#4a5562] mb-4"></div>
+
+      <div className="mb-5 flex gap-4">
+        <span className="rounded-xl border border-[#20ff6d] bg-transparent px-4 py-2 text-sm font-medium text-[#20ff6d]">
+          Number
+        </span>
+        <span className="text-lg font-semibold text-white">1000</span>
+        <span className="rounded-xl border border-[#20ff6d] bg-transparent px-4 py-2 text-sm font-medium text-[#20ff6d] ml-auto">
+          Price
+        </span>
+        <span className="flex items-center gap-2 text-lg font-semibold text-white">
+          {priceLabel}
+          <EthereumIcon />
+        </span>
+      </div>
+
+      <div className="space-y-3">
+        <Progress value={mintedPercent} />
+        <div className="flex justify-between text-sm text-[#9ca3b0]">
+          <span>Minted</span>
+          <span>{mintedCount} / 1</span>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -168,6 +266,18 @@ function CreditCardIcon() {
       <rect x="2" y="5" width="20" height="14" rx="2" />
       <line x1="2" y1="10" x2="22" y2="10" />
     </svg>
+  );
+}
+
+type ProgressProps = {
+  value: number;
+};
+
+function Progress({ value }: ProgressProps) {
+  return (
+    <div className="h-2 w-full overflow-hidden rounded-full bg-[#3d4854]">
+      <div className="h-full rounded-full bg-[#20ff6d]" style={{ width: `${Math.min(100, Math.max(0, value))}%` }} />
+    </div>
   );
 }
 
