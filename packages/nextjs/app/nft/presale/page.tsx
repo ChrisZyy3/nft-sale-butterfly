@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import {
   INVITE_PARAM_KEY,
@@ -59,8 +58,6 @@ const ipfsToHttp = (uri?: string) => {
 };
 
 export default function PresalePage() {
-  const searchParams = useSearchParams();
-  const inviteParam = searchParams.get(INVITE_PARAM_KEY);
   const { address, isConnected } = useAccount();
   const [inviteCode, setInviteCode] = useState<string | null>(null);
   const [isInviteReady, setIsInviteReady] = useState(false);
@@ -70,7 +67,8 @@ export default function PresalePage() {
       return;
     }
 
-    const normalizedParam = normalizeInviteCode(inviteParam);
+    const params = new URLSearchParams(window.location.search);
+    const normalizedParam = normalizeInviteCode(params.get(INVITE_PARAM_KEY));
     if (normalizedParam) {
       storeInviteCode(normalizedParam);
       setInviteCode(normalizedParam);
@@ -81,7 +79,7 @@ export default function PresalePage() {
     const stored = getStoredInviteCode();
     setInviteCode(stored);
     setIsInviteReady(true);
-  }, [inviteParam]);
+  }, []);
 
   const { data: mintPrice } = useScaffoldReadContract({
     contractName: "ButterflyPresale",
