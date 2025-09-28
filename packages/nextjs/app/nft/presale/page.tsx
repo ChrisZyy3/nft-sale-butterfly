@@ -52,6 +52,36 @@ const ipfsToHttp = (uri?: string) => {
 export default function PresalePage() {
   const { isConnected } = useAccount();
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchNftData = async () => {
+      try {
+        const response = await fetch("http://59.110.161.193:8080/api/v1/nft", {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          console.error("Failed to fetch NFTs from API:", response.status, response.statusText);
+          return;
+        }
+
+        const data = await response.json();
+        console.log("Fetched NFT data from API:", data);
+      } catch (error) {
+        if ((error as Error).name !== "AbortError") {
+          console.error("Error fetching NFT data from API:", error);
+        }
+      }
+    };
+
+    void fetchNftData();
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
   const { data: mintPrice } = useScaffoldReadContract({
     contractName: "ButterflyPresale",
     functionName: "mintPrice",
