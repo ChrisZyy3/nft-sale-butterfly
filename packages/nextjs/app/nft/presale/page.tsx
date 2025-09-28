@@ -3,6 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
+import {
+  INVITE_PARAM_KEY,
+  PROMOTION_RULES,
+  getStoredInviteCode,
+  incrementReferralCount,
+  normalizeInviteCode,
+  storeInviteCode,
+} from "@/lib/invite";
 import type { Address } from "viem";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
@@ -50,7 +58,28 @@ const ipfsToHttp = (uri?: string) => {
 };
 
 export default function PresalePage() {
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
+  const [inviteCode, setInviteCode] = useState<string | null>(null);
+  const [isInviteReady, setIsInviteReady] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const normalizedParam = normalizeInviteCode(params.get(INVITE_PARAM_KEY));
+    if (normalizedParam) {
+      storeInviteCode(normalizedParam);
+      setInviteCode(normalizedParam);
+      setIsInviteReady(true);
+      return;
+    }
+
+    const stored = getStoredInviteCode();
+    setInviteCode(stored);
+    setIsInviteReady(true);
+  }, []);
 
   const { data: mintPrice } = useScaffoldReadContract({
     contractName: "ButterflyPresale",
@@ -75,13 +104,64 @@ export default function PresalePage() {
   const goToPrevious = () => setCurrentPage(prev => Math.max(1, prev - 1));
   const goToNext = () => setCurrentPage(prev => Math.min(totalPages, prev + 1));
 
+  if (!isInviteReady) {
+    return (
+      <div className="min-h-screen bg-[#05060A] pb-24">
+        <ScreenHeader title="Presale" />
+        <div className="px-4 py-6">
+          <div className="mx-auto max-w-md rounded-3xl border border-[#1f2432] bg-[#10131c] px-6 py-8 text-center text-sm text-[#9ca3b0]">
+            正在校验邀请链接...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!inviteCode) {
+    return (
+      <div className="min-h-screen bg-[#05060A] pb-24">
+        <ScreenHeader title="Presale" />
+        <div className="px-4 py-6">
+          <div className="mx-auto max-w-md space-y-4 rounded-3xl border border-[#1f2432] bg-[#10131c] px-6 py-8 text-center text-white">
+            <h2 className="text-lg font-semibold uppercase tracking-[0.28em] text-[#20ff6d]">需要邀请码</h2>
+            <p className="text-sm text-[#9ca3b0]">请通过已购玩家提供的邀请链接访问DAPP后再参与Hash Butterfly预售。</p>
+            <ol className="space-y-2 text-xs text-[#9ca3b0]">
+              {PROMOTION_RULES.map((rule, index) => (
+                <li key={rule} className="flex gap-2 text-left">
+                  <span className="mt-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#20ff6d] text-[10px] font-semibold text-black">
+                    {index + 1}
+                  </span>
+                  <span>{rule}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const inviterDisplay = formatAddress(inviteCode);
+  const canPurchase = Boolean(inviteCode);
+
   return (
     <div className="min-h-screen bg-[#05060A] pb-24">
       <ScreenHeader title="Presale" />
       <div className="px-4 py-6">
+        <div className="mx-auto mb-6 max-w-md rounded-2xl border border-[#1f2432] bg-[#10131c] px-4 py-3 text-xs text-[#9ca3b0]">
+          当前邀请人：<span className="font-semibold text-white">{inviterDisplay}</span>
+        </div>
         <div className="mx-auto max-w-md space-y-4">
           {paginatedItems.map(item => (
-            <PresaleItemCard key={item.tokenId} item={item} isConnected={isConnected} mintPrice={mintPrice} />
+            <PresaleItemCard
+              key={item.tokenId}
+              item={item}
+              isConnected={isConnected}
+              mintPrice={mintPrice}
+              canPurchase={canPurchase}
+              inviteCode={inviteCode}
+              buyerAddress={address}
+            />
           ))}
         </div>
 
@@ -115,9 +195,19 @@ type PresaleItemCardProps = {
   item: PresaleItem;
   isConnected: boolean;
   mintPrice: bigint | undefined;
+  canPurchase: boolean;
+  inviteCode: string | null;
+  buyerAddress?: Address;
 };
 
-function PresaleItemCard({ item, isConnected, mintPrice }: PresaleItemCardProps) {
+function PresaleItemCard({
+  item,
+  isConnected,
+  mintPrice,
+  canPurchase,
+  inviteCode,
+  buyerAddress,
+}: PresaleItemCardProps) {
   const [metadata, setMetadata] = useState<NftMetadata | null>(null);
 
   const tokenIdBigInt = useMemo(() => BigInt(item.tokenId), [item.tokenId]);
@@ -178,15 +268,22 @@ function PresaleItemCard({ item, isConnected, mintPrice }: PresaleItemCardProps)
   const mintedCount = isReserved ? 1 : 0;
   const mintedPercent = mintedCount * 100;
   const priceLabel = "0.01";
+  const isBuyDisabled = !isConnected || !mintPrice || isReserved || isMining || !canPurchase;
 
   const handleBuy = async () => {
-    if (!mintPrice) return;
+    if (!mintPrice || !canPurchase) return;
     try {
       await writeContractAsync({
         functionName: "reserve",
         args: [tokenIdBigInt],
         value: mintPrice,
       });
+      if (inviteCode) {
+        const normalizedBuyer = buyerAddress?.toLowerCase();
+        if (!normalizedBuyer || normalizedBuyer !== inviteCode) {
+          incrementReferralCount(inviteCode);
+        }
+      }
     } catch (error) {
       console.error(`Failed to reserve token ${item.tokenId}`, error);
     }
@@ -216,13 +313,14 @@ function PresaleItemCard({ item, isConnected, mintPrice }: PresaleItemCardProps)
         </div>
         <button
           type="button"
-          disabled={!isConnected || !mintPrice || isReserved || isMining}
+          disabled={isBuyDisabled}
           className="flex items-center gap-2 rounded-full bg-[#20ff6d] px-8 py-3 text-sm font-bold text-black hover:bg-[#1ae058] disabled:opacity-50"
           onClick={handleBuy}
         >
           <CreditCardIcon />
           BUY
         </button>
+        {!canPurchase ? <p className="mt-2 text-xs text-[#ff5f66]">需要有效的邀请码才能购买。</p> : null}
       </div>
 
       <div className="border-t border-[#4a5562] mb-4"></div>
@@ -250,6 +348,13 @@ function PresaleItemCard({ item, isConnected, mintPrice }: PresaleItemCardProps)
       </div>
     </article>
   );
+}
+
+function formatAddress(value: string) {
+  if (value.length <= 10) {
+    return value;
+  }
+  return `${value.slice(0, 6)}...${value.slice(-4)}`;
 }
 
 function ButterflyIcon({ color }: { color: string }) {
