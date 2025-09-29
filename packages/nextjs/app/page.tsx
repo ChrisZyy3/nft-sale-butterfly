@@ -7,14 +7,6 @@ import nftImage from "@/images/nft.jpg";
 import walletImage from "@/images/wallet.jpg";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
-  { label: "Overview", href: "#overview" },
-  { label: "Collections", href: "#collections" },
-  { label: "Ecosystem", href: "#ecosystem" },
-  { label: "Roadmap", href: "#roadmap" },
-  { label: "FAQ", href: "#faq" },
-];
-
 const heroStats = [
   { label: "Genesis holders", value: "18,420" },
   { label: "Volume traded", value: "$42M" },
@@ -190,7 +182,6 @@ export default function HomeLanding() {
     <div className="relative overflow-hidden bg-[#05060a] text-white">
       <BackgroundAura />
       <div className="hb-container flex flex-col gap-16 pb-24 pt-8 md:gap-20 md:pb-32">
-        <NavBar />
         <Hero />
         <SectionDivider id="overview" title="Hash butterfly overview" subtitle="The metaverse IP renaissance" />
         <HighlightMetrics />
@@ -208,36 +199,6 @@ export default function HomeLanding() {
         <Footer />
       </div>
     </div>
-  );
-}
-
-function NavBar() {
-  return (
-    <header className="sticky top-4 z-30 rounded-full border border-[#1f2432] bg-[#0c0f16]/80 backdrop-blur-lg">
-      <div className="flex items-center justify-between gap-6 px-4 py-3">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="inline-flex size-10 items-center justify-center rounded-full bg-[#20ff6d]/10 text-[#20ff6d]">
-            <ButterflyMark className="size-5" />
-          </span>
-          <span className="text-xs font-semibold uppercase tracking-[0.6em] text-[#9ca3b0] md:text-sm">
-            Hash Butterfly
-          </span>
-        </Link>
-        <nav className="hidden items-center gap-6 text-[0.7rem] uppercase tracking-[0.45em] text-[#6f7483] md:flex">
-          {navLinks.map(item => (
-            <a key={item.label} href={item.href} className="transition hover:text-[#20ff6d]">
-              {item.label}
-            </a>
-          ))}
-        </nav>
-        <Button asChild size="sm" variant="primary" className="tracking-[0.4em]">
-          <Link href="/wallet" className="flex items-center gap-2">
-            <WalletIcon />
-            Wallet
-          </Link>
-        </Button>
-      </div>
-    </header>
   );
 }
 
@@ -550,15 +511,6 @@ function ArrowIcon() {
   return (
     <svg aria-hidden="true" className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
       <path d="M10 7l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function WalletIcon() {
-  return (
-    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#041710" strokeWidth="1.6">
-      <path d="M4 7a2 2 0 0 1 2-2h12v4H6a2 2 0 0 1-2-2Zm0 4a2 2 0 0 1 2-2h14v8H6a2 2 0 0 1-2-2v-4Z" />
-      <circle cx="17" cy="13" r="1.2" fill="#041710" />
     </svg>
   );
 }
