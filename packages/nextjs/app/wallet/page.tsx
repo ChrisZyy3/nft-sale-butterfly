@@ -1,16 +1,18 @@
 "use client";
 
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { useWatchBalance } from "@/hooks/scaffold-eth/useWatchBalance";
 import { cn } from "@/lib/utils";
 import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
-import { useAccount, useReadContract } from "wagmi";
+import { decodeEventLog } from "viem";
+import { useAccount, usePublicClient, useReadContract, useWriteContract } from "wagmi";
+import { notification } from "~~/utils/scaffold-eth";
 
 const BSC_TESTNET_CHAIN_ID = 97;
 const BUTTERFLY_CONTRACT_ADDRESS = "0xD3E517C3ffDa92D560378A70ee7F717d51e34d70" as const;
 
-const REFERRAL_ABI = [
+const BUTTERFLY_ABI = [
   {
     inputs: [{ internalType: "address", name: "user", type: "address" }],
     name: "getReferralInfo",
@@ -21,6 +23,29 @@ const REFERRAL_ABI = [
     ],
     stateMutability: "view",
     type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "getUserPurchases",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "generateInvitationCode",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "address", name: "user", type: "address" },
+      { indexed: true, internalType: "bytes32", name: "invitationCode", type: "bytes32" },
+    ],
+    name: "InvitationCodeGenerated",
+    type: "event",
   },
 ] as const;
 
@@ -69,15 +94,39 @@ type WalletItem = {
 export default function WalletPage() {
   const { address, chain: connectedChain } = useAccount();
   const { openConnectModal } = useConnectModal();
+  const publicClient = usePublicClient({ chainId: BSC_TESTNET_CHAIN_ID });
+  const { writeContractAsync, isPending: isGeneratingOnChain } = useWriteContract();
+  const [invitationCode, setInvitationCode] = useState<string | null>(null);
+  const [isGeneratingCode, setIsGeneratingCode] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const { data: balanceData } = useWatchBalance({
     address,
     chainId: connectedChain?.id,
     query: { enabled: Boolean(address) },
   });
-  const { data: referralInfo, isLoading: isReferralLoading } = useReadContract({
+  const {
+    data: referralInfo,
+    isLoading: isReferralLoading,
+    refetch: refetchReferralInfo,
+  } = useReadContract({
     address: BUTTERFLY_CONTRACT_ADDRESS,
-    abi: REFERRAL_ABI,
+    abi: BUTTERFLY_ABI,
     functionName: "getReferralInfo",
+    args: [(address ?? "0x0000000000000000000000000000000000000000") as `0x${string}`],
+    chainId: BSC_TESTNET_CHAIN_ID,
+    query: {
+      enabled: Boolean(address),
+    },
+  });
+  const {
+    data: userPurchasesData,
+    isLoading: isPurchasesLoading,
+    refetch: refetchUserPurchases,
+  } = useReadContract({
+    address: BUTTERFLY_CONTRACT_ADDRESS,
+    abi: BUTTERFLY_ABI,
+    functionName: "getUserPurchases",
     args: [(address ?? "0x0000000000000000000000000000000000000000") as `0x${string}`],
     chainId: BSC_TESTNET_CHAIN_ID,
     query: {
@@ -98,6 +147,17 @@ export default function WalletPage() {
     return referralCount !== undefined ? referralCount.toLocaleString() : "0";
   }, [isConnected, isReferralLoading, referralCount]);
 
+  const totalPurchases = useMemo(() => {
+    if (!userPurchasesData) {
+      return 0;
+    }
+    try {
+      return Number(userPurchasesData);
+    } catch {
+      return 0;
+    }
+  }, [userPurchasesData]);
+
   const walletItems = useMemo(
     () =>
       baseWalletItems.map(item =>
@@ -110,6 +170,79 @@ export default function WalletPage() {
       ),
     [formattedReferralCount],
   );
+
+  const handleGenerateInvitation = async () => {
+    if (!isConnected) {
+      openConnectModal?.();
+      return;
+    }
+
+    if (!address) {
+      notification.error("Wallet address not detected.");
+      return;
+    }
+
+    if (!isPurchasesLoading && totalPurchases <= 0) {
+      notification.error("You must purchase an NFT before generating an invitation code.");
+      return;
+    }
+
+    setIsGeneratingCode(true);
+    let toastId: string | null = null;
+    try {
+      toastId = notification.loading("Generating invitation code...");
+      const txHash = await writeContractAsync({
+        address: BUTTERFLY_CONTRACT_ADDRESS,
+        abi: BUTTERFLY_ABI,
+        functionName: "generateInvitationCode",
+        chainId: BSC_TESTNET_CHAIN_ID,
+      });
+
+      if (!publicClient) {
+        throw new Error("Public client unavailable.");
+      }
+
+      const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash });
+      if (toastId) {
+        notification.remove(toastId);
+      }
+
+      let generatedCode: string | null = null;
+      for (const log of receipt.logs) {
+        try {
+          const event = decodeEventLog({
+            abi: BUTTERFLY_ABI,
+            data: log.data,
+            topics: log.topics,
+          });
+          if (event.eventName === "InvitationCodeGenerated") {
+            const codeBytes = event.args?.invitationCode as `0x${string}`;
+            generatedCode = codeBytes;
+            break;
+          }
+        } catch {
+          // Ignore logs that don't match the event
+        }
+      }
+
+      if (generatedCode) {
+        setInvitationCode(generatedCode);
+        setIsDialogOpen(true);
+      }
+      notification.success("Invitation code generated successfully.");
+
+      await Promise.all([refetchReferralInfo(), refetchUserPurchases()]);
+    } catch (error) {
+      if (toastId) {
+        notification.remove(toastId);
+      }
+      const message = error instanceof Error ? error.message : "Unknown error";
+      notification.error(`Failed to generate invitation code: ${message}`);
+      console.error("Failed to generate invitation code", error);
+    } finally {
+      setIsGeneratingCode(false);
+    }
+  };
 
   return (
     <div className="pb-24 pt-2 md:pb-16">
@@ -161,7 +294,35 @@ export default function WalletPage() {
             );
           })}
         </div>
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={handleGenerateInvitation}
+            disabled={!isConnected || isPurchasesLoading || isGeneratingCode || isGeneratingOnChain}
+            className="w-full rounded-[22px] border border-[#1f2432] bg-[#10131c] px-5 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-[#20ff6d] hover:bg-[#141924] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isGeneratingCode || isGeneratingOnChain ? "Processing..." : "Generate Invitation Code"}
+          </button>
+        </div>
       </section>
+      {isDialogOpen && invitationCode ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-6">
+          <div className="w-full max-w-sm rounded-3xl border border-[#1f2432] bg-[#10131c] p-6 text-center shadow-[0_40px_120px_-80px_rgba(32,255,109,0.4)]">
+            <h2 className="text-lg font-semibold uppercase tracking-[0.32em] text-[#20ff6d]">Invitation Code</h2>
+            <p className="mt-4 break-all text-sm text-[#cdd3de]">{invitationCode}</p>
+            <button
+              type="button"
+              onClick={() => {
+                setIsDialogOpen(false);
+                setInvitationCode(null);
+              }}
+              className="mt-6 w-full rounded-2xl border border-[#1f2432] bg-[#141924] px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-[#20ff6d] hover:bg-[#101621]"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
