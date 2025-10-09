@@ -2,11 +2,72 @@
 
 import { type ChangeEvent, type ReactNode, useEffect, useMemo, useState } from "react";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
-import { useAccount } from "wagmi";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { formatUnits } from "viem";
+import { useAccount, useChainId, useReadContract, useReadContracts, useWriteContract } from "wagmi";
 
 const STAGE_SIZE = 1000;
-const DISPLAY_PRICE = "0.01";
+const DISPLAY_PRICE = "0.011";
+const MAX_PURCHASE_FALLBACK = 10;
+const BSC_TESTNET_CHAIN_ID = 97;
+const BUTTERFLY_CONTRACT_ADDRESS = "0xD3E517C3ffDa92D560378A70ee7F717d51e34d70" as const;
+
+const BUTTERFLY_CONTRACT_ABI = [
+  {
+    inputs: [],
+    name: "getCurrentRoundInfo",
+    outputs: [
+      { internalType: "uint256", name: "round", type: "uint256" },
+      { internalType: "uint256", name: "sold", type: "uint256" },
+      { internalType: "uint256", name: "remaining", type: "uint256" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "roundNumber", type: "uint256" }],
+    name: "getRoundInfo",
+    outputs: [
+      { internalType: "uint256", name: "sold", type: "uint256" },
+      { internalType: "uint256", name: "remaining", type: "uint256" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "UNIT_PRICE",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MAX_PURCHASE_PER_ADDRESS",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "roundNumber", type: "uint256" },
+      { internalType: "address", name: "buyer", type: "address" },
+    ],
+    name: "roundUserPurchases",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "roundNumber", type: "uint256" },
+      { internalType: "uint256", name: "quantity", type: "uint256" },
+    ],
+    name: "purchase",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+] as const;
 
 type PresaleRound = {
   id: number;
@@ -22,7 +83,7 @@ const PRESALE_ROUNDS: PresaleRound[] = [
     label: "001",
     iconAccent: "#20FF6D",
     iconBackground: "linear-gradient(135deg, #163824 0%, #0F1E14 100%)",
-    isActive: true,
+    isActive: false,
   },
   {
     id: 2,
@@ -59,6 +120,7 @@ type RoundWithProgress = PresaleRound & {
   mintedPercent: number;
   startingTokenId: number;
   available: number;
+  availableForAccount: number;
 };
 
 const clampNumber = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -66,46 +128,120 @@ const clampNumber = (value: number, min: number, max: number) => Math.min(max, M
 const numberFormatter = new Intl.NumberFormat("en-US");
 const formatNumber = (value: number) => numberFormatter.format(value);
 
-const mapRoundProgress = (totalReservations: number): RoundWithProgress[] =>
-  PRESALE_ROUNDS.map((round, index) => {
-    const mintedCount = clampNumber(totalReservations - index * STAGE_SIZE, 0, STAGE_SIZE);
-    const mintedPercent = (mintedCount / STAGE_SIZE) * 100;
-    const startingTokenId = index * STAGE_SIZE + 1;
-    const available = Math.max(0, STAGE_SIZE - mintedCount);
-
-    return {
-      ...round,
-      mintedCount,
-      mintedPercent,
-      startingTokenId,
-      available,
-    };
-  });
-
 export default function PresalePage() {
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
+  const chainId = useChainId();
 
-  const { data: mintPrice } = useScaffoldReadContract({
-    contractName: "ButterflyPresale",
-    functionName: "mintPrice",
+  const { data: currentRoundInfo } = useReadContract({
+    address: BUTTERFLY_CONTRACT_ADDRESS,
+    abi: BUTTERFLY_CONTRACT_ABI,
+    functionName: "getCurrentRoundInfo",
+    chainId: BSC_TESTNET_CHAIN_ID,
   });
 
-  const { data: totalReservationsData } = useScaffoldReadContract({
-    contractName: "ButterflyPresale",
-    functionName: "totalReservations",
+  const { data: unitPrice } = useReadContract({
+    address: BUTTERFLY_CONTRACT_ADDRESS,
+    abi: BUTTERFLY_CONTRACT_ABI,
+    functionName: "UNIT_PRICE",
+    chainId: BSC_TESTNET_CHAIN_ID,
   });
 
-  const totalReservations = useMemo(() => Number(totalReservationsData ?? 0n), [totalReservationsData]);
+  const { data: maxPurchasePerAddress } = useReadContract({
+    address: BUTTERFLY_CONTRACT_ADDRESS,
+    abi: BUTTERFLY_CONTRACT_ABI,
+    functionName: "MAX_PURCHASE_PER_ADDRESS",
+    chainId: BSC_TESTNET_CHAIN_ID,
+  });
 
-  const roundsWithProgress = useMemo(() => mapRoundProgress(totalReservations), [totalReservations]);
+  const { data: roundInfoData } = useReadContracts({
+    contracts: PRESALE_ROUNDS.map(round => ({
+      address: BUTTERFLY_CONTRACT_ADDRESS,
+      abi: BUTTERFLY_CONTRACT_ABI,
+      functionName: "getRoundInfo",
+      args: [BigInt(round.id)] as const,
+      chainId: BSC_TESTNET_CHAIN_ID,
+    })),
+  });
+
+  const { data: accountRoundPurchases } = useReadContracts({
+    contracts: PRESALE_ROUNDS.map(round => ({
+      address: BUTTERFLY_CONTRACT_ADDRESS,
+      abi: BUTTERFLY_CONTRACT_ABI,
+      functionName: "roundUserPurchases",
+      args: [BigInt(round.id), (address ?? "0x0000000000000000000000000000000000000000") as `0x${string}`] as const,
+      chainId: BSC_TESTNET_CHAIN_ID,
+    })),
+    query: {
+      enabled: Boolean(address),
+    },
+  });
+
+  const currentRound = useMemo(() => {
+    if (!currentRoundInfo) return 0;
+    const [round] = currentRoundInfo as readonly [bigint, bigint, bigint];
+    return Number(round);
+  }, [currentRoundInfo]);
+
+  const maxPerAddress = useMemo(
+    () => Number(maxPurchasePerAddress ?? BigInt(MAX_PURCHASE_FALLBACK)) || MAX_PURCHASE_FALLBACK,
+    [maxPurchasePerAddress],
+  );
+
+  const roundsWithProgress = useMemo(() => {
+    return PRESALE_ROUNDS.map((round, index) => {
+      const roundInfoResult = roundInfoData?.[index]?.result as readonly [bigint, bigint] | undefined;
+      const sold = Number(roundInfoResult?.[0] ?? 0n);
+      const remaining = Number(roundInfoResult?.[1] ?? BigInt(STAGE_SIZE));
+      const mintedCount = clampNumber(sold, 0, STAGE_SIZE);
+      const mintedPercent = (mintedCount / STAGE_SIZE) * 100;
+      const startingTokenId = (round.id - 1) * STAGE_SIZE + 1;
+      const available = Math.max(0, Math.min(STAGE_SIZE, remaining));
+      const accountPurchased = Number((accountRoundPurchases?.[index]?.result as bigint | undefined) ?? BigInt(0));
+      const perAccountRemaining = Math.max(0, maxPerAddress - accountPurchased);
+      const availableForAccount = Math.min(available, perAccountRemaining);
+
+      return {
+        ...round,
+        isActive: round.id === currentRound,
+        mintedCount,
+        mintedPercent,
+        startingTokenId,
+        available,
+        availableForAccount,
+      } satisfies RoundWithProgress;
+    });
+  }, [accountRoundPurchases, currentRound, maxPerAddress, roundInfoData]);
+
+  const formattedPrice = useMemo(() => {
+    try {
+      return unitPrice ? formatUnits(unitPrice, 18) : DISPLAY_PRICE;
+    } catch (error) {
+      console.warn("Failed to format UNIT_PRICE", error);
+      return DISPLAY_PRICE;
+    }
+  }, [unitPrice]);
+
+  const isOnSupportedNetwork = !isConnected || chainId === BSC_TESTNET_CHAIN_ID;
 
   return (
     <div className="min-h-screen bg-[#05060A] pb-24">
       <ScreenHeader title="Presale" />
       <div className="px-4 py-6">
         <div className="mx-auto max-w-md space-y-4">
+          {isConnected && !isOnSupportedNetwork ? (
+            <div className="rounded-2xl border border-[#2B1B1B] bg-[#190C0C] p-4 text-sm text-[#FF8787]">
+              Please switch your wallet network to BSC Testnet (chain id 97) to participate in the presale.
+            </div>
+          ) : null}
           {roundsWithProgress.map(round => (
-            <PresaleRoundCard key={round.id} round={round} isConnected={isConnected} mintPrice={mintPrice} />
+            <PresaleRoundCard
+              key={round.id}
+              round={round}
+              unitPrice={unitPrice}
+              formattedPrice={formattedPrice}
+              isConnected={isConnected}
+              isOnSupportedNetwork={isOnSupportedNetwork}
+            />
           ))}
         </div>
       </div>
@@ -114,18 +250,24 @@ export default function PresalePage() {
 }
 type PresaleRoundCardProps = {
   round: RoundWithProgress;
-  mintPrice: bigint | undefined;
+  unitPrice: bigint | undefined;
+  formattedPrice: string;
   isConnected: boolean;
+  isOnSupportedNetwork: boolean;
 };
 
-function PresaleRoundCard({ round, mintPrice, isConnected }: PresaleRoundCardProps) {
+function PresaleRoundCard({
+  round,
+  unitPrice,
+  formattedPrice,
+  isConnected,
+  isOnSupportedNetwork,
+}: PresaleRoundCardProps) {
   const [quantity, setQuantity] = useState(1);
   const [quantityInput, setQuantityInput] = useState("1");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { writeContractAsync, isMining } = useScaffoldWriteContract({
-    contractName: "ButterflyPresale",
-  });
+  const { writeContractAsync, isPending } = useWriteContract();
 
   useEffect(() => {
     if (!round.isActive) {
@@ -134,15 +276,9 @@ function PresaleRoundCard({ round, mintPrice, isConnected }: PresaleRoundCardPro
       return;
     }
 
-    if (round.available <= 0) {
-      setQuantity(0);
-      setQuantityInput("0");
-      return;
-    }
-
     setQuantity(previous => {
       const normalized = previous <= 0 ? 1 : previous;
-      const clamped = Math.min(normalized, round.available);
+      const clamped = Math.min(normalized, round.availableForAccount);
       if (clamped !== previous) {
         setQuantityInput(String(clamped));
         return clamped;
@@ -150,11 +286,11 @@ function PresaleRoundCard({ round, mintPrice, isConnected }: PresaleRoundCardPro
       setQuantityInput(String(clamped));
       return previous;
     });
-  }, [round.isActive, round.available]);
+  }, [round.availableForAccount, round.isActive]);
 
-  const quantityDisabled = !round.isActive || round.available <= 0;
+  const quantityDisabled = !round.isActive || round.availableForAccount <= 0 || !isOnSupportedNetwork;
   const canDecrease = !quantityDisabled && quantity > 1;
-  const canIncrease = !quantityDisabled && quantity < round.available;
+  const canIncrease = !quantityDisabled && quantity < round.availableForAccount;
 
   const handleQuantityInput = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -169,7 +305,7 @@ function PresaleRoundCard({ round, mintPrice, isConnected }: PresaleRoundCardPro
       return;
     }
 
-    const clamped = clampNumber(parsed, 1, round.available);
+    const clamped = clampNumber(parsed, 1, round.availableForAccount);
     setQuantity(clamped);
     if (clamped !== parsed) {
       setQuantityInput(String(clamped));
@@ -180,7 +316,7 @@ function PresaleRoundCard({ round, mintPrice, isConnected }: PresaleRoundCardPro
     if (quantityDisabled) return;
     setQuantity(previous => {
       const base = previous <= 0 ? 1 : previous;
-      const next = clampNumber(base + delta, 1, round.available);
+      const next = clampNumber(base + delta, 1, round.availableForAccount);
       setQuantityInput(String(next));
       return next;
     });
@@ -190,27 +326,33 @@ function PresaleRoundCard({ round, mintPrice, isConnected }: PresaleRoundCardPro
   const handleIncrease = () => adjustQuantity(1);
 
   const canPurchase =
-    round.isActive && round.available > 0 && isConnected && Boolean(mintPrice) && !isMining && !isSubmitting;
+    round.isActive &&
+    round.availableForAccount > 0 &&
+    isConnected &&
+    Boolean(unitPrice) &&
+    isOnSupportedNetwork &&
+    !isPending &&
+    !isSubmitting;
 
   const handleBuy = async () => {
-    if (!canPurchase || !mintPrice) return;
+    if (!canPurchase || !unitPrice) return;
 
-    const safeQuantity = clampNumber(quantity, 1, round.available);
+    const safeQuantity = clampNumber(quantity, 1, round.availableForAccount);
     if (safeQuantity <= 0) return;
 
     setIsSubmitting(true);
     try {
-      const initialTokenId = round.startingTokenId + round.mintedCount;
-      for (let index = 0; index < safeQuantity; index += 1) {
-        const tokenId = BigInt(initialTokenId + index);
-        await writeContractAsync({
-          functionName: "reserve",
-          args: [tokenId],
-          value: mintPrice,
-        });
-      }
+      const totalCost = unitPrice * BigInt(safeQuantity);
+      await writeContractAsync({
+        abi: BUTTERFLY_CONTRACT_ABI,
+        address: BUTTERFLY_CONTRACT_ADDRESS,
+        functionName: "purchase",
+        args: [BigInt(round.id), BigInt(safeQuantity)],
+        value: totalCost,
+        chainId: BSC_TESTNET_CHAIN_ID,
+      });
     } catch (error) {
-      console.error(`Failed to reserve tokens for round ${round.label}`, error);
+      console.error(`Failed to purchase tokens for round ${round.label}`, error);
     } finally {
       setIsSubmitting(false);
     }
@@ -256,7 +398,7 @@ function PresaleRoundCard({ round, mintPrice, isConnected }: PresaleRoundCardPro
           label="Price"
           value={
             <span className="flex items-center gap-2">
-              {DISPLAY_PRICE}
+              {formattedPrice}
               <EthereumIcon />
             </span>
           }
