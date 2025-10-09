@@ -1,13 +1,30 @@
 import { NextResponse } from "next/server";
-import { createReadStream, statSync } from "fs";
+import { type ReadStream, createReadStream, statSync } from "fs";
 import path from "path";
-import { Readable } from "stream";
 
 const VIDEO_PATH = path.join(process.cwd(), "images", "home-page-videos", "3.mp4");
 
 export async function GET(request: Request) {
+  let size: number;
+
+  try {
+    ({ size } = statSync(VIDEO_PATH));
+  } catch (error) {
+    console.error("Failed to load hero video", error);
+    return new NextResponse("Video not found", { status: 404 });
+  }
+
+  if (request.method === "HEAD") {
+    return new NextResponse(null, {
+      headers: {
+        "Accept-Ranges": "bytes",
+        "Content-Length": size.toString(),
+        "Content-Type": "video/mp4",
+      },
+    });
+  }
+
   const range = request.headers.get("range");
-  const { size } = statSync(VIDEO_PATH);
 
   if (range) {
     const bytesPrefix = "bytes=";
@@ -25,7 +42,7 @@ export async function GET(request: Request) {
 
     const chunkSize = end - start + 1;
     const nodeStream = createReadStream(VIDEO_PATH, { start, end });
-    const webStream = Readable.toWeb(nodeStream) as unknown as ReadableStream;
+    const webStream = createWebStream(nodeStream);
 
     return new NextResponse(webStream, {
       status: 206,
@@ -39,11 +56,41 @@ export async function GET(request: Request) {
   }
 
   const nodeStream = createReadStream(VIDEO_PATH);
-  const webStream = Readable.toWeb(nodeStream) as unknown as ReadableStream;
+  const webStream = createWebStream(nodeStream);
   return new NextResponse(webStream, {
     headers: {
       "Content-Length": size.toString(),
       "Content-Type": "video/mp4",
+    },
+  });
+}
+
+function createWebStream(stream: ReadStream) {
+  return new ReadableStream<Uint8Array>({
+    start(controller) {
+      let closed = false;
+
+      const close = () => {
+        if (closed) return;
+        closed = true;
+        controller.close();
+      };
+
+      const error = (err: unknown) => {
+        if (closed) return;
+        closed = true;
+        controller.error(err);
+      };
+
+      stream.on("data", chunk => {
+        controller.enqueue(chunk instanceof Uint8Array ? chunk : Buffer.from(chunk));
+      });
+      stream.on("end", close);
+      stream.on("close", close);
+      stream.on("error", error);
+    },
+    cancel() {
+      stream.destroy();
     },
   });
 }
