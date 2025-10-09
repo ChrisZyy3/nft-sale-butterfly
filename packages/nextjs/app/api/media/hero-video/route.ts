@@ -85,9 +85,16 @@ function createWebStream(stream: ReadStream) {
       stream.on("data", chunk => {
         controller.enqueue(chunk instanceof Uint8Array ? chunk : Buffer.from(chunk));
       });
+
+      // 移除重复的 close 监听器，只保留 end 事件
       stream.on("end", close);
-      stream.on("close", close);
       stream.on("error", error);
+
+      // 添加清理函数以确保资源释放
+      stream.on("close", () => {
+        // 流已经关闭，不需要再操作 controller
+        closed = true;
+      });
     },
     cancel() {
       stream.destroy();

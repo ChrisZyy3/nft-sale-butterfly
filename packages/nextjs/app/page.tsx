@@ -1,9 +1,57 @@
+"use client";
+
 import type { ComponentProps, ReactElement } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import mallPreview from "@/images/mal.jpg";
 import nftPreview from "@/images/nft.jpg";
 import walletPreview from "@/images/wallet.jpg";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { decodeEventLog } from "viem";
+import { useAccount, usePublicClient, useReadContract, useWriteContract } from "wagmi";
+import { notification } from "~~/utils/scaffold-eth";
+
+const BSC_TESTNET_CHAIN_ID = 97;
+const BUTTERFLY_CONTRACT_ADDRESS = "0xD3E517C3ffDa92D560378A70ee7F717d51e34d70" as const;
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as const;
+
+const BUTTERFLY_ABI = [
+  {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "getReferralInfo",
+    outputs: [
+      { internalType: "address", name: "referrer", type: "address" },
+      { internalType: "uint256", name: "referralCount", type: "uint256" },
+      { internalType: "uint256", name: "totalRewards", type: "uint256" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "bytes32", name: "invitationCode", type: "bytes32" }],
+    name: "bindReferrerByInvitationCode",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "referrer", type: "address" }],
+    name: "bindReferrerByAddress",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "address", name: "user", type: "address" },
+      { indexed: true, internalType: "address", name: "referrer", type: "address" },
+    ],
+    name: "ReferralSet",
+    type: "event",
+  },
+] as const;
 
 const heroHighlights = [
   {
@@ -82,17 +130,399 @@ const navItems: NavItem[] = [
 ];
 
 export default function HomeLanding() {
+  const { address, isConnected } = useAccount();
+  const { writeContractAsync } = useWriteContract();
+  const publicClient = usePublicClient({ chainId: BSC_TESTNET_CHAIN_ID });
+  const openConnectModalRef = useRef<(() => void) | null>(null);
+
+  const [incomingRefCode, setIncomingRefCode] = useState<string | null>(null);
+  const [incomingRefAddress, setIncomingRefAddress] = useState<string | null>(null);
+  const [isBindDialogOpen, setIsBindDialogOpen] = useState(false);
+  const [isBindingReferrer, setIsBindingReferrer] = useState(false);
+  const [isBindingByAddress, setIsBindingByAddress] = useState(false);
+
+  const { data: referralInfo, refetch: refetchReferralInfo } = useReadContract({
+    address: BUTTERFLY_CONTRACT_ADDRESS,
+    abi: BUTTERFLY_ABI,
+    functionName: "getReferralInfo",
+    args: [(address ?? "0x0000000000000000000000000000000000000000") as `0x${string}`],
+    chainId: BSC_TESTNET_CHAIN_ID,
+    query: {
+      enabled: Boolean(address),
+    },
+  });
+
+  const referrerAddress =
+    referralInfo && Array.isArray(referralInfo)
+      ? ((referralInfo as readonly [string, bigint, bigint])[0] as string)
+      : ZERO_ADDRESS;
+
+  // URL parameter detection
+  useEffect(() => {
+    // Handle URL parameters
+    if (typeof window === "undefined") return;
+
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+
+    // Handle refaddress parameter
+    const refAddress = params.get("refaddress");
+    if (refAddress) {
+      console.log("🔗 检测到推荐人地址参数", {
+        refaddress: refAddress,
+        isValidFormat: /^0x[0-9a-fA-F]{40}$/.test(refAddress),
+        timestamp: new Date().toISOString(),
+      });
+
+      if (/^0x[0-9a-fA-F]{40}$/.test(refAddress)) {
+        setIncomingRefAddress(refAddress);
+        // Only show binding dialog when user has referrer address and not connected
+        if (!isConnected) {
+          console.log("🔗 推荐人地址检测完成，等待用户手动触发绑定");
+        }
+      } else {
+        console.warn("⚠️ 无效的推荐人地址格式", {
+          refaddress: refAddress,
+          expectedFormat: "0x + 40 hex characters",
+          timestamp: new Date().toISOString(),
+        });
+      }
+    }
+
+    // Log any other unexpected parameters
+    const knownParams = ["refcode", "refaddress"];
+    const unknownParams = Array.from(params.keys()).filter(key => !knownParams.includes(key));
+    if (unknownParams.length > 0) {
+      console.log("❓ 检测到未知参数", {
+        unknownParameters: unknownParams.map(key => ({
+          name: key,
+          value: params.get(key),
+        })),
+        timestamp: new Date().toISOString(),
+      });
+    }
+  }, [isConnected]); // Add isConnected to the dependency array
+
+  // Debug log to verify component mounted
+  useEffect(() => {
+    console.log("🔧 Home page component mounted, checking URL parameters...");
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      console.log("🔧 Current URL:", url.toString());
+    }
+  }, []);
+
+  // Auto-popup logic removed - binding dialogs should only show when user explicitly triggers them
+
+  const clearRefCodeFromUrl = () => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("refcode");
+    window.history.replaceState(null, "", url.toString());
+  };
+
+  const clearRefAddressFromUrl = () => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("refaddress");
+    window.history.replaceState(null, "", url.toString());
+  };
+
+  const handleBindReferrerByAddress = async () => {
+    if (!incomingRefAddress) return;
+
+    // Check if wallet is connected
+    if (!isConnected) {
+      const openModal = openConnectModalRef.current;
+      if (openModal) {
+        openModal();
+      } else {
+        notification.error("Wallet connection not available. Please try refreshing the page.");
+      }
+      return;
+    }
+
+    // Check if user already has a referrer
+    if (referrerAddress && referrerAddress !== ZERO_ADDRESS) {
+      notification.error("You already have a referrer bound.");
+      setIncomingRefAddress(null);
+      clearRefAddressFromUrl();
+      setIsBindDialogOpen(false);
+      return;
+    }
+
+    // Check if trying to bind self
+    if (incomingRefAddress.toLowerCase() === address?.toLowerCase()) {
+      notification.error("You cannot bind yourself as referrer.");
+      setIncomingRefAddress(null);
+      clearRefAddressFromUrl();
+      setIsBindDialogOpen(false);
+      return;
+    }
+
+    setIsBindingByAddress(true);
+    setIsBindDialogOpen(false);
+    let toastId: string | null = null;
+    try {
+      toastId = notification.loading("Binding referrer by address...");
+      console.log("🔗 开始绑定推荐人地址", {
+        address: address,
+        referrer: incomingRefAddress,
+        timestamp: new Date().toISOString(),
+      });
+
+      const txHash = await writeContractAsync({
+        address: BUTTERFLY_CONTRACT_ADDRESS,
+        abi: BUTTERFLY_ABI,
+        functionName: "bindReferrerByAddress",
+        args: [incomingRefAddress as `0x${string}`],
+        chainId: BSC_TESTNET_CHAIN_ID,
+      });
+
+      if (!publicClient) {
+        throw new Error("Public client unavailable.");
+      }
+
+      const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash });
+      if (toastId) {
+        notification.remove(toastId);
+      }
+
+      let referrerSet = false;
+      for (const log of receipt.logs) {
+        try {
+          const event = decodeEventLog({
+            abi: BUTTERFLY_ABI,
+            data: log.data,
+            topics: log.topics,
+          });
+          if (event.eventName === "ReferralSet") {
+            referrerSet = true;
+            const referrer = event.args?.referrer as string;
+            const user = event.args?.user as string;
+            console.log("✅ ReferralSet 事件触发", {
+              user: user,
+              referrer: referrer,
+              timestamp: new Date().toISOString(),
+            });
+            break;
+          }
+        } catch {
+          // Ignore logs that don't match the event
+        }
+      }
+
+      if (referrerSet) {
+        notification.success("Referrer bound successfully!");
+        setIncomingRefAddress(null);
+        clearRefAddressFromUrl();
+        console.log("✅ 推荐人绑定成功", {
+          address: address,
+          referrer: incomingRefAddress,
+          timestamp: new Date().toISOString(),
+        });
+
+        await refetchReferralInfo();
+      } else {
+        notification.error("Failed to bind referrer: ReferralSet event not found");
+      }
+    } catch (error) {
+      if (toastId) {
+        notification.remove(toastId);
+      }
+      const message = error instanceof Error ? error.message : "Unknown error";
+      if (message.toLowerCase().includes("user rejected")) {
+        notification.error("Transaction cancelled by user.");
+      } else {
+        notification.error(`Failed to bind referrer: ${message}`);
+      }
+      console.error("❌ 绑定推荐人失败", {
+        address: address,
+        referrer: incomingRefAddress,
+        error: error,
+        timestamp: new Date().toISOString(),
+      });
+    } finally {
+      setIsBindingByAddress(false);
+    }
+  };
+
+  const handleConfirmBindReferrer = async () => {
+    if (!incomingRefCode) return;
+
+    // Check if wallet is connected
+    if (!isConnected) {
+      const openModal = openConnectModalRef.current;
+      if (openModal) {
+        openModal();
+      } else {
+        notification.error("Wallet connection not available. Please try refreshing the page.");
+      }
+      return;
+    }
+
+    // Check if user already has a referrer
+    if (referrerAddress && referrerAddress !== ZERO_ADDRESS) {
+      notification.error("You already have a referrer bound.");
+      setIncomingRefCode(null);
+      clearRefCodeFromUrl();
+      setIsBindDialogOpen(false);
+      return;
+    }
+
+    setIsBindingReferrer(true);
+    setIsBindDialogOpen(false);
+    let toastId: string | null = null;
+    try {
+      toastId = notification.loading("Binding referral code...");
+      const normalizedCode = incomingRefCode.startsWith("0x") ? incomingRefCode : `0x${incomingRefCode}`;
+
+      const txHash = await writeContractAsync({
+        address: BUTTERFLY_CONTRACT_ADDRESS,
+        abi: BUTTERFLY_ABI,
+        functionName: "bindReferrerByInvitationCode",
+        args: [normalizedCode as `0x${string}`],
+        chainId: BSC_TESTNET_CHAIN_ID,
+      });
+
+      if (!publicClient) {
+        throw new Error("Public client unavailable.");
+      }
+
+      await publicClient.waitForTransactionReceipt({ hash: txHash });
+      if (toastId) {
+        notification.remove(toastId);
+      }
+
+      notification.success("Referral code bound successfully.");
+      setIncomingRefCode(null);
+      clearRefCodeFromUrl();
+
+      await refetchReferralInfo();
+    } catch (error) {
+      if (toastId) {
+        notification.remove(toastId);
+      }
+      const message = error instanceof Error ? error.message : "Unknown error";
+      if (message.toLowerCase().includes("user rejected")) {
+        notification.error("Transaction cancelled by user.");
+      } else {
+        notification.error(`Failed to bind referral code: ${message}`);
+      }
+    } finally {
+      setIsBindingReferrer(false);
+    }
+  };
+
+  const handleDismissBindDialog = () => {
+    setIsBindDialogOpen(false);
+    if (incomingRefCode) {
+      setIncomingRefCode(null);
+      clearRefCodeFromUrl();
+    }
+    if (incomingRefAddress) {
+      setIncomingRefAddress(null);
+      clearRefAddressFromUrl();
+    }
+  };
+
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#010205] text-white">
-      <BackgroundGlow />
-      <div className="relative mx-auto flex w-full max-w-[1180px] flex-col gap-28 px-6 pb-36 pt-20 lg:px-12">
-        <HeroSection />
-        <FeatureSection />
-        <EcosystemSection />
-        <TokenSection />
+    <>
+      {/* Hidden ConnectButton to get access to openConnectModal */}
+      <div style={{ display: "none" }}>
+        <ConnectButton.Custom>
+          {({ openConnectModal }) => {
+            // Cache RainbowKit's openConnectModal handler for reuse in this page
+            openConnectModalRef.current = openConnectModal ?? null;
+            return null;
+          }}
+        </ConnectButton.Custom>
       </div>
-      <BottomNav />
-    </main>
+
+      <main className="relative min-h-screen w-full overflow-hidden bg-[#010205] text-white">
+        <BackgroundGlow />
+        <div className="relative mx-auto flex w-full max-w-[1180px] flex-col gap-28 px-6 pb-36 pt-20 lg:px-12">
+          <HeroSection />
+          <FeatureSection />
+          <EcosystemSection />
+          <TokenSection />
+        </div>
+        <BottomNav />
+      </main>
+
+      {/* 推荐参数提示 - 不自动弹出，让用户手动触发 */}
+      {(incomingRefCode || incomingRefAddress) && !isBindDialogOpen && (
+        <div className="fixed bottom-24 right-6 z-40 max-w-sm rounded-2xl border border-[#1f2432] bg-[#10131c] p-4 shadow-[0_20px_60px_-40px_rgba(32,255,109,0.3)]">
+          <div className="flex items-start gap-3">
+            <div className="mt-1 h-2 w-2 flex-none rounded-full bg-[#20ff6d]" />
+            <div className="flex-1">
+              <div className="flex items-start justify-between">
+                <p className="text-sm font-medium text-[#20ff6d]">
+                  {incomingRefCode ? "Invitation Code Detected" : "Referrer Address Detected"}
+                </p>
+                <button
+                  type="button"
+                  onClick={handleDismissBindDialog}
+                  className="ml-2 flex-none rounded-lg border border-[#1f2432] bg-transparent p-1 text-[#788090] transition hover:border-[#ff5f66] hover:text-[#ff5f66]"
+                  title="Close"
+                >
+                  <svg className="size-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <p className="mt-1 text-xs text-[#cdd3de] break-all">{incomingRefCode || incomingRefAddress}</p>
+              <button
+                type="button"
+                onClick={() => setIsBindDialogOpen(true)}
+                className="mt-3 w-full rounded-xl border border-[#1f2432] bg-[#141924] px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:border-[#20ff6d] hover:bg-[#101621]"
+              >
+                Bind Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Referral Binding Dialog */}
+      {isBindDialogOpen && (incomingRefCode || incomingRefAddress) && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-6">
+          <div className="w-full max-w-sm rounded-3xl border border-[#1f2432] bg-[#10131c] p-6 text-center shadow-[0_40px_120px_-80px_rgba(32,255,109,0.4)]">
+            <h2 className="text-lg font-semibold uppercase tracking-[0.32em] text-[#20ff6d]">Bind Referral</h2>
+            <p className="mt-4 text-sm text-[#cdd3de]">
+              {incomingRefCode
+                ? `We detected an invitation code. ${!isConnected ? "Click to connect your wallet and" : "Do you want to"} bind this referral?`
+                : `We detected a referrer address. ${!isConnected ? "Click to connect your wallet and" : "Do you want to"} bind this referral?`}
+            </p>
+            <p className="mt-4 break-all text-xs uppercase tracking-[0.3em] text-[#20ff6d]">
+              {incomingRefCode || incomingRefAddress}
+            </p>
+            <div className="mt-6 flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={incomingRefCode ? handleConfirmBindReferrer : handleBindReferrerByAddress}
+                disabled={isBindingReferrer || isBindingByAddress}
+                className="w-full rounded-2xl border border-[#1f2432] bg-[#141924] px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-[#20ff6d] hover:bg-[#101621] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isBindingReferrer || isBindingByAddress
+                  ? "Binding..."
+                  : !isConnected
+                    ? "Connect Wallet & Bind"
+                    : "Bind Referral"}
+              </button>
+              <button
+                type="button"
+                onClick={handleDismissBindDialog}
+                disabled={isBindingReferrer || isBindingByAddress}
+                className="w-full rounded-2xl border border-[#1f2432] bg-[#101621] px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-[#ff5f66] hover:bg-[#171d29] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Maybe Later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
