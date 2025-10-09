@@ -1,13 +1,30 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { type ReactNode, useMemo } from "react";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { useWatchBalance } from "@/hooks/scaffold-eth/useWatchBalance";
 import { cn } from "@/lib/utils";
 import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 
-const walletItems = [
+const BSC_TESTNET_CHAIN_ID = 97;
+const BUTTERFLY_CONTRACT_ADDRESS = "0xD3E517C3ffDa92D560378A70ee7F717d51e34d70" as const;
+
+const REFERRAL_ABI = [
+  {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "getReferralInfo",
+    outputs: [
+      { internalType: "address", name: "referrer", type: "address" },
+      { internalType: "uint256", name: "referralCount", type: "uint256" },
+      { internalType: "uint256", name: "totalRewards", type: "uint256" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+] as const;
+
+const baseWalletItems = [
   {
     title: "ETH Balance",
     value: "0 ETH",
@@ -57,9 +74,43 @@ export default function WalletPage() {
     chainId: connectedChain?.id,
     query: { enabled: Boolean(address) },
   });
+  const { data: referralInfo, isLoading: isReferralLoading } = useReadContract({
+    address: BUTTERFLY_CONTRACT_ADDRESS,
+    abi: REFERRAL_ABI,
+    functionName: "getReferralInfo",
+    args: [(address ?? "0x0000000000000000000000000000000000000000") as `0x${string}`],
+    chainId: BSC_TESTNET_CHAIN_ID,
+    query: {
+      enabled: Boolean(address),
+    },
+  });
 
   const formattedBalance = balanceData ? formatBalanceForDisplay(balanceData) : undefined;
   const isConnected = Boolean(address && connectedChain);
+  const referralCount = referralInfo ? Number((referralInfo as readonly [string, bigint, bigint])[1]) : undefined;
+  const formattedReferralCount = useMemo(() => {
+    if (!isConnected) {
+      return "0";
+    }
+    if (isReferralLoading) {
+      return "--";
+    }
+    return referralCount !== undefined ? referralCount.toLocaleString() : "0";
+  }, [isConnected, isReferralLoading, referralCount]);
+
+  const walletItems = useMemo(
+    () =>
+      baseWalletItems.map(item =>
+        item.title === "Friends"
+          ? {
+              ...item,
+              value: formattedReferralCount,
+            }
+          : item,
+      ),
+    [formattedReferralCount],
+  );
+
   return (
     <div className="pb-24 pt-2 md:pb-16">
       <ScreenHeader title="Wallet" />

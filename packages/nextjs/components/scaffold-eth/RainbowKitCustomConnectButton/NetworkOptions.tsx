@@ -1,10 +1,8 @@
 import { useTheme } from "next-themes";
+import { bscTestnet } from "viem/chains";
 import { useAccount, useSwitchChain } from "wagmi";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
 import { getNetworkColor } from "~~/hooks/scaffold-eth";
-import { getTargetNetworks } from "~~/utils/scaffold-eth";
-
-const allowedNetworks = getTargetNetworks();
 
 type NetworkOptionsProps = {
   hidden?: boolean;
@@ -16,33 +14,35 @@ export const NetworkOptions = ({ hidden = false }: NetworkOptionsProps) => {
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
 
+  // Only show BSC Testnet option if not already on BSC Testnet
+  const bscTestnetNetwork = bscTestnet;
+  const isNotOnBSC = chain?.id !== bscTestnet.id;
+
   return (
     <>
-      {allowedNetworks
-        .filter(allowedNetwork => allowedNetwork.id !== chain?.id)
-        .map(allowedNetwork => (
-          <li key={allowedNetwork.id} className={hidden ? "hidden" : ""}>
-            <button
-              className="menu-item btn-sm rounded-xl! flex gap-3 py-3 whitespace-nowrap"
-              type="button"
-              onClick={() => {
-                switchChain?.({ chainId: allowedNetwork.id });
-              }}
-            >
-              <ArrowsRightLeftIcon className="h-6 w-4 ml-2 sm:ml-0" />
-              <span>
-                Switch to{" "}
-                <span
-                  style={{
-                    color: getNetworkColor(allowedNetwork, isDarkMode),
-                  }}
-                >
-                  {allowedNetwork.name}
-                </span>
+      {isNotOnBSC && (
+        <li className={hidden ? "hidden" : ""}>
+          <button
+            className="menu-item btn-sm rounded-xl! flex gap-3 py-3 whitespace-nowrap"
+            type="button"
+            onClick={() => {
+              switchChain?.({ chainId: bscTestnet.id });
+            }}
+          >
+            <ArrowsRightLeftIcon className="h-6 w-4 ml-2 sm:ml-0" />
+            <span>
+              Switch to{" "}
+              <span
+                style={{
+                  color: getNetworkColor(bscTestnetNetwork, isDarkMode),
+                }}
+              >
+                BSC Testnet
               </span>
-            </button>
-          </li>
-        ))}
+            </span>
+          </button>
+        </li>
+      )}
     </>
   );
 };

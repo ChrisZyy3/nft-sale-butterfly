@@ -60,7 +60,7 @@ const ecosystemBullets = [
 
 const tokenStats = [
   { label: "Token name", value: "HASH" },
-  { label: "Public chain", value: "Ethereum" },
+  { label: "Public chain", value: "BSC Testnet" },
   { label: "Issuance", value: "900 trillion" },
   { label: "Circulation", value: "100 trillion" },
 ];

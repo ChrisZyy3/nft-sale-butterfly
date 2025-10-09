@@ -1,9 +1,10 @@
 "use client";
 
-import { type ChangeEvent, type ReactNode, useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { formatUnits } from "viem";
 import { useAccount, useChainId, useReadContract, useReadContracts, useWriteContract } from "wagmi";
+import { notification } from "~~/utils/scaffold-eth";
 
 const STAGE_SIZE = 1000;
 const DISPLAY_PRICE = "0.011";
@@ -58,13 +59,17 @@ const BUTTERFLY_CONTRACT_ABI = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "uint256", name: "roundNumber", type: "uint256" },
-      { internalType: "uint256", name: "quantity", type: "uint256" },
-    ],
+    inputs: [{ internalType: "uint256", name: "quantity", type: "uint256" }],
     name: "purchase",
     outputs: [],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "getUserAvailablePurchase",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
     type: "function",
   },
 ] as const;
@@ -132,12 +137,23 @@ export default function PresalePage() {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
 
-  const { data: currentRoundInfo } = useReadContract({
+  const {
+    data: currentRoundInfo,
+    status: currentRoundStatus,
+    error: currentRoundError,
+    refetch: refetchCurrentRoundInfo,
+  } = useReadContract({
     address: BUTTERFLY_CONTRACT_ADDRESS,
     abi: BUTTERFLY_CONTRACT_ABI,
     functionName: "getCurrentRoundInfo",
     chainId: BSC_TESTNET_CHAIN_ID,
   });
+
+  useEffect(() => {
+    if (currentRoundStatus === "error") {
+      console.error("getCurrentRoundInfo 调用失败", currentRoundError);
+    }
+  }, [currentRoundStatus, currentRoundError]);
 
   const { data: unitPrice } = useReadContract({
     address: BUTTERFLY_CONTRACT_ADDRESS,
@@ -176,6 +192,17 @@ export default function PresalePage() {
     },
   });
 
+  const { data: userAvailablePurchase, refetch: refetchUserAvailablePurchase } = useReadContract({
+    address: BUTTERFLY_CONTRACT_ADDRESS,
+    abi: BUTTERFLY_CONTRACT_ABI,
+    functionName: "getUserAvailablePurchase",
+    args: [(address ?? "0x0000000000000000000000000000000000000000") as `0x${string}`],
+    chainId: BSC_TESTNET_CHAIN_ID,
+    query: {
+      enabled: Boolean(address),
+    },
+  });
+
   const currentRound = useMemo(() => {
     if (!currentRoundInfo) return 0;
     const [round] = currentRoundInfo as readonly [bigint, bigint, bigint];
@@ -190,15 +217,30 @@ export default function PresalePage() {
   const roundsWithProgress = useMemo(() => {
     return PRESALE_ROUNDS.map((round, index) => {
       const roundInfoResult = roundInfoData?.[index]?.result as readonly [bigint, bigint] | undefined;
-      const sold = Number(roundInfoResult?.[0] ?? 0n);
-      const remaining = Number(roundInfoResult?.[1] ?? BigInt(STAGE_SIZE));
+
+      let sold = Number(roundInfoResult?.[0] ?? 0n);
+      let remaining = Number(roundInfoResult?.[1] ?? BigInt(STAGE_SIZE));
+
+      if (round.id === currentRound && currentRoundInfo) {
+        const [, currentSold, currentRemaining] = currentRoundInfo as readonly [bigint, bigint, bigint];
+        sold = Number(currentSold);
+        remaining = Number(currentRemaining);
+      }
+
       const mintedCount = clampNumber(sold, 0, STAGE_SIZE);
       const mintedPercent = (mintedCount / STAGE_SIZE) * 100;
       const startingTokenId = (round.id - 1) * STAGE_SIZE + 1;
       const available = Math.max(0, Math.min(STAGE_SIZE, remaining));
       const accountPurchased = Number((accountRoundPurchases?.[index]?.result as bigint | undefined) ?? BigInt(0));
       const perAccountRemaining = Math.max(0, maxPerAddress - accountPurchased);
-      const availableForAccount = Math.min(available, perAccountRemaining);
+      let availableForAccount = Math.min(available, perAccountRemaining);
+
+      if (round.id === currentRound) {
+        const userAvailable = address
+          ? Number(userAvailablePurchase ?? BigInt(perAccountRemaining))
+          : perAccountRemaining;
+        availableForAccount = Math.min(available, Math.max(0, userAvailable));
+      }
 
       return {
         ...round,
@@ -210,7 +252,15 @@ export default function PresalePage() {
         availableForAccount,
       } satisfies RoundWithProgress;
     });
-  }, [accountRoundPurchases, currentRound, maxPerAddress, roundInfoData]);
+  }, [
+    accountRoundPurchases,
+    address,
+    currentRound,
+    currentRoundInfo,
+    maxPerAddress,
+    roundInfoData,
+    userAvailablePurchase,
+  ]);
 
   const formattedPrice = useMemo(() => {
     try {
@@ -222,6 +272,10 @@ export default function PresalePage() {
   }, [unitPrice]);
 
   const isOnSupportedNetwork = !isConnected || chainId === BSC_TESTNET_CHAIN_ID;
+
+  const handlePurchaseSuccess = useCallback(async () => {
+    await Promise.all([refetchCurrentRoundInfo(), refetchUserAvailablePurchase()]);
+  }, [refetchCurrentRoundInfo, refetchUserAvailablePurchase]);
 
   return (
     <div className="min-h-screen bg-[#05060A] pb-24">
@@ -241,6 +295,7 @@ export default function PresalePage() {
               formattedPrice={formattedPrice}
               isConnected={isConnected}
               isOnSupportedNetwork={isOnSupportedNetwork}
+              onPurchaseSuccess={handlePurchaseSuccess}
             />
           ))}
         </div>
@@ -254,6 +309,7 @@ type PresaleRoundCardProps = {
   formattedPrice: string;
   isConnected: boolean;
   isOnSupportedNetwork: boolean;
+  onPurchaseSuccess?: () => Promise<void> | void;
 };
 
 function PresaleRoundCard({
@@ -262,6 +318,7 @@ function PresaleRoundCard({
   formattedPrice,
   isConnected,
   isOnSupportedNetwork,
+  onPurchaseSuccess,
 }: PresaleRoundCardProps) {
   const [quantity, setQuantity] = useState(1);
   const [quantityInput, setQuantityInput] = useState("1");
@@ -337,21 +394,47 @@ function PresaleRoundCard({
   const handleBuy = async () => {
     if (!canPurchase || !unitPrice) return;
 
+    if (round.availableForAccount <= 0 || quantity > round.availableForAccount) {
+      notification.error("You have exceeded the maximum quantity available for this round.");
+      return;
+    }
+
     const safeQuantity = clampNumber(quantity, 1, round.availableForAccount);
-    if (safeQuantity <= 0) return;
+    if (safeQuantity <= 0) {
+      notification.error("You have exceeded the maximum quantity available for this round.");
+      return;
+    }
 
     setIsSubmitting(true);
+    let toastId: string | null = null;
     try {
+      toastId = notification.loading("Submitting purchase transaction...");
       const totalCost = unitPrice * BigInt(safeQuantity);
       await writeContractAsync({
         abi: BUTTERFLY_CONTRACT_ABI,
         address: BUTTERFLY_CONTRACT_ADDRESS,
         functionName: "purchase",
-        args: [BigInt(round.id), BigInt(safeQuantity)],
+        args: [BigInt(safeQuantity)],
         value: totalCost,
         chainId: BSC_TESTNET_CHAIN_ID,
       });
+      if (onPurchaseSuccess) {
+        await onPurchaseSuccess();
+      }
+      if (toastId) {
+        notification.remove(toastId);
+      }
+      notification.success("Purchase transaction submitted successfully.");
     } catch (error) {
+      if (toastId) {
+        notification.remove(toastId);
+      }
+      const message = error instanceof Error ? error.message : "Unknown error";
+      if (message && message.toLowerCase().includes("user rejected")) {
+        notification.error("Transaction cancelled by user.");
+      } else {
+        notification.error(`Purchase failed: ${message}`);
+      }
       console.error(`Failed to purchase tokens for round ${round.label}`, error);
     } finally {
       setIsSubmitting(false);
@@ -362,7 +445,10 @@ function PresaleRoundCard({
   const buttonDisabled = !canPurchase;
 
   return (
-    <article className="rounded-[28px] border border-[#1A2633] bg-[#0C1119] p-5 shadow-[0_24px_60px_rgba(3,8,15,0.65)]">
+    <article
+      data-testid={`presale-round-${round.id}`}
+      className="rounded-[28px] border border-[#1A2633] bg-[#0C1119] p-5 shadow-[0_24px_60px_rgba(3,8,15,0.65)]"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div
@@ -387,8 +473,17 @@ function PresaleRoundCard({
             boxShadow: buttonDisabled ? undefined : "0 12px 32px rgba(32, 255, 109, 0.35)",
           }}
         >
-          <CreditCardIcon />
-          BUY
+          {buttonDisabled && (isPending || isSubmitting) ? (
+            <>
+              <span className="loading loading-spinner loading-xs text-current" aria-hidden="true" />
+              <span className="uppercase">Processing</span>
+            </>
+          ) : (
+            <>
+              <CreditCardIcon />
+              BUY
+            </>
+          )}
         </button>
       </div>
 
