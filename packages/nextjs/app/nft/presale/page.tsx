@@ -1,7 +1,8 @@
 "use client";
 
-import { type ChangeEvent, type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { formatUnits } from "viem";
 import { useAccount, useChainId, useReadContract, useReadContracts, useWriteContract } from "wagmi";
 import { notification } from "~~/utils/scaffold-eth";
@@ -325,6 +326,92 @@ function PresaleRoundCard({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { writeContractAsync, isPending } = useWriteContract();
+  const { openConnectModal } = useConnectModal();
+  const isConnectedRef = useRef(isConnected);
+  const previousIsConnectedRef = useRef(isConnected);
+  const activeConnectionPromiseRef = useRef<Promise<void> | null>(null);
+  const pendingConnectionRef = useRef<{
+    resolve: () => void;
+    reject: (reason?: unknown) => void;
+  } | null>(null);
+  const connectionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearPendingConnection = useCallback(() => {
+    if (connectionTimeoutRef.current) {
+      clearTimeout(connectionTimeoutRef.current);
+      connectionTimeoutRef.current = null;
+    }
+    pendingConnectionRef.current = null;
+    activeConnectionPromiseRef.current = null;
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      const pending = pendingConnectionRef.current;
+      if (pending) {
+        pending.reject(new Error("Wallet connection cancelled."));
+      }
+      clearPendingConnection();
+    };
+  }, [clearPendingConnection]);
+
+  useEffect(() => {
+    const wasConnected = previousIsConnectedRef.current;
+    if (!wasConnected && isConnected) {
+      isConnectedRef.current = true;
+      pendingConnectionRef.current?.resolve();
+      if (onPurchaseSuccess) {
+        void onPurchaseSuccess();
+      }
+    } else if (wasConnected && !isConnected) {
+      isConnectedRef.current = false;
+      pendingConnectionRef.current?.reject(new Error("Wallet disconnected."));
+    } else {
+      isConnectedRef.current = isConnected;
+    }
+
+    previousIsConnectedRef.current = isConnected;
+  }, [isConnected, onPurchaseSuccess]);
+
+  const waitForWalletConnection = useCallback(async () => {
+    if (isConnectedRef.current) return;
+
+    if (activeConnectionPromiseRef.current) {
+      return activeConnectionPromiseRef.current;
+    }
+
+    if (!openConnectModal) {
+      throw new Error("Wallet connect modal is not available.");
+    }
+
+    activeConnectionPromiseRef.current = new Promise<void>((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        clearPendingConnection();
+        reject(new Error("Wallet connection timed out. Please try again."));
+      }, 60_000);
+
+      connectionTimeoutRef.current = timeoutId;
+      pendingConnectionRef.current = {
+        resolve: () => {
+          clearPendingConnection();
+          resolve();
+        },
+        reject: reason => {
+          clearPendingConnection();
+          reject(reason);
+        },
+      };
+    });
+
+    try {
+      openConnectModal();
+    } catch (error) {
+      clearPendingConnection();
+      throw error;
+    }
+
+    return activeConnectionPromiseRef.current;
+  }, [clearPendingConnection, openConnectModal]);
 
   useEffect(() => {
     if (!round.isActive) {
@@ -382,26 +469,40 @@ function PresaleRoundCard({
   const handleDecrease = () => adjustQuantity(-1);
   const handleIncrease = () => adjustQuantity(1);
 
-  const canPurchase =
-    round.isActive &&
-    round.availableForAccount > 0 &&
-    isConnected &&
-    Boolean(unitPrice) &&
-    isOnSupportedNetwork &&
-    !isPending &&
-    !isSubmitting;
+  const roundIsActionable =
+    round.isActive && round.availableForAccount > 0 && isOnSupportedNetwork && !isPending && !isSubmitting;
 
   const handleBuy = async () => {
-    if (!canPurchase || !unitPrice) return;
+    if (!round.isActive) return;
+
+    if (!roundIsActionable) {
+      if (!isOnSupportedNetwork) {
+        notification.error("Unsupported network. Please switch to the required network and try again.");
+      }
+      return;
+    }
 
     if (round.availableForAccount <= 0 || quantity > round.availableForAccount) {
       notification.error("You have exceeded the maximum quantity available for this round.");
       return;
     }
 
+    try {
+      await waitForWalletConnection();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Wallet connection failed.";
+      notification.error(message);
+      return;
+    }
+
     const safeQuantity = clampNumber(quantity, 1, round.availableForAccount);
     if (safeQuantity <= 0) {
       notification.error("You have exceeded the maximum quantity available for this round.");
+      return;
+    }
+
+    if (!unitPrice) {
+      notification.error("Unit price is unavailable. Please try again later.");
       return;
     }
 
@@ -442,7 +543,7 @@ function PresaleRoundCard({
   };
 
   const mintedPercentDisplay = Math.round(clampNumber(round.mintedPercent, 0, 100));
-  const buttonDisabled = !canPurchase;
+  const buttonDisabled = !roundIsActionable;
 
   return (
     <article
