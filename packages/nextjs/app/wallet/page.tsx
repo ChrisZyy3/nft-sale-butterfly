@@ -1,16 +1,20 @@
 "use client";
 
-import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { useWatchBalance } from "@/hooks/scaffold-eth/useWatchBalance";
 import { cn } from "@/lib/utils";
+import {
+  BSC_TESTNET_CHAIN_ID,
+  BTF_TOKEN_ADDRESS,
+  BUTTERFLY_CONTRACT_ADDRESS,
+  getUserTokenBalance,
+  withdrawAllUserETH,
+} from "@/services/web3/butterflyContract";
 import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
-import { decodeEventLog } from "viem";
+import { decodeEventLog, formatUnits } from "viem";
 import { useAccount, usePublicClient, useReadContract, useWriteContract } from "wagmi";
 import { notification } from "~~/utils/scaffold-eth";
-
-const BSC_TESTNET_CHAIN_ID = 97;
-const BUTTERFLY_CONTRACT_ADDRESS = "0xD3E517C3ffDa92D560378A70ee7F717d51e34d70" as const;
 
 const BUTTERFLY_ABI = [
   {
@@ -82,7 +86,7 @@ const baseWalletItems = [
   },
   {
     title: "Assets",
-    value: "0",
+    value: "0 BTF",
     accent: "#ffb547",
     icon: AssetsIcon,
   },
@@ -127,6 +131,10 @@ export default function WalletPage() {
   const [isBindingReferrer, setIsBindingReferrer] = useState(false);
   const [incomingRefAddress, setIncomingRefAddress] = useState<string | null>(null);
   const [isBindingByAddress, setIsBindingByAddress] = useState(false);
+  const [btfBalance, setBtfBalance] = useState<bigint | null>(null);
+  const [isFetchingBtfBalance, setIsFetchingBtfBalance] = useState(false);
+  const [hasWithdrawableBalance, setHasWithdrawableBalance] = useState(false);
+  const [isWithdrawingRewards, setIsWithdrawingRewards] = useState(false);
 
   const { data: balanceData } = useWatchBalance({
     address,
@@ -198,6 +206,37 @@ export default function WalletPage() {
 
   const formattedBalance = balanceData ? formatBalanceForDisplay(balanceData) : undefined;
   const isConnected = Boolean(address && connectedChain);
+  const fetchBtfBalance = useCallback(async () => {
+    if (!address) {
+      setBtfBalance(null);
+      setHasWithdrawableBalance(false);
+      return;
+    }
+
+    setIsFetchingBtfBalance(true);
+    try {
+      const balance = await getUserTokenBalance(address as `0x${string}`, BTF_TOKEN_ADDRESS);
+      setBtfBalance(balance);
+      setHasWithdrawableBalance(balance > 0n);
+    } catch (error) {
+      console.error("Failed to fetch BTF balance", error);
+      setBtfBalance(null);
+      setHasWithdrawableBalance(false);
+    } finally {
+      setIsFetchingBtfBalance(false);
+    }
+  }, [address]);
+
+  useEffect(() => {
+    if (!isConnected) {
+      setBtfBalance(null);
+      setHasWithdrawableBalance(false);
+      return;
+    }
+
+    void fetchBtfBalance();
+  }, [fetchBtfBalance, isConnected]);
+
   const referralCount = referralInfo ? Number((referralInfo as readonly [string, bigint, bigint])[1]) : undefined;
   const formattedReferralCount = useMemo(() => {
     if (!isConnected) {
@@ -366,18 +405,106 @@ export default function WalletPage() {
   //   setIsBindDialogOpen(true);
   // }, [incomingRefAddress, isConnected, referralInfo, referrerAddress, address]);
 
+  const assetsValue = useMemo(() => {
+    if (!isConnected) {
+      return "0 BTF";
+    }
+
+    if (isFetchingBtfBalance || isWithdrawingRewards) {
+      return "...";
+    }
+
+    if (btfBalance === null) {
+      return "0 BTF";
+    }
+
+    return formatTokenBalanceForDisplay(btfBalance, "BTF");
+  }, [btfBalance, isConnected, isFetchingBtfBalance, isWithdrawingRewards]);
+
   const walletItems = useMemo(
     () =>
-      baseWalletItems.map(item =>
-        item.title === "Friends"
-          ? {
-              ...item,
-              value: formattedReferralCount,
-            }
-          : item,
-      ),
-    [formattedReferralCount],
+      baseWalletItems.map(item => {
+        if (item.title === "Friends") {
+          return {
+            ...item,
+            value: formattedReferralCount,
+          };
+        }
+
+        if (item.title === "Assets") {
+          return {
+            ...item,
+            value: assetsValue,
+          };
+        }
+
+        return item;
+      }),
+    [assetsValue, formattedReferralCount],
   );
+
+  const handleWithdrawRewards = useCallback(async () => {
+    if (!isConnected) {
+      openConnectModal?.();
+      return;
+    }
+
+    if (!address) {
+      notification.error("Wallet address not detected.");
+      return;
+    }
+
+    if (!hasWithdrawableBalance) {
+      notification.info("No rewards available to withdraw.");
+      return;
+    }
+
+    if (!publicClient) {
+      notification.error("Public client unavailable.");
+      return;
+    }
+
+    if (isFetchingBtfBalance || isWithdrawingRewards) {
+      return;
+    }
+
+    setIsWithdrawingRewards(true);
+    let toastId: string | null = null;
+    try {
+      toastId = notification.loading("Withdrawing rewards...");
+      const txHash = await withdrawAllUserETH(address as `0x${string}`);
+      await publicClient.waitForTransactionReceipt({ hash: txHash });
+
+      if (toastId) {
+        notification.remove(toastId);
+        toastId = null;
+      }
+
+      notification.success("Rewards withdrawn successfully.");
+
+      await Promise.all([fetchBtfBalance(), refetchReferralInfo(), refetchUserPurchases()]);
+    } catch (error) {
+      if (toastId) {
+        notification.remove(toastId);
+      }
+      const message = error instanceof Error ? error.message : "Unknown error";
+      notification.error(`Failed to withdraw rewards: ${message}`);
+      console.error("Failed to withdraw rewards", error);
+    } finally {
+      setIsWithdrawingRewards(false);
+    }
+  }, [
+    address,
+    fetchBtfBalance,
+    hasWithdrawableBalance,
+    isConnected,
+    isFetchingBtfBalance,
+    isWithdrawingRewards,
+    openConnectModal,
+    publicClient,
+    refetchReferralInfo,
+    refetchUserPurchases,
+  ]);
 
   const handleGenerateInvitation = async () => {
     if (!isConnected) {
@@ -716,9 +843,15 @@ export default function WalletPage() {
             }
 
             const Icon = item.icon;
+            const isAssetsItem = item.title === "Assets";
             const handleItemClick = () => {
               if (!isConnected) {
                 openConnectModal?.();
+                return;
+              }
+
+              if (isAssetsItem) {
+                void handleWithdrawRewards();
               }
             };
             return (
@@ -726,7 +859,8 @@ export default function WalletPage() {
                 key={item.title}
                 type="button"
                 onClick={handleItemClick}
-                className="group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-[22px] border border-[#1f2432] bg-[#10131c] px-5 py-4 text-left transition hover:border-[#20ff6d] hover:bg-[#141924]"
+                disabled={isAssetsItem && (isFetchingBtfBalance || isWithdrawingRewards)}
+                className="group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-[22px] border border-[#1f2432] bg-[#10131c] px-5 py-4 text-left transition hover:border-[#20ff6d] hover:bg-[#141924] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <span className="relative z-10 flex items-center gap-4">
                   <span
@@ -1014,6 +1148,27 @@ function ArrowRightIcon() {
       <path d="m10.5 6.5 3.5 3.5-3.5 3.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
+}
+
+function formatTokenBalanceForDisplay(balance: bigint, symbol: string, decimals = 18) {
+  const formatted = formatUnits(balance, decimals);
+  const numericValue = Number.parseFloat(formatted);
+
+  if (!Number.isFinite(numericValue)) {
+    return `${formatted} ${symbol}`;
+  }
+
+  const fractionDigits = numericValue >= 1 ? 4 : 6;
+  const formattedNumber = numericValue.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: fractionDigits,
+  });
+
+  if (numericValue !== 0 && formattedNumber === "0") {
+    return `${numericValue.toPrecision(4)} ${symbol}`;
+  }
+
+  return `${formattedNumber} ${symbol}`;
 }
 
 function formatBalanceForDisplay(balance: { formatted: string; symbol: string }) {
