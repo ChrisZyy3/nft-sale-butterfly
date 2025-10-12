@@ -133,6 +133,30 @@ button {
   --rk-blurs-modalOverlay: blur(28px);
 }
 
+[data-rk] h1,
+[data-rk] h2,
+[data-rk] h3,
+[data-rk] h4,
+[data-rk] h5,
+[data-rk] h6 {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+[data-rk] [data-testid^="rk-wallet-option-"] * {
+  min-width: 0;
+}
+
+[data-rk] [data-testid^="rk-wallet-option-"] [style*="max-width"] {
+  max-width: 100% !important;
+  white-space: normal;
+  word-break: break-word;
+}
+
+[data-rk] [data-testid^="rk-wallet-option-"] {
+  white-space: normal;
+}
+
 @media (max-width: 640px) {
   [data-rk] {
     --rk-colors-modalBackdrop: rgba(5, 6, 10, 0.82);
@@ -142,5 +166,40 @@ button {
   [data-rk] [role="dialog"] {
     border-radius: 32px 32px 0 0;
     border: 1px solid var(--hb-border-strong);
+  }
+
+  [data-rk] [role="dialog"] [data-testid^="rk-wallet-option-"] {
+    padding-inline: 12px;
+  }
+}
+
+@media (max-width: 540px) {
+  [data-rk] [role="dialog"] {
+    width: 100vw;
+    max-width: none;
+    margin: 0;
+  }
+
+  [data-rk] [role="dialog"] .ju367va.ju367v4.ju367v2r {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    text-align: center;
+  }
+
+  [data-rk] [role="dialog"] .ju367va.ju367v4.ju367v2r > .ju367va {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  [data-rk] [role="dialog"] .ju367va.ju367v4.ju367v2r > .ju367va > * {
+    flex: 1 1 0;
+  }
+
+  [data-rk] [role="dialog"] .ju367va.ju367v4.ju367v2r > .ju367va > * > * {
+    width: 100%;
+    justify-content: center;
   }
 }
