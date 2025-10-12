@@ -219,6 +219,18 @@ export default function WalletPage() {
       return 0;
     }
   }, [userPurchasesData]);
+
+  const formattedTotalPurchases = useMemo(() => {
+    if (!isConnected) {
+      return "0";
+    }
+
+    if (isPurchasesLoading) {
+      return "--";
+    }
+
+    return totalPurchases.toLocaleString();
+  }, [isConnected, isPurchasesLoading, totalPurchases]);
   // Either use the variable by adding a comment explaining why it's needed
   // or remove/comment it out if not needed
   // const referrerAddress =
@@ -368,15 +380,31 @@ export default function WalletPage() {
 
   const walletItems = useMemo(
     () =>
-      baseWalletItems.map(item =>
-        item.title === "Friends"
-          ? {
-              ...item,
-              value: formattedReferralCount,
-            }
-          : item,
-      ),
-    [formattedReferralCount],
+      baseWalletItems.map(item => {
+        if (item.title === "ETH Balance") {
+          return {
+            ...item,
+            value: formattedBalance ?? item.value,
+          };
+        }
+
+        if (item.title === "Friends") {
+          return {
+            ...item,
+            value: formattedReferralCount,
+          };
+        }
+
+        if (item.title === "NFT") {
+          return {
+            ...item,
+            value: formattedTotalPurchases,
+          };
+        }
+
+        return item;
+      }),
+    [formattedBalance, formattedReferralCount, formattedTotalPurchases],
   );
 
   const handleGenerateInvitation = async () => {
