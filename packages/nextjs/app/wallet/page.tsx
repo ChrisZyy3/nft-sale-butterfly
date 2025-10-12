@@ -368,15 +368,26 @@ export default function WalletPage() {
 
   const walletItems = useMemo(
     () =>
-      baseWalletItems.map(item =>
-        item.title === "Friends"
-          ? {
-              ...item,
-              value: formattedReferralCount,
-            }
-          : item,
-      ),
-    [formattedReferralCount],
+      baseWalletItems.map(item => {
+        if (item.title === "Friends") {
+          return {
+            ...item,
+            value: formattedReferralCount,
+          };
+        }
+
+        if (item.title === "NFT") {
+          const value = !isConnected ? "0" : isPurchasesLoading ? "--" : totalPurchases.toLocaleString();
+
+          return {
+            ...item,
+            value,
+          };
+        }
+
+        return item;
+      }),
+    [formattedReferralCount, isConnected, isPurchasesLoading, totalPurchases],
   );
 
   const handleGenerateInvitation = async () => {
