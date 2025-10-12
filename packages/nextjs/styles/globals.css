@@ -106,3 +106,41 @@ button {
     mask-composite: exclude;
   }
 }
+
+/* RainbowKit overrides */
+[data-rk] {
+  --rk-fonts-body: inherit;
+  --rk-colors-accentColor: var(--hb-green);
+  --rk-colors-accentColorForeground: #05060a;
+  --rk-colors-modalBackdrop: rgba(5, 6, 10, 0.72);
+  --rk-colors-modalBackground: var(--hb-surface-soft);
+  --rk-colors-modalBorder: var(--hb-border-strong);
+  --rk-colors-modalText: var(--hb-text-primary);
+  --rk-colors-modalTextSecondary: var(--hb-text-secondary);
+  --rk-colors-modalTextDim: var(--hb-text-subtle);
+  --rk-colors-actionButtonBorder: var(--hb-border);
+  --rk-colors-actionButtonBorderMobile: var(--hb-border);
+  --rk-colors-actionButtonSecondaryBackground: var(--hb-surface-muted);
+  --rk-colors-selectedOptionBorder: rgba(32, 255, 109, 0.4);
+  --rk-radii-actionButton: 16px;
+  --rk-radii-connectButton: 16px;
+  --rk-radii-menuButton: 16px;
+  --rk-radii-modal: 24px;
+  --rk-radii-modalMobile: 28px;
+  --rk-shadows-dialog: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --rk-shadows-selectedOption: 0 0 0 1px rgba(32, 255, 109, 0.35);
+  --rk-shadows-walletLogo: 0 16px 40px rgba(0, 0, 0, 0.35);
+  --rk-blurs-modalOverlay: blur(28px);
+}
+
+@media (max-width: 640px) {
+  [data-rk] {
+    --rk-colors-modalBackdrop: rgba(5, 6, 10, 0.82);
+    --rk-radii-modalMobile: 32px;
+  }
+
+  [data-rk] [role="dialog"] {
+    border-radius: 32px 32px 0 0;
+    border: 1px solid var(--hb-border-strong);
+  }
+}

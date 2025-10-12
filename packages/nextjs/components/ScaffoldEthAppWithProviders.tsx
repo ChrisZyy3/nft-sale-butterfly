@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
@@ -28,6 +28,14 @@ const AppContainer = ({ children }: AppContainerProps) => {
   );
 };
 
+const RAINBOW_KIT_THEME_OPTIONS = {
+  accentColor: "#20ff6d",
+  accentColorForeground: "#05060a",
+  borderRadius: "large" as const,
+  fontStack: "system" as const,
+  overlayBlur: "small" as const,
+};
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -40,18 +48,42 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
   const [mounted, setMounted] = useState(false);
+  const [modalSize, setModalSize] = useState<"compact" | "wide">("wide");
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const updateModalSize = () => {
+      const nextSize: "compact" | "wide" = window.innerWidth <= 640 ? "compact" : "wide";
+      setModalSize(current => (current === nextSize ? current : nextSize));
+    };
+
+    updateModalSize();
+    window.addEventListener("resize", updateModalSize);
+
+    return () => {
+      window.removeEventListener("resize", updateModalSize);
+    };
+  }, []);
+
+  const rainbowKitTheme = useMemo(() => {
+    if (!mounted) {
+      return lightTheme(RAINBOW_KIT_THEME_OPTIONS);
+    }
+
+    return isDarkMode ? darkTheme(RAINBOW_KIT_THEME_OPTIONS) : lightTheme(RAINBOW_KIT_THEME_OPTIONS);
+  }, [isDarkMode, mounted]);
+
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          avatar={BlockieAvatar}
-          theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
-        >
+        <RainbowKitProvider avatar={BlockieAvatar} modalSize={modalSize} theme={rainbowKitTheme}>
           <ProgressBar height="3px" color="#20ff6d" />
           <AppContainer>{children}</AppContainer>
         </RainbowKitProvider>
