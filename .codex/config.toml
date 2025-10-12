@@ -1,0 +1,26 @@
+# Codex 全局配置文件
+# MCP (Model Context Protocol) 配置部分
+# 每个 mcp_servers.xxx = "服务地址或本地命令"
+
+[mcp_servers]
+
+# 1. npm MCP
+# 用于直接查 npm 包的 API / 文档，便于生成 React/Next/Tailwind 等代码
+npm = "npx @codex-mcp/npm"
+
+# 2. git MCP
+# 让 Codex 读取你的仓库结构、分支、commit
+git = "npx @codex-mcp/git"
+
+# 3. filesystem MCP
+# 允许 Codex 读写你项目本地文件（生成新页面、改组件）
+filesystem = "npx @codex-mcp/filesystem"
+
+# 4. figma MCP
+# 接入 Figma API，需要提供 token（可在 Figma 账户设置里生成）
+# 注意：替换 YOUR_FIGMA_PERSONAL_ACCESS_TOKEN
+figma = "npx @codex-mcp/figma --token=figd_Uxzn8k8Ez-KVLyCFE03Ujxy9ozjcpA2j_MFxy1s4"
+
+# 5. playwright MCP
+# 自动生成 / 运行 Playwright 测试（E2E UI 测试）
+playwright = "npx @codex-mcp/playwright"

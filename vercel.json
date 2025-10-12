@@ -1,0 +1,15 @@
+{
+  "buildCommand": "yarn build",
+  "installCommand": "yarn install --frozen-lockfile=false",
+  "framework": "nextjs",
+  "buildEnv": {
+    "YARN_ENABLE_IMMUTABLE_INSTALLS": "false",
+    "ENABLE_EXPERIMENTAL_COREPACK": "1",
+    "VERCEL_TELEMETRY_DISABLED": "1"
+  },
+  "functions": {
+    "packages/nextjs/app/api/**": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}

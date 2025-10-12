@@ -22,7 +22,6 @@ export const RPC_CHAIN_NAMES: Record<number, string> = {
   [chains.optimismSepolia.id]: "opt-sepolia",
   [chains.arbitrum.id]: "arb-mainnet",
   [chains.arbitrumGoerli.id]: "arb-goerli",
-  [chains.arbitrumSepolia.id]: "arb-sepolia",
   [chains.polygon.id]: "polygon-mainnet",
   [chains.polygonMumbai.id]: "polygon-mumbai",
   [chains.polygonAmoy.id]: "polygon-amoy",
@@ -32,6 +31,7 @@ export const RPC_CHAIN_NAMES: Record<number, string> = {
   [chains.base.id]: "base-mainnet",
   [chains.baseGoerli.id]: "base-goerli",
   [chains.baseSepolia.id]: "base-sepolia",
+  [chains.bscTestnet.id]: "bsc-testnet",
   [chains.celo.id]: "celo-mainnet",
   [chains.celoSepolia.id]: "celo-sepolia",
 };
@@ -43,8 +43,8 @@ export const getAlchemyHttpUrl = (chainId: number) => {
 };
 
 export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
-  [chains.hardhat.id]: {
-    color: "#b8af0c",
+  [chains.bscTestnet.id]: {
+    color: "#f0b90b",
   },
   [chains.mainnet.id]: {
     color: "#ff8b9e",
@@ -68,9 +68,6 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
   },
   [chains.optimism.id]: {
     color: "#f01a37",
-  },
-  [chains.arbitrumSepolia.id]: {
-    color: "#28a0f0",
   },
   [chains.arbitrum.id]: {
     color: "#28a0f0",
@@ -123,9 +120,6 @@ export function getBlockExplorerTxLink(chainId: number, txnHash: string) {
  */
 export function getBlockExplorerAddressLink(network: chains.Chain, address: string) {
   const blockExplorerBaseURL = network.blockExplorers?.default?.url;
-  if (network.id === chains.hardhat.id) {
-    return `/blockexplorer/address/${address}`;
-  }
 
   if (!blockExplorerBaseURL) {
     return `https://etherscan.io/address/${address}`;
