@@ -4,7 +4,7 @@ import { type ChangeEvent, type ReactNode, useCallback, useEffect, useMemo, useR
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { formatUnits } from "viem";
-import { useAccount, useChainId, useReadContract, useReadContracts, useWriteContract } from "wagmi";
+import { useAccount, useChainId, useReadContract, useReadContracts, useSwitchChain, useWriteContract } from "wagmi";
 import { notification } from "~~/utils/scaffold-eth";
 
 const STAGE_SIZE = 1000;
@@ -137,6 +137,7 @@ const formatNumber = (value: number) => numberFormatter.format(value);
 export default function PresalePage() {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
+  const { switchChainAsync, isPending: isSwitchingChain } = useSwitchChain();
 
   const {
     data: currentRoundInfo,
@@ -274,6 +275,21 @@ export default function PresalePage() {
 
   const isOnSupportedNetwork = !isConnected || chainId === BSC_TESTNET_CHAIN_ID;
 
+  const handleSwitchToBsc = useCallback(async () => {
+    if (!switchChainAsync) {
+      notification.error("Unable to switch networks automatically. Please change it from your wallet.");
+      return;
+    }
+
+    try {
+      await switchChainAsync({ chainId: BSC_TESTNET_CHAIN_ID });
+      notification.success("Switched to BSC Testnet.");
+    } catch (error) {
+      console.error("Failed to switch to BSC Testnet", error);
+      notification.error("Failed to switch network. Please try again from your wallet.");
+    }
+  }, [switchChainAsync]);
+
   const handlePurchaseSuccess = useCallback(async () => {
     await Promise.all([refetchCurrentRoundInfo(), refetchUserAvailablePurchase()]);
   }, [refetchCurrentRoundInfo, refetchUserAvailablePurchase]);
@@ -284,9 +300,14 @@ export default function PresalePage() {
       <div className="px-4 py-6">
         <div className="mx-auto max-w-md space-y-4">
           {isConnected && !isOnSupportedNetwork ? (
-            <div className="rounded-2xl border border-[#2B1B1B] bg-[#190C0C] p-4 text-sm text-[#FF8787]">
+            <button
+              type="button"
+              onClick={handleSwitchToBsc}
+              disabled={isSwitchingChain}
+              className="w-full rounded-2xl border border-[#2B1B1B] bg-[#190C0C] p-4 text-sm text-[#FF8787] transition-colors hover:border-[#FF8787]/60 hover:bg-[#2A1515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8787] focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060A] disabled:cursor-not-allowed disabled:opacity-70"
+            >
               Please switch your wallet network to BSC Testnet (chain id 97) to participate in the presale.
-            </div>
+            </button>
           ) : null}
           {roundsWithProgress.map(round => (
             <PresaleRoundCard
@@ -296,6 +317,8 @@ export default function PresalePage() {
               formattedPrice={formattedPrice}
               isConnected={isConnected}
               isOnSupportedNetwork={isOnSupportedNetwork}
+              isSwitchingNetwork={isSwitchingChain}
+              onSwitchNetwork={handleSwitchToBsc}
               onPurchaseSuccess={handlePurchaseSuccess}
             />
           ))}
@@ -310,6 +333,8 @@ type PresaleRoundCardProps = {
   formattedPrice: string;
   isConnected: boolean;
   isOnSupportedNetwork: boolean;
+  isSwitchingNetwork?: boolean;
+  onSwitchNetwork?: () => Promise<void> | void;
   onPurchaseSuccess?: () => Promise<void> | void;
 };
 
@@ -319,6 +344,8 @@ function PresaleRoundCard({
   formattedPrice,
   isConnected,
   isOnSupportedNetwork,
+  isSwitchingNetwork,
+  onSwitchNetwork,
   onPurchaseSuccess,
 }: PresaleRoundCardProps) {
   const [quantity, setQuantity] = useState(1);
@@ -327,7 +354,9 @@ function PresaleRoundCard({
 
   const { writeContractAsync, isPending } = useWriteContract();
   const { openConnectModal } = useConnectModal();
+  const activeChainId = useChainId();
   const isConnectedRef = useRef(isConnected);
+  const chainIdRef = useRef<number | undefined>(activeChainId);
   const previousIsConnectedRef = useRef(isConnected);
   const activeConnectionPromiseRef = useRef<Promise<void> | null>(null);
   const pendingConnectionRef = useRef<{
@@ -354,6 +383,10 @@ function PresaleRoundCard({
       clearPendingConnection();
     };
   }, [clearPendingConnection]);
+
+  useEffect(() => {
+    chainIdRef.current = activeChainId;
+  }, [activeChainId]);
 
   useEffect(() => {
     const wasConnected = previousIsConnectedRef.current;
@@ -475,10 +508,11 @@ function PresaleRoundCard({
   const handleBuy = async () => {
     if (!round.isActive) return;
 
-    if (!roundIsActionable) {
-      if (!isOnSupportedNetwork) {
-        notification.error("Unsupported network. Please switch to the required network and try again.");
-      }
+    if (isPending || isSubmitting) {
+      return;
+    }
+
+    if (!isOnSupportedNetwork) {
       return;
     }
 
@@ -492,6 +526,13 @@ function PresaleRoundCard({
     } catch (error) {
       const message = error instanceof Error ? error.message : "Wallet connection failed.";
       notification.error(message);
+      return;
+    }
+
+    if (chainIdRef.current !== BSC_TESTNET_CHAIN_ID) {
+      notification.error(<SwitchNetworkPrompt onSwitchNetwork={onSwitchNetwork} isSwitching={isSwitchingNetwork} />, {
+        duration: 8000,
+      });
       return;
     }
 
@@ -632,6 +673,41 @@ function PresaleRoundCard({
         </div>
       </div>
     </article>
+  );
+}
+
+type SwitchNetworkPromptProps = {
+  onSwitchNetwork?: () => Promise<void> | void;
+  isSwitching?: boolean;
+};
+
+function SwitchNetworkPrompt({ onSwitchNetwork, isSwitching }: SwitchNetworkPromptProps) {
+  const handleSwitch = useCallback(() => {
+    if (!onSwitchNetwork) return;
+    try {
+      const maybePromise = onSwitchNetwork();
+      if (maybePromise && typeof (maybePromise as Promise<unknown>).then === "function") {
+        void (maybePromise as Promise<unknown>);
+      }
+    } catch (error) {
+      console.error("Failed to trigger network switch from toast", error);
+    }
+  }, [onSwitchNetwork]);
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="text-sm font-medium text-white">You are not on BSC Testnet.</p>
+      {onSwitchNetwork ? (
+        <button
+          type="button"
+          onClick={handleSwitch}
+          disabled={isSwitching}
+          className="inline-flex items-center justify-center rounded-lg bg-[#20FF6D] px-4 py-2 text-sm font-semibold text-[#03140A] transition-colors duration-200 hover:bg-[#1ae15d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#20FF6D] focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060A] disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {isSwitching ? "Switching..." : "Switch network"}
+        </button>
+      ) : null}
+    </div>
   );
 }
 
