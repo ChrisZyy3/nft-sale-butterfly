@@ -348,7 +348,9 @@ function PresaleRoundCard({
 
   const { writeContractAsync, isPending } = useWriteContract();
   const { openConnectModal } = useConnectModal();
+  const activeChainId = useChainId();
   const isConnectedRef = useRef(isConnected);
+  const chainIdRef = useRef<number | undefined>(activeChainId);
   const previousIsConnectedRef = useRef(isConnected);
   const activeConnectionPromiseRef = useRef<Promise<void> | null>(null);
   const pendingConnectionRef = useRef<{
@@ -375,6 +377,10 @@ function PresaleRoundCard({
       clearPendingConnection();
     };
   }, [clearPendingConnection]);
+
+  useEffect(() => {
+    chainIdRef.current = activeChainId;
+  }, [activeChainId]);
 
   useEffect(() => {
     const wasConnected = previousIsConnectedRef.current;
@@ -496,10 +502,11 @@ function PresaleRoundCard({
   const handleBuy = async () => {
     if (!round.isActive) return;
 
-    if (!roundIsActionable) {
-      if (!isOnSupportedNetwork) {
-        notification.error("Unsupported network. Please switch to the required network and try again.");
-      }
+    if (isPending || isSubmitting) {
+      return;
+    }
+
+    if (!isOnSupportedNetwork) {
       return;
     }
 
@@ -513,6 +520,10 @@ function PresaleRoundCard({
     } catch (error) {
       const message = error instanceof Error ? error.message : "Wallet connection failed.";
       notification.error(message);
+      return;
+    }
+
+    if (chainIdRef.current !== BSC_TESTNET_CHAIN_ID) {
       return;
     }
 
