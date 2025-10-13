@@ -175,9 +175,11 @@ button {
 
 @media (max-width: 540px) {
   [data-rk] [role="dialog"] {
-    width: 100vw;
+    box-sizing: border-box;
+    width: min(420px, calc(100vw - 24px));
     max-width: none;
-    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   [data-rk] [role="dialog"] .ju367va.ju367v4.ju367v2r {
