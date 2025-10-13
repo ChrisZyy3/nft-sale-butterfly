@@ -317,6 +317,8 @@ export default function PresalePage() {
               formattedPrice={formattedPrice}
               isConnected={isConnected}
               isOnSupportedNetwork={isOnSupportedNetwork}
+              isSwitchingNetwork={isSwitchingChain}
+              onSwitchNetwork={handleSwitchToBsc}
               onPurchaseSuccess={handlePurchaseSuccess}
             />
           ))}
@@ -331,6 +333,8 @@ type PresaleRoundCardProps = {
   formattedPrice: string;
   isConnected: boolean;
   isOnSupportedNetwork: boolean;
+  isSwitchingNetwork?: boolean;
+  onSwitchNetwork?: () => Promise<void> | void;
   onPurchaseSuccess?: () => Promise<void> | void;
 };
 
@@ -340,6 +344,8 @@ function PresaleRoundCard({
   formattedPrice,
   isConnected,
   isOnSupportedNetwork,
+  isSwitchingNetwork,
+  onSwitchNetwork,
   onPurchaseSuccess,
 }: PresaleRoundCardProps) {
   const [quantity, setQuantity] = useState(1);
@@ -524,6 +530,9 @@ function PresaleRoundCard({
     }
 
     if (chainIdRef.current !== BSC_TESTNET_CHAIN_ID) {
+      notification.error(<SwitchNetworkPrompt onSwitchNetwork={onSwitchNetwork} isSwitching={isSwitchingNetwork} />, {
+        duration: 8000,
+      });
       return;
     }
 
@@ -664,6 +673,41 @@ function PresaleRoundCard({
         </div>
       </div>
     </article>
+  );
+}
+
+type SwitchNetworkPromptProps = {
+  onSwitchNetwork?: () => Promise<void> | void;
+  isSwitching?: boolean;
+};
+
+function SwitchNetworkPrompt({ onSwitchNetwork, isSwitching }: SwitchNetworkPromptProps) {
+  const handleSwitch = useCallback(() => {
+    if (!onSwitchNetwork) return;
+    try {
+      const maybePromise = onSwitchNetwork();
+      if (maybePromise && typeof (maybePromise as Promise<unknown>).then === "function") {
+        void (maybePromise as Promise<unknown>);
+      }
+    } catch (error) {
+      console.error("Failed to trigger network switch from toast", error);
+    }
+  }, [onSwitchNetwork]);
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="text-sm font-medium text-white">You are not on BSC Testnet.</p>
+      {onSwitchNetwork ? (
+        <button
+          type="button"
+          onClick={handleSwitch}
+          disabled={isSwitching}
+          className="inline-flex items-center justify-center rounded-lg bg-[#20FF6D] px-4 py-2 text-sm font-semibold text-[#03140A] transition-colors duration-200 hover:bg-[#1ae15d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#20FF6D] focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060A] disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {isSwitching ? "Switching..." : "Switch network"}
+        </button>
+      ) : null}
+    </div>
   );
 }
 
