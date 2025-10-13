@@ -4,7 +4,7 @@ import { type ChangeEvent, type ReactNode, useCallback, useEffect, useMemo, useR
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { formatUnits } from "viem";
-import { useAccount, useChainId, useReadContract, useReadContracts, useWriteContract } from "wagmi";
+import { useAccount, useChainId, useReadContract, useReadContracts, useSwitchChain, useWriteContract } from "wagmi";
 import { notification } from "~~/utils/scaffold-eth";
 
 const STAGE_SIZE = 1000;
@@ -137,6 +137,7 @@ const formatNumber = (value: number) => numberFormatter.format(value);
 export default function PresalePage() {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
+  const { switchChainAsync, isPending: isSwitchingChain } = useSwitchChain();
 
   const {
     data: currentRoundInfo,
@@ -274,6 +275,21 @@ export default function PresalePage() {
 
   const isOnSupportedNetwork = !isConnected || chainId === BSC_TESTNET_CHAIN_ID;
 
+  const handleSwitchToBsc = useCallback(async () => {
+    if (!switchChainAsync) {
+      notification.error("Unable to switch networks automatically. Please change it from your wallet.");
+      return;
+    }
+
+    try {
+      await switchChainAsync({ chainId: BSC_TESTNET_CHAIN_ID });
+      notification.success("Switched to BSC Testnet.");
+    } catch (error) {
+      console.error("Failed to switch to BSC Testnet", error);
+      notification.error("Failed to switch network. Please try again from your wallet.");
+    }
+  }, [switchChainAsync]);
+
   const handlePurchaseSuccess = useCallback(async () => {
     await Promise.all([refetchCurrentRoundInfo(), refetchUserAvailablePurchase()]);
   }, [refetchCurrentRoundInfo, refetchUserAvailablePurchase]);
@@ -284,9 +300,14 @@ export default function PresalePage() {
       <div className="px-4 py-6">
         <div className="mx-auto max-w-md space-y-4">
           {isConnected && !isOnSupportedNetwork ? (
-            <div className="rounded-2xl border border-[#2B1B1B] bg-[#190C0C] p-4 text-sm text-[#FF8787]">
+            <button
+              type="button"
+              onClick={handleSwitchToBsc}
+              disabled={isSwitchingChain}
+              className="w-full rounded-2xl border border-[#2B1B1B] bg-[#190C0C] p-4 text-sm text-[#FF8787] transition-colors hover:border-[#FF8787]/60 hover:bg-[#2A1515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8787] focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060A] disabled:cursor-not-allowed disabled:opacity-70"
+            >
               Please switch your wallet network to BSC Testnet (chain id 97) to participate in the presale.
-            </div>
+            </button>
           ) : null}
           {roundsWithProgress.map(round => (
             <PresaleRoundCard
